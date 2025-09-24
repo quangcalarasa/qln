@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOITQln", "IOITQln.csproj", "{44F165DB-B89E-46A4-9ED8-9A07B3DF7ADF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44F165DB-B89E-46A4-9ED8-9A07B3DF7ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F165DB-B89E-46A4-9ED8-9A07B3DF7ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44F165DB-B89E-46A4-9ED8-9A07B3DF7ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44F165DB-B89E-46A4-9ED8-9A07B3DF7ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C532BB0-199E-490C-A8B3-33061F6A770F}
+	EndGlobalSection
+EndGlobal

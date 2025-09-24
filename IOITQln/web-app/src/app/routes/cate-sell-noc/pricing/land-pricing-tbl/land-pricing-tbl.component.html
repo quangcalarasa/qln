@@ -1,0 +1,223 @@
+<ng-container *ngIf="apartmentDetailData.length > 0">
+  <ng-container
+    *ngIf="(typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU || (this.typeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG && this.parentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU)) && tblInVestmentRateValid">
+    <span class="font-italic border-bottom-1">Áp dụng Suất vốn đầu tư</span>
+    <nz-table class="mb-lg" #basicTable nzBordered="true" nzShowPagination="false" [nzData]="apartmentDetailData"
+      [nzScroll]="{ x: '100%' }">
+      <thead>
+        <tr class="v-align-bt">
+          <th nzWidth="200px" class="text-center">Nghị định</th>
+          <th nzWidth="200px" class="text-center">Điều</th>
+          <th nzWidth="100px" class="text-center">Cấp nhà</th>
+          <th nzWidth="100px" class="text-center">Căn hộ ở tầng số</th>
+          <th nzWidth="100px" class="text-center">Thông tin chi tiết tầng cụ thể</th>
+          <th nzWidth="100px" class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">Số tầng
+            chung cư (để áp dụng hệ số phân bổ đất)</th>
+          <th nzWidth="100px" class="text-center">DT (m2)</th>
+          <th nzWidth="100px" class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">H.s điều
+            chỉnh gt sử dụng</th>
+          <th nzWidth="100px" class="text-center">Tỷ lệ chất lượng còn lại</th>
+          <th nzWidth="300px" class="text-center">Suất vốn đầu tư xây dựng công trình nhà chung cư</th>
+          <th nzWidth="120px" class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">Suất vốn đầu tư</th>
+          <th nzWidth="120px" class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">Chi phí thiết bị</th>
+          <th nzWidth="120px" class="text-center">Chi phí xây dựng</th>
+          <th nzRight nzWidth="120px" class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+            Suất vốn đầu tư (áp dụng cho tính giá bán)
+            <span class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+              [nzPopoverContent]="contentPpvTpl21" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+          </th>
+          <th nzRight nzWidth="120px" class="text-center">
+            Giá nhà năm {{ curr_date | date: 'yyyy' }}
+            <span class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+              [nzPopoverContent]="contentPpvTpl12" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+          </th>
+          <th nzRight nzWidth="120px" class="text-center">
+            Giá trị còn lại của nhà ở
+            <span *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU" class="point text-lg ml-sm" nz-icon
+              nzType="question-circle" nzTheme="twotone" nz-popover [nzPopoverContent]="contentPpvTpl13"
+              [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+            <span *ngIf="typeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG"
+              class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+              [nzPopoverContent]="contentPpvTpl15" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let item of apartmentDetailData | filterApartmentDetailDataPricing: typeReportApply : true : parentTypeReportApply; let index = index; let first = first">
+          <td class="text-center">{{ item.DecreeType1Name }}</td>
+          <td class="text-center">{{ item.TermApplyName }}</td>
+          <td class="text-center">
+            <span>{{ item.Level }}</span>
+          </td>
+          <td class="text-center">{{ item.FloorName }}</td>
+          <td class="text-center">{{ item.AreaName }}</td>
+          <td class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">{{
+            item.FloorApplyPriceChange | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center">{{ item.PrivateArea | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">{{
+            item.CoefficientUseValue
+            | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center">{{ item.MaintextureRateValue | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center">
+            <nz-select nzAllowClear nzPlaceHolder="" [nzShowSearch]="true" class="text-left width-100"
+              [(ngModel)]="item.InvestmentRateItemId" [ngModelOptions]="{ standalone: true }"
+              (ngModelChange)="changeInvestmentRateItem($event, true, item)" [nzCustomTemplate]="defaultTemplate"
+              nzDropdownClassName="nz-select-price-list-item">
+              <nz-option
+                *ngFor="let i of investment_rate_item_data | filterItemsByDecreeType1Id: item.DecreeType1Id; let idx = index"
+                [nzLabel]="i.DetailInfo + ', ' + i.LineInfo + ', ' + i.Des" [nzValue]="i.Id">
+              </nz-option>
+            </nz-select>
+            <ng-template #defaultTemplate let-selected>
+              <span></span>
+              {{ customInvestmentRateItemSelectedlabel(selected.nzLabel) }}
+            </ng-template>
+          </td>
+          <td class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+            {{ item.InvestmentRateValue | number: '0.0-2':'de-DE'}}
+          </td>
+          <td class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+            {{ item.InvestmentRateValue2 | number: '0.0-2':'de-DE'}}
+          </td>
+          <td class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+            {{ item.InvestmentRateValue1 | number: '0.0-2':'de-DE'}}
+          </td>
+          <td nzRight class="text-center">
+            {{ item.Price | number: '0.0-2':'de-DE'}}
+          </td>
+          <td nzRight class="text-center">{{ item.PriceInYear | number: '0.0-2':'de-DE'}}</td>
+          <td nzRight class="text-center">{{ item.RemainingPrice | number: '0.0-2':'de-DE'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-container>
+
+  <ng-container *ngIf="tblUnInVestmentRateValid">
+    <span class="font-italic border-bottom-1"
+      *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU || (this.typeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG && this.parentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU)">Không
+      áp dụng Suất
+      vốn đầu
+      tư</span>
+    <nz-table #basicTable nzBordered="true" nzShowPagination="false" [nzData]="apartmentDetailData"
+      [nzScroll]="{ x: '100%' }">
+      <thead>
+        <tr class="v-align-bt">
+          <th nzWidth="200px" class="text-center">Nghị định</th>
+          <th nzWidth="200px" class="text-center">Điều</th>
+          <th nzWidth="100px" class="text-center">Cấp nhà</th>
+          <th nzWidth="100px" class="text-center">Căn hộ ở tầng số</th>
+          <th nzWidth="100px" class="text-center">Thông tin chi tiết tầng cụ thể</th>
+          <th nzWidth="100px" class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">Số tầng
+            chung
+            cư (để áp dụng hệ số phân bổ đất)</th>
+          <th nzWidth="100px" class="text-center">
+            <span
+              *ngIf="typeReportApply != TypeReportApplyEnum.NHA_CHUNG_CU && parentTypeReportApply != TypeReportApplyEnum.NHA_CHUNG_CU">Nhà
+              nhiều hộ (m2)</span>
+            <span
+              *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU || parentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">DT
+              (m2)</span>
+          </th>
+          <th nzWidth="100px" class="text-center"
+            *ngIf="typeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">Nhà riêng lẻ (m2)</th>
+          <th nzWidth="100px" class="text-center"
+            *ngIf="typeReportApply != TypeReportApplyEnum.NHA_RIENG_LE && typeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+            H.s phân bổ
+            các tầng</th>
+          <th nzWidth="100px" class="text-center"
+            *ngIf="typeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">H.s điều chỉnh gt sử dụng
+          </th>
+          <th nzWidth="100px" class="text-center">Tỷ lệ chất lượng còn lại</th>
+          <th nzWidth="300px" class="text-center">Căn cứ xác định đơn giá nhà</th>
+          <th nzRight nzWidth="120px" class="text-center">Đơn giá nhà (đồng/m2)</th>
+          <th nzRight nzWidth="120px" class="text-center">
+            Giá nhà năm {{ curr_date | date: 'yyyy' }}
+            <span class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+              [nzPopoverContent]="contentPpvTpl6" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+          </th>
+          <th nzRight nzWidth="120px" class="text-center">
+            Giá trị còn lại của nhà ở
+            <span *ngIf="typeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG"
+              class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+              [nzPopoverContent]="contentPpvTpl7" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+            <span *ngIf="typeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG"
+              class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+              [nzPopoverContent]="contentPpvTpl15" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let item of apartmentDetailData | filterApartmentDetailDataPricing: typeReportApply : false : parentTypeReportApply; let index = index; let first = first">
+          <td class="text-center">{{ item.DecreeType1Name }}</td>
+          <td class="text-center">{{ item.TermApplyName }}</td>
+          <td class="text-center">
+            <span>{{ item.Level }}</span>
+          </td>
+          <td class="text-center">{{ item.FloorName }}</td>
+          <td class="text-center">{{ item.AreaName }}</td>
+          <td class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+            {{ item.FloorApplyPriceChange | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center" *ngIf="typeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">{{
+            item.GeneralArea | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center">{{ item.PrivateArea | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center"
+            *ngIf="typeReportApply != TypeReportApplyEnum.NHA_RIENG_LE && typeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+            {{
+            item.CoefficientDistribution | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center" *ngIf="typeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+            <span *ngIf="item.TermApply != TermApplyEnum.DIEU_70 && item.TermApply != TermApplyEnum.KHOAN_2_DIEU_34">
+              {{item.CoefficientUseValue | number: '0.0-2':'de-DE'}}
+            </span>
+          </td>
+          <td class="text-center">{{ item.MaintextureRateValue | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center">
+            <nz-select nzAllowClear nzPlaceHolder="" [nzShowSearch]="true" class="text-left width-100"
+              [(ngModel)]="item.PriceListItemId" [ngModelOptions]="{ standalone: true }"
+              (ngModelChange)="changePriceListItem($event, true, item)" [nzCustomTemplate]="defaultTemplate"
+              nzDropdownClassName="nz-select-price-list-item">
+              <nz-option
+                *ngFor="let i of price_list_item_data | filterPriceListItemByDecreeType1Id: item.DecreeType1Id; let idx = index"
+                [nzLabel]="i.NameOfConstruction + ' + ' + i.DetailStructure" [nzValue]="i.Id">
+              </nz-option>
+            </nz-select>
+            <ng-template #defaultTemplate let-selected>
+              <span></span>
+              {{ customPriceListItemSelectedlabel(selected.nzLabel) }}
+            </ng-template>
+          </td>
+          <td nzRight class="text-right">
+            {{ item.Price | number: '0.0-2':'de-DE'}}
+          </td>
+          <td nzRight class="text-right">{{ item.PriceInYear | number: '0.0-2':'de-DE'}}</td>
+          <td nzRight class="text-right">{{ item.RemainingPrice | number: '0.0-2':'de-DE'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-container>
+
+</ng-container>
+
+<ng-container *ngIf="apartmentDetailData.length == 0">
+  <p class="text-center" style="font-style: italic; text-decoration: underline;">Không có dữ liệu</p>
+</ng-container>
+
+<ng-template #contentPpvTpl6>
+  <app-shared-popover [cs]="6"> </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl7>
+  <app-shared-popover [cs]="7"> </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl12>
+  <app-shared-popover [cs]="12"> </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl13>
+  <app-shared-popover [cs]="13"> </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl15>
+  <app-shared-popover [cs]="15"> </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl21>
+  <app-shared-popover [cs]="21"> </app-shared-popover>
+</ng-template>

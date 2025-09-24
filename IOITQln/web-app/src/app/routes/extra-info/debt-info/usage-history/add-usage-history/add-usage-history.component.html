@@ -1,0 +1,79 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Code" nzRequired>Mã định danh</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Mã định danh!">
+            <input nz-input formControlName="Code" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="House" nzRequired>Căn nhà</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Căn nhà!">
+            <input nz-input formControlName="House" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Apartment" nzRequired>Căn hộ</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Căn nhà!">
+            <input nz-input formControlName="Apartment" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Address" nzRequired>Địa chỉ</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập địa chỉ!">
+            <input nz-input formControlName="Address" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Total" nzRequired>Diện tích</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập diện tích!">
+            <input nz-input formControlName="Total" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Name" nzRequired>Chủ căn hộ</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập chủ căn hộ!">
+            <input nz-input formControlName="Name" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Phone" nzRequired>Điện thoại</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập điện thoại!">
+            <input nz-input formControlName="Phone" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzMd]="6" nzFor="ToDate" nzRequired>Thời gian yêu cầu hỗ trợ</nz-form-label>
+        <nz-form-control [nzMd]="14" nzHasFeedback [nzErrorTip]="timeReqErrorTpl">
+            <input nz-input type="date" max="9999-12-31" formControlName="ToDate" />
+            <ng-template #timeReqErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Chưa nhập Thời gian yêu cầu hỗ trợ!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="TypeUsageStatusName" nzRequired>Trạng thái sử dụng</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa chọn trạng thái">
+          <nz-select
+            formControlName="TypeUsageStatusName"
+            name="TypeUsageStatusName"
+            id="TypeUsageStatusName"
+            [nzPlaceHolder]="'Chưa chọn người tiếp nhận'"
+            [nzShowSearch]="true"
+            [nzAllowClear]="true"
+          >
+            <nz-option *ngFor="let i of TypeUsageStatus | keyvalue; let idx = index" [nzLabel]="i.value" [nzValue]="i.key"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

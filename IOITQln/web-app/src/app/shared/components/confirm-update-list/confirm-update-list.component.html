@@ -1,0 +1,16 @@
+<div>
+    <form nz-form (keydown.enter)="$event.preventDefault()">
+        <div nz-row [nzGutter]="24">
+            <st #tableRef [data]="data" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'"
+                [ps]="paging.page_size" [total]="paging.item_count"
+                [widthMode]="{ type: 'strict',strictBehavior:'truncate' }" [page]="{front:false}">
+                <ng-template st-row="no-column" let-item let-index="index">
+                    <span>{{ ((paging.page - 1) * paging.page_size) + index + 1 }}</span>
+                </ng-template>
+            </st>
+        </div>
+    </form>
+</div>
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="close()">Đóng</button>
+</div>

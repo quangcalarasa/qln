@@ -1,0 +1,350 @@
+<ng-container *ngIf="cs == 1">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">* Ghi chú:</span>
+    <span>- Hệ số phân bổ các tầng dùng để tính diện tích đất ở chung quy đổi</span>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="cs == 2">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <div class="All">
+      <div class="Sum">- Phân tích kinh tế kỹ thuật = </div>
+      <span class="Fraction">
+        <span class="Numerator">Σ (Tỷ lệ chất lượng còn lại * Tỷ lệ GT kết cấu chính)</span>
+        <span class="Denominator">Σ (Tỷ lệ GT kết cấu chính)</span>
+      </span>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="cs == 3">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block"> - Độ sau vị trí < 100: Đơn giá đất ở&nbsp;=&nbsp;Đơn giá mặt tiền đường * Hệ số vị trí
+        </span>
+        <span class="d-block"> - Độ sau vị trí > 100: Đơn giá đất ở = Đơn giá mặt tiền đường * Hệ số vị trí * (100% - %
+          miễn giảm) </span>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="cs == 4">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú:</span>
+    <span class="d-block">- Mặc định check trường "Mặt tiền đường": Đơn giá đất ở = Đơn giá mặt tiền đường</span>
+    <span class="d-block">- Nếu là hẻm bỏ check chọn, hệ thống hiển thị Trường "Hẻm cấp" và "Vị trí hẻm". Đơn giá đất ở
+      căn cứ vào Đơn giá mắt tiền để lấy được
+      đơn giá đất hẻm</span>
+    <span class="d-block pl-lg">+ Không là hẻm trải đất: Đơn giá đất ở = Bảng giá đất số 2</span>
+    <span class="d-block pl-lg">+ Trường hợp là Hẻm trải đất: Đơn giá đất ở = Bảng giá đất số 2 * 0.8</span>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="cs == 5">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: Có thể chọn từ danh sách thuê nhà, có thể chọn nhiều người</span>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="cs == 6">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block font-weight-bold">Ghi chú: công thức tính</span>
+    <ng-container>
+      <span class="d-block font-weight-bold font-italic">Theo nghị định 99/2015/NĐ-CP</span>
+      <span class="d-block pl-sm">
+        <strong>- Cột Giá nhà ở năm</strong> ... (Năm lập biên bản) = <strong>Đơn giá nhà</strong> (theo quy định) *
+        <strong>Chỉ số giá xây dựng công trình</strong>
+      </span>
+    </ng-container>
+    <ng-container>
+      <span class="d-block font-weight-bold font-italic">Theo nghị định 34/2013/NĐ-CP</span>
+      <span class="d-block pl-sm">
+        <strong>- Cột Giá nhà ở năm</strong> ... (Năm lập biên bản) = <strong>Đơn giá nhà</strong> (theo quy định)
+      </span>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="cs == 7">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block font-weight-bold">Ghi chú: công thức tính</span>
+    <ng-container>
+      <span class="d-block font-weight-bold font-italic">Theo nghị định 99/2015/NĐ-CP</span>
+      <span class="d-block pl-sm">
+        <strong>- Cột Giá trị còn lại của nhà ở:</strong>
+      </span>
+      <span class="d-block pl-md">
+        + Theo Điều 65 = <strong>Giá nhà ở năm ... * Tỷ lệ chất lượng còn lại của nhà ở * DT * Hệ số điều chỉnh giá trị
+          sử dụng</strong>
+      </span>
+      <span class="d-block pl-md mb-lg">
+        + Theo Điều 70 = <strong>Giá nhà ở năm ... * Tỷ lệ chất lượng còn lại của nhà ở * DT</strong>
+      </span>
+    </ng-container>
+    <ng-container>
+      <span class="d-block font-weight-bold font-italic">Theo nghị định 34/2013/NĐ-CP</span>
+      <span class="d-block pl-sm">
+        <strong>- Cột Giá trị còn lại của nhà ở:</strong>
+      </span>
+      <span class="d-block pl-md">
+        + Theo Điều 27, khoản 1 Điều 34 =
+        <strong>Giá nhà ở năm ... * Tỷ lệ chất lượng còn lại của nhà ở * DT * Hệ số điều chỉnh giá trị sử dụng</strong>
+      </span>
+      <span class="d-block pl-md mb-lg">
+        + Theo Khoản 2 Điều 34 = <strong>Giá nhà ở năm ... * Tỷ lệ chất lượng còn lại của nhà ở * DT</strong>
+      </span>
+    </ng-container>
+  </div>
+</ng-container>
+
+<!-- Công thức tính S chung quy đổi -->
+<ng-container *ngIf="cs == 8">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <div class="All">
+      <div class="Sum">- S đất ở chung quy đổi = </div>
+      <span class="Fraction">
+        <span class="Numerator">Σ (S nhà nhiều hộ theo hộ* Hệ số tầng)</span>
+        <span class="Denominator">Σ (S nhà nhiều hộ theo thông tin chi tiết tầng cụ thể * Hệ số tầng)</span>
+      </span>
+      <div class="Sum"> * S chung (Tổng DT xây dựng sử dụng chung đặc biệt)</div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Công thức tính giá đất theo điều 65, khoản 1 điều 34, điều 7 -->
+<ng-container *ngIf="cs == 9651347">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * (S riêng * 40% + S đất ở chung quy đổi * 10% + S chung phân bổ * 40% ) * (100% -
+        %Tiền đất miễn giảm)</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Công thức tính giá đất theo điều 70, khoản 2 điều 34 -->
+<ng-container *ngIf="cs == 70234">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * (S riêng + S đất ở chung quy đổi + S chung phân bổ) * 100%</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Ghi chú công thức tính Đơn giá đất ở cho TH nhà riêng lẻ -->
+<ng-container *ngIf="cs == 10">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú công thức tính:</span>
+    <span class="d-block">- Nếu vị trí đất ở # 1 không áp dụng hệ số K</span>
+    <span class="d-block pl-lg">+ Độ sâu vị trí < 100: Đơn giá đất ở=Đơn giá mặt tiền đường * Hệ số vị trí </span>
+        <span class="d-block pl-lg">+ Độ sâu vị trí > 100: Đơn giá đất ở = Đơn giá mặt tiền đường * Hệ số vị trí * (100%
+          - % miễn giảm)</span>
+        <span class="d-block">- Nếu vị trí đất ở = 1 áp dụng hệ số K (Chiều rộng hẻm < 3 thì Hệ số K điều chỉnh giá
+            đất=1; Chiều rộng hẻm> 3= thì Hệ số K điều chỉnh giá đất =1.2)</span>
+        <span class="d-block pl-lg">+ Độ sâu vị trí < 100: Đơn giá đất ở=Đơn giá mặt tiền đường * Hệ số vị trí * Hệ số K
+            điều chỉnh giá đất</span>
+            <span class="d-block pl-lg">+ Độ sâu vị trí > 100: Đơn giá đất ở = Đơn giá mặt tiền đường * Hệ số vị trí *
+              (100% - % miễn giảm) * * Hệ số K điều chỉnh giá đất</span>
+  </div>
+</ng-container>
+
+<!-- Ghi chú về Áp dụng suất vốn đầu tư -->
+<ng-container *ngIf="cs == 11">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: Cột Áp dụng suất vốn đầu tư chỉ hiển thị theo Nghị định 99, với phần DT thuộc
+      cấp của chung cư và không là tầng lửng mặc địch check</span>
+  </div>
+</ng-container>
+
+<!-- Ghi chú về công thức tính giá đất của Nhà riêng lẻ -->
+<!-- Công thức tính giá đất theo điều 65, khoản 1 điều 34 Nhà riêng lẻ -->
+<ng-container *ngIf="cs == 1165134">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * (DT đất của nhà ở trong hạn mức * 40% + DT đất của nhà ở ngoài hạn mức * 100%) *
+        (100% -
+        %Tiền đất miễn giảm)</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Công thức tính giá đất theo điều 70, khoản 2 điều 34 Nhà riêng lẻ -->
+<ng-container *ngIf="cs == 1170234">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * (DT đất của nhà ở trong hạn mức + DT đất của nhà ở ngoài hạn mức) *
+        100%</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Công thức tính giá đất theo điều 7 ND61 Nhà riêng lẻ -->
+<ng-container *ngIf="cs == 117">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * (DT đất của nhà ở trong hạn mức * 40% + DT đất của nhà ở ngoài hạn mức * 100%) *
+        (100% -
+        %Tiền đất miễn giảm)</strong>
+      <strong>hoặc Giá đất = Đơn giá đất * (DT đất của nhà ở trong hạn mức * 40% + DT đất của nhà ở ngoài hạn mức * 100)
+        * Tiền đất miễn giảm</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Công thức tính giá nhà ở năm theo Nghị định 99 Áp dụng suất vốn đầu tư -->
+<ng-container *ngIf="cs == 12">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block font-weight-bold">Ghi chú: công thức tính khi áp dụng suất vốn đầu từ với nhà chung cư, tính
+      theo Nghị định 99/2015/NĐ-CP</span>
+    <ng-container>
+      <span class="d-block pl-sm">
+        <strong>- Cột Giá nhà ở năm</strong> ... (Năm lập biên bản) = <strong>Suất vốn đầu tư </strong> (theo quy định)
+        *
+        <strong>Chỉ số giá xây dựng công trình</strong>
+        *
+        <strong>Hệ số điều chỉnh vùng 8 (TPHCM)</strong>
+      </span>
+    </ng-container>
+  </div>
+</ng-container>
+<ng-container *ngIf="cs == 13">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block font-weight-bold">Ghi chú: công thức tính khi áp dụng suất vốn đầu tư với nhà chung cư, tính
+      theo Nghị định 99/2015/NĐ-CP</span>
+    <ng-container>
+      <span class="d-block pl-sm">
+        <strong>- Cột Giá trị còn lại của nhà ở:</strong>
+      </span>
+      <span class="d-block pl-lg">
+        <span>+ Theo điều 65 nghị định 99/2015/NĐ-CP = </span>
+        <strong>Giá nhà ở năm ... * Tỷ lệ chất lượng còn lại của nhà ở * DT * Hệ số điều chỉnh giá trị sử dụng</strong>
+      </span>
+      <span class="d-block pl-lg">
+        <span>+ Theo điều 70 nghị định 99/2015/NĐ-CP = </span>
+        <strong>Giá nhà ở năm ... * Tỷ lệ chất lượng còn lại của nhà ở * DT</strong>
+      </span>
+    </ng-container>
+  </div>
+</ng-container>
+
+<!-- Ghi chú về công thức tính giá đất Nhà chung cư -->
+<!-- Công thức tính giá đất theo điều 65, khoản 1 điều 34 Nhà chung cư -->
+<ng-container *ngIf="cs == 1465134">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * Σ (DT đất của chung cư * Hệ số phân bổ các tầng khi chuyển quyền sử dụng đất) *
+        10% * Hệ số nhà chung cư * (100% - %Tiền đất miễn giảm)</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Công thức tính giá đất theo điều 70, khoản 2 điều 34 Nhà chung cư -->
+<ng-container *ngIf="cs == 1470234">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * Σ (DT đất của chung cư * Hệ số phân bổ các tầng khi chuyển quyền sử dụng đất) *
+        100% * Hệ số nhà chung cư</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Công thức tính giá đất theo điều 7 ND61 Nhà chung cư -->
+<ng-container *ngIf="cs == 147">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * Σ (DT đất của chung cư * Hệ số phân bổ các tầng khi chuyển quyền sử dụng đất) *
+        10% * Hệ số nhà chung cư * (100% - %Tiền đất miễn giảm)</strong>
+      <strong>hoặc Giá đất = [Đơn giá đất * Σ (DT đất của chung cư * Hệ số phân bổ các tầng khi chuyển quyền sử dụng
+        đất) * 10% * Hệ số nhà chung cư *] - Tiền đất miễn giảm</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Công thức tính Giá trị còn lại của nhà ở cho TH Bán phần diện tích sử dụng chung -->
+<ng-container *ngIf="cs == 15">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block font-weight-bold">Ghi chú: công thức tính</span>
+    <ng-container>
+      <span class="d-block font-weight-bold font-italic">Theo nghị định 99/2015/NĐ-CP</span>
+      <span class="d-block pl-sm">
+        <strong>- Cột Giá trị còn lại của nhà ở:</strong>
+      </span>
+      <span class="d-block pl-md">
+        + Theo Điều 71 = <strong>Giá nhà ở năm ... * Tỷ lệ chất lượng còn lại của nhà ở * DT</strong>
+      </span>
+    </ng-container>
+    <ng-container>
+      <span class="d-block font-weight-bold font-italic">Theo nghị định 34/2013/NĐ-CP</span>
+      <span class="d-block pl-sm">
+        <strong>- Cột Giá trị còn lại của nhà ở:</strong>
+      </span>
+      <span class="d-block pl-md">
+        + Theo Điều 35 =
+        <strong>Giá nhà ở năm ... * Tỷ lệ chất lượng còn lại của nhà ở * DT </strong>
+      </span>
+    </ng-container>
+  </div>
+</ng-container>
+
+<!-- Công thức tính giá đất cho Nhà hộ chung - Phần diện tích sử dụng chung  -->
+<ng-container *ngIf="cs == 16">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * DT đất ở xây dựng (Bán bổ sung) * 100%</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Công thức tính giá đất cho Nhà chung cư - Phần diện tích sử dụng chung  -->
+<ng-container *ngIf="cs == 17">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * DT đất ở * 100%</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Công thức tính giá đất cho Phần diện tích liền kề  -->
+<ng-container *ngIf="cs == 18">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Giá đất = Đơn giá đất * (DT đất của nhà ở trong hạn mức *40% + DT đất của nhà ở ngoài hạn mức *
+        100%)</strong>
+    </span>
+  </div>
+</ng-container>
+
+<!-- Ghi chú Thông tin diện tích đất liền kề với nhà ở cũ -->
+<ng-container *ngIf="cs == 19">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: Thông tin được hiển thị theo biên bản khi bán phần diện tích đất liền kề</span>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="cs == 20">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Ghi chú: công thức tính</span>
+    <span class="d-block pl-sm">
+      <strong>- Thuế đất phi nông nghiệp (của Loại nhà = nhà đất) = (Diện tích đất sử dụng chung + Diện tích đất sử dụng
+        riêng)
+        * (Giá 1m² đất theo hệ số vị trí * 80%) * Thuế suất</strong>
+    </span>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="cs == 21">
+  <div class="bg-magenta-light p-sm">
+    <span class="d-block">Suất vốn đầu tư (áp dụng cho tính giá bán) = Suất vốn đầu tư - Chi phí thiết bị</span>
+  </div>
+</ng-container>

@@ -1,0 +1,21 @@
+<div style="padding: 50px;">
+  <nz-row [nzGutter]="16"
+    style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);display: flex;width: 50%;padding: 0px 200px; text-align: center;">
+    <nz-col [nzSpan]="12">
+      <nz-card>
+        <!-- <nz-statistic [nzValue]="(11.28 | number: '1.0-2')!" [nzTitle]="'NOC'" [nzPrefix]="" [nzSuffix]=""
+          [nzValueStyle]="{ color: '#3F8600' }"></nz-statistic> -->
+        <!-- <ng-template #prefixTplOne><span nz-icon nzType="arrow-up"></span></ng-template> -->
+        <strong style="color: #3F8600; font-size: 30px; cursor: pointer;" (click)="chooseSubSystem(2)">NOC</strong>
+      </nz-card>
+    </nz-col>
+    <nz-col [nzSpan]="12">
+      <nz-card>
+        <!-- <nz-statistic [nzValue]="(9.3 | number: '1.0-2')!" [nzTitle]="'TDC'" [nzPrefix]=""
+          [nzValueStyle]="{ color: '#CF1322' }"></nz-statistic> -->
+        <!-- <ng-template #prefixTplTwo><span nz-icon nzType="arrow-down"></span></ng-template> -->
+        <strong style="color: #CF1322; font-size: 30px; cursor: pointer;" (click)="chooseSubSystem(3)">TDC</strong>
+      </nz-card>
+    </nz-col>
+  </nz-row>
+</div>

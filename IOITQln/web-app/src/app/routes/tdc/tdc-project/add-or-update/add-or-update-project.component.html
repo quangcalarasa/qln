@@ -1,0 +1,213 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8" *ngIf="add">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Code" nzRequired>
+                    <span>Mã dự án</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input formControlName="Code" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Name" nzRequired>
+                    <span>Tên dự án</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input formControlName="Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandCount">
+                    <span>Số lượng lô</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input formControlName="LandCount" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+    </div>
+    <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="7">
+            <span class="title">Lãi bán nhà trả góp</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LateRate">
+                    <span>Hệ số lãi phạt trễ hạn</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" nz-input currencyMask [options]="{ precision: 2, min: 0 }" formControlName="LateRate" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DebtRate">
+                    <span>Lãi nợ cũ</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" nz-input currencyMask [options]="{ precision: 2, min: 0 }" formControlName="DebtRate" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="3">
+            <span class="title">Quy mô</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TotalAreas" nzRequired>
+                    <span>Tổng diện tích</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }"  nz-input formControlName="TotalAreas" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TotalApartment" nzRequired>
+                    <span>Tổng số căn hộ</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" nz-input currencyMask [options]="{ precision: 2, min: 0 }" formControlName="TotalApartment" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TotalPlatform" nzRequired>
+                    <span>Tổng số nền đất</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" nz-input currencyMask [options]="{ precision: 2, min: 0 }" formControlName="TotalPlatform" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TotalFloorAreas" nzRequired>
+                    <span>Tổng diện tích sàn</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" nz-input currencyMask [options]="{ precision: 2, min: 0 }" formControlName="TotalFloorAreas" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TotalUseAreas" nzRequired>
+                    <span>Tổng diện tích sử dụng</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" nz-input currencyMask [options]="{ precision: 2, min: 0 }" formControlName="TotalUseAreas" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TotalBuildAreas" nzRequired>
+                    <span>Tổng diện tích xây dựng</span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" nz-input currencyMask [options]="{ precision: 2, min: 0 }" formControlName="TotalBuildAreas" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="3">
+            <span class="title">Địa chỉ căn nhà</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="HouseNumber" nzRequired>Căn nhà số</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập thông tin Số căn nhà!">
+                    <input nz-input formControlName="HouseNumber" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="BuildingName" nzRequired>Tòa</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập thông tin Số căn nhà!">
+                    <input nz-input formControlName="BuildingName" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Pdw">Tỉnh (Tp) /Quận (huyện) /Phường (xã)
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-cascader [nzShowSearch]="true" formControlName="Pdw" name="Pdw" id="Pdw" nzPlaceHolder=""
+                        [nzOptions]="pdw_data" (ngModelChange)="changePdw()">
+                    </nz-cascader>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Lane">Đường</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Đường!">
+                    <nz-select nzAllowClear formControlName="Lane" name="Lane" id="Lane" nzPlaceHolder=""
+                        [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of lane_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <app-tdc-project-ingreprice #tdcProjectIngrepriceComponent
+                [tDCProjectIngrePrices]="validateForm.value.tDCProjectIngrePrices" (eventEmitter)="changeData($event)"
+                (eventDeletedEmitter)="DeletedItemIngrePrice($event)">
+            </app-tdc-project-ingreprice>
+        </div>
+        <div nz-col [nzSpan]="24">
+            <app-tdc-project-price-and-tax #tdcProjectPriceAndTaxComponent
+                [tdcProjectPriceAndTax]="validateForm.value.tDCProjectPriceAndTaxes"
+                [tDCProjectIngrePrices]="validateForm.value.tDCProjectIngrePrices"></app-tdc-project-price-and-tax>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Note">Ghi chú</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập diễn giải!">
+                    <textarea formControlName="Note" nz-input rows="2"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

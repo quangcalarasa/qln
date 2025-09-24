@@ -1,0 +1,126 @@
+<div nz-row>
+    <div nz-col [nzSm]="24" [nzMd]="6">
+        <h3 class="title-table mb-lg">
+            <i nz-icon nzType="arrow-left" nzTheme="outline" (click)="onBack()"></i>
+            Thống kê danh sách phiếu chi
+        </h3>
+    </div>
+</div>
+<form nz-form [formGroup]="validateForm" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="FromYear">Từ năm</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select formControlName="FromYear" nzAllowClear [nzShowSearch]="true">
+                      <nz-option *ngFor="let year of years" [nzValue]="year" [nzLabel]="year"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ToYear">Đến năm</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select formControlName="ToYear" nzAllowClear [nzShowSearch]="true">
+                      <nz-option *ngFor="let year of years" [nzValue]="year" [nzLabel]="year"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="HouseId">Mã căn nhà/Kios</nz-form-label>
+                <nz-form-control class="width-lg text-left">
+                    <nz-select nzAllowClear [nzDropdownMatchSelectWidth]="false" formControlName="HouseId" name="type"
+                        id="type" [nzPlaceHolder]="''" [nzShowSearch]="true" nzAllowClear>
+                        <nz-option *ngFor="let i of md167_house_data; let idx = index" [nzLabel]="i.HouseCode" [nzValue]="i.HouseId">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DistrictId">Quận/Huyện</nz-form-label>
+                <nz-select nzAllowClear formControlName="DistrictId" name="DistrictId" id="DistrictId" nzPlaceHolder=""
+                    [nzShowSearch]="true" (ngModelChange)="changeDistrict()" nzAllowClear>
+                    <nz-option *ngFor="let i of lstDistrict; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="WardId">Phường/Xã</nz-form-label>
+                <nz-select nzAllowClear formControlName="WardId" name="WardId" id="WardId" nzPlaceHolder=""
+                    [nzShowSearch]="true" (ngModelChange)="changeWard()" nzAllowClear>
+                    <nz-option *ngFor="let i of lstWard; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LaneId">Đường</nz-form-label>
+                <nz-select nzAllowClear formControlName="LaneId" name="LaneId" id="LaneId" nzPlaceHolder=""
+                    [nzShowSearch]="true">
+                    <nz-option *ngFor="let i of lstLane; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+<div class="btn-right">
+    <!-- <button nz-button nzType="primary" nz-button (click)="export()">
+        <i nz-icon nzType="export" nzTheme="outline"></i>
+        Xuất File
+    </button> -->
+    <button nz-button nzType="primary" nz-button (click)="view()">
+        <i *ngIf="!loading" nz-icon nzType="eye" nzTheme="outline"></i>
+        <span *ngIf="loading" nz-icon nzType="loading" nzTheme="outline"></span>
+        Xem dữ liệu
+    </button>
+</div>
+<form style="padding-top: 60px; ">
+    <div>
+        <table #groupingTable Data="dataTable" class="table-bct" style="width:100%">
+            <thead>
+                <tr>
+                    <th rowSpan="2">STT</th>
+                    <th rowSpan="2">Năm</th>
+                    <th rowSpan="2">Mã nhà</th>
+                    <th rowSpan="2">Tên nhà</th>
+                    <th colSpan="3">Tiền thuế phí nông nghiệp</th>
+                    <th rowSpan="2">Ngày nộp tiền</th>
+                </tr>
+                <tr>
+                    <th>Phải đóng</th>
+                    <th>Đã đóng</th>
+                    <th>Còn thiếu</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <ng-container *ngIf="tableData && tableData.length > 0; else dataRows">
+                    <tr *ngFor="let item of tableData; let idx = index; let firstChild = first; let lastChild = last">
+                        <td class="text-center">{{ idx+1 }}</td>
+                        <td class="text-center">{{ item.Year }}</td>
+                        <td class="text-center">{{ item.HouseCode }}</td>
+                        <td class="text-center">{{ item.HouseName }}</td>
+                        <td class="text-center">{{ item.TaxNN | number: '1.0-0'}}</td>
+                        <td class="text-center">{{ item.Paid | number: '1.0-0'}}</td>
+                        <td class="text-center">{{ item.Debt | number: '1.0-0'}}</td>
+                        <td class="text-center">{{ item.Date | date: 'dd/MM/yyyy'}}</td>
+                    </tr>
+                </ng-container>
+                <ng-template #dataRows>
+                    <tr>
+                        <td colspan="8" class="text-center">Không có dữ liệu</td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
+    </div>
+</form>

@@ -1,0 +1,8 @@
+<div class="card-body">
+  <st #tableRef [data]="data" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'" [loading]="loading"
+    [ps]="paging.page_size" [total]="paging.item_count" [widthMode]="{ type: 'strict', strictBehavior: 'truncate' }"
+    [page]="{ front: false }">
+    <ng-template st-row="aClmn" let-item let-index="index"> <span>{{ item.Area | number:'0.0-2':'de-DE' }}</span>
+    </ng-template>
+  </st>
+</div>

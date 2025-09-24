@@ -1,0 +1,170 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DecreeType1Id" nzRequired>Nghị định áp dụng cho biên
+                    bản</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Nghị định áp dụng cho biên bản!">
+                    <nz-select nzAllowClear formControlName="DecreeType1Id" name="DecreeType1Id" id="DecreeType1Id"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of decree_type1_data | keyvalue; let idx = index" [nzLabel]="i.value"
+                            [nzValue]="i.key">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DecreeType2Id">Văn bản pháp luật liên
+                    quan</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear formControlName="DecreeType2Id" name="DecreeType2Id" id="DecreeType2Id"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of decree_type2_data; let idx = index" [nzLabel]="i.Code"
+                            [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TypeReportApply" nzRequired>Loại biên bản áp dụng</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Loại biên bản áp dụng!">
+                    <nz-select nzAllowClear formControlName="TypeReportApply" name="TypeReportApply"
+                        id="TypeReportApply" nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option
+                            *ngFor="let i of TypeReportApply_data | keyvalue | filterTypeReportApplyWithoutAnyItem; let idx = index"
+                            [nzLabel]="i.value" [nzValue]="i.key">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ProvinceId" nzRequired>Tỉnh/thành phố áp dụng</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Tỉnh/thành phố áp dụng!">
+                    <nz-select nzAllowClear formControlName="ProvinceId" name="ProvinceId" id="ProvinceId"
+                        nzPlaceHolder="" [nzShowSearch]="true" [disabled]="true">
+                        <nz-option *ngFor="let i of province_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Note">Diễn giải</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <textarea formControlName="Note" nz-input rows="3"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row class="row-title">
+        <div nz-col [nzMd]="6">
+            <span class="title">Bảng chi tiết Hạn mức đất ở</span>
+        </div>
+    </div>
+    <div nz-row>
+        <div nz-span>
+            <a nz-button nzType="link" (click)="addRow()">
+                <span nz-icon nzType="plus-circle"></span>
+                Thêm mới chi tiết Hạn mức đất ở
+            </a>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <div class="card-body">
+                <st #tableItemRef [data]="validateForm.value.landscapeLimitItems" (change)="tableItemRefChange($event)"
+                    [columns]="columnsItem" [size]="'small'" [loading]="loading" [widthMode]="{ type: 'strict' }"
+                    [page]="{ front: false }">
+
+                    <ng-template st-row="districtHeader" type="title"><span
+                            class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Quận/huyện
+                    </ng-template>
+                    <ng-template st-row="limitAreaNormalHeader" type="title"><span
+                            class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Đối với hộ gia đình, cá
+                        nhân (m2/hộ)
+                    </ng-template>
+                    <ng-template st-row="limitAreaSpecialHeader" type="title"><span
+                            class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Người có công với cách mạng
+                        (m2/hộ)
+                    </ng-template>
+                    <ng-template st-row="inLimitPercentHeader" type="title"><span
+                            class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Trong hạn mức (%)
+                    </ng-template>
+                    <ng-template st-row="outLimitPercentHeader" type="title"><span
+                            class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Ngoài hạn mức (%)
+                    </ng-template>
+
+                    <ng-template st-row="districtTpl" let-item let-index="index">
+                        <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                            [ngClass]="item.submit && !item.DistrictId ? 'danger-st-row' : ''"
+                            [ngModel]="item.DistrictId"
+                            (ngModelChange)="tableItemRef.setRow(index, { DistrictId: $event })"
+                            [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                            <nz-option *ngFor="let i of district_data; let idx = index" [nzLabel]="i.Name"
+                                [nzValue]="i.Id">
+                            </nz-option>
+                        </nz-select>
+                    </ng-template>
+                    <ng-template st-row="limitAreaNormalTpl" let-item let-index="index">
+                        <input *ngIf="item.edit" type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                            [ngModel]="item.LimitAreaNormal"
+                            [ngClass]="item.submit && (!item.LimitAreaNormal || item.LimitAreaNormal == '') ? 'danger-st-row' : ''"
+                            (ngModelChange)="tableItemRef.setRow(index, { LimitAreaNormal: $event })"
+                            [ngModelOptions]="{ standalone: true }" />
+                        <ng-container *ngIf="!item.edit">{{ item.LimitAreaNormal | number: '0.0-2':'de-DE'
+                            }}</ng-container>
+                    </ng-template>
+                    <ng-template st-row="limitAreaSpecialTpl" let-item let-index="index">
+                        <input *ngIf="item.edit" type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                            [ngModel]="item.LimitAreaSpecial"
+                            [ngClass]="item.submit && (!item.LimitAreaSpecial || item.LimitAreaSpecial == '') ? 'danger-st-row' : ''"
+                            (ngModelChange)="tableItemRef.setRow(index, { LimitAreaSpecial: $event })"
+                            [ngModelOptions]="{ standalone: true }" />
+                        <ng-container *ngIf="!item.edit">{{ item.LimitAreaSpecial | number: '0.0-2':'de-DE'
+                            }}</ng-container>
+                    </ng-template>
+                    <ng-template st-row="inLimitPercentTpl" let-item let-index="index">
+                        <input *ngIf="item.edit" type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                            [ngModel]="item.InLimitPercent"
+                            [ngClass]="item.submit && (!item.InLimitPercent || item.InLimitPercent == '') ? 'danger-st-row' : ''"
+                            (ngModelChange)="tableItemRef.setRow(index, { InLimitPercent: $event })"
+                            [ngModelOptions]="{ standalone: true }" />
+                        <ng-container *ngIf="!item.edit">{{ item.InLimitPercent | number: '0.0-2':'de-DE'
+                            }}</ng-container>
+                    </ng-template>
+                    <ng-template st-row="outLimitPercentTpl" let-item let-index="index">
+                        <input *ngIf="item.edit" type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                            [ngModel]="item.OutLimitPercent"
+                            [ngClass]="item.submit && (!item.OutLimitPercent || item.OutLimitPercent == '') ? 'danger-st-row' : ''"
+                            (ngModelChange)="tableItemRef.setRow(index, { OutLimitPercent: $event })"
+                            [ngModelOptions]="{ standalone: true }" />
+                        <ng-container *ngIf="!item.edit">{{ item.OutLimitPercent | number: '0.0-2':'de-DE'
+                            }}</ng-container>
+                    </ng-template>
+                </st>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || invalid_tableItemRef || loading"
+        (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

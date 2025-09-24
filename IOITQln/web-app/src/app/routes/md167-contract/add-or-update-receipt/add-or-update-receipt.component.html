@@ -1,0 +1,44 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="ReceiptCode" nzRequired>Mã hóa đơn</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Mã hóa đơn!">
+            <input nz-input formControlName="ReceiptCode" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzMd]="6" nzFor="DateOfPayment" nzRequired>Ngày nộp tiền</nz-form-label>
+        <nz-form-control [nzMd]="14" [nzErrorTip]="DopErrorTpl">
+            <input nz-input type="date" max="9999-12-31" formControlName="DateOfPayment" nzHasFeedback />
+            <ng-template #DopErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Chưa nhập Ngày nộp tiền!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzMd]="6" nzFor="DateOfReceipt" nzRequired>Ngày xuất hóa đơn</nz-form-label>
+        <nz-form-control [nzMd]="14" [nzErrorTip]="DorErrorTpl">
+            <input nz-input type="date" max="9999-12-31" formControlName="DateOfReceipt" nzHasFeedback />
+            <ng-template #DorErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Chưa nhập Ngày xuất hóa đơn!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Amount" nzRequired>Số tiền thanh toán</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Chưa nhập Số tiền thanh toán!">
+            <input type="text" currencyMask nz-input formControlName="Amount" nzHasFeedback />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item *ngIf="(!contract?.PaidDeposit && !validateForm.value.Id) || validateForm.value.Id">
+        <!-- <nz-form-label [nzSpan]="24">&nbsp;</nz-form-label> -->
+        <nz-form-control [nzSpan]="18" nzOffset="6">
+            <label nz-checkbox formControlName="PaidDeposit">
+              <span> Thanh toán tiền thuế chân </span>
+            </label>
+          </nz-form-control>
+    </nz-form-item>
+</form>
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="close()">Hủy</button>
+    <button nz-button nzType="primary" [disabled]="!validateForm.valid || loading" (click)="submitForm()">Lưu thông tin</button>
+</div>

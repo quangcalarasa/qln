@@ -1,0 +1,130 @@
+<form class="form-action-custom" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="UserName" nzRequired>Tài khoản</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="userNameErrorTpl">
+      <input nz-input formControlName="UserName" />
+      <ng-template #userNameErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập Tài khoản!</ng-container>
+        <ng-container *ngIf="control?.hasError('minlength')">Tài khoản từ 4 ký tự trở lên!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="!validateForm.value.Id">
+    <nz-form-label [nzSpan]="6" nzFor="Password" nzRequired>Mật khẩu</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="passwordErrorTpl">
+      <input nz-input autocomplete="off" type="password" formControlName="Password"
+        (ngModelChange)="validateConfirmPassword()" />
+      <ng-template #passwordErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập Mật khẩu!</ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">{{ errMsgRgxPassword }}</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="!validateForm.value.Id">
+    <nz-form-label [nzSpan]="6" nzFor="ConfirmPassword" nzRequired>Xác nhận mật khẩu</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="passwordConfirmErrorTpl">
+      <input nz-input type="password" formControlName="ConfirmPassword" />
+      <ng-template #passwordConfirmErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập Mật khẩu xác nhận!</ng-container>
+        <ng-container *ngIf="control.hasError('confirm')">Mật khẩu xác nhận không khớp!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="FullName" nzRequired>Họ tên</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="fullNameErrorTpl">
+      <input nz-input formControlName="FullName" />
+      <ng-template #fullNameErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập Họ tên!</ng-container>
+        <ng-container *ngIf="control.hasError('minlength')">Họ tên từ 6 ký tự trở lên!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="Phone" nzRequired>Số điện thoại</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="phoneNameErrorTpl">
+      <input nz-input formControlName="Phone" />
+      <ng-template #phoneNameErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập Số điện thoại!</ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">Số điện thoại không hợp lệ!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="Email" nzRequired>Email</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="emailNameErrorTpl">
+      <input nz-input formControlName="Email" />
+      <ng-template #emailNameErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập email!</ng-container>
+        <ng-container *ngIf="control.hasError('email')">Email không hợp lệ!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzMd]="6" nzFor="Dob">Ngày sinh</nz-form-label>
+    <nz-form-control [nzMd]="14" [nzErrorTip]="DobErrorTpl">
+      <input nz-input type="date" max="9999-12-31" formControlName="Dob" />
+      <ng-template #DobErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập Ngày sinh!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="Avatar">Ảnh đại diện</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-upload class="avatar-uploader" [nzAccept]="'image/png,image/jpeg,image/gif,image/bmp'" nzName="Avatar"
+        nzListType="picture-card" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload">
+        <ng-container *ngIf="!validateForm.value.Avatar">
+          <i class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'upload'"></i>
+          <div class="ant-upload-text">&nbsp;&nbsp;&nbsp;Tải lên</div>
+        </ng-container>
+        <img *ngIf="validateForm.value.Avatar" [src]="srcImg + validateForm.value.Avatar" class="img-upload-drawer" />
+      </nz-upload>
+      <div *ngIf="validateForm.value.Avatar" class="btn-remove-img" style="color: red"
+        (click)="validateForm.value.Avatar = undefined">
+        <i nz-icon nzType="close-circle" nzTheme="outline"></i>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Địa chỉ</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <textarea formControlName="Address" nz-input rows="2"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>Nhóm quyền</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa chọn nhóm quyền">
+      <nz-select [compareWith]="compareFn" nzMode="multiple" nzPlaceHolder="Nhóm quyền" formControlName="userRoles">
+        <nz-option *ngFor="let role of rolesInput" [nzValue]="role" [nzLabel]="role.FullName"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzMd]="6" nzFor="ModuleSystem">Phân hệ</nz-form-label>
+    <nz-form-control [nzMd]="14">
+      <nz-radio-group formControlName="ModuleSystem">
+        <label class="ml-lg" nz-radio nzValue="1">Nhà ở cũ</label>
+        <label class="ml-lg" nz-radio nzValue="2">Nhà tái định cư</label>
+        <label class="ml-lg" nz-radio nzValue="3">Nhà ở 167</label>
+      </nz-radio-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="validateForm.value.ModuleSystem==1">
+    <nz-form-label [nzMd]="6" nzFor="wardManagements">Đơn vị quản lý</nz-form-label>
+    <nz-form-control [nzMd]="14">
+        <shared-tree-view-checkbox #treeViewCheckbox [districts]="districts" [wards]="wards" [wardManagements]="validateForm.value.wardManagements"></shared-tree-view-checkbox>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>

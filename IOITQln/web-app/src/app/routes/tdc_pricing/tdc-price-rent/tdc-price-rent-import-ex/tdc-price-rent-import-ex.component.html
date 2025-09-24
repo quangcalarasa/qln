@@ -1,0 +1,56 @@
+<!-- <button (click)="btn()">click</button> -->
+
+<form (ngSubmit)="onSubmit()" #myForm="ngForm" style="margin: 10px">
+  <input type="file" (change)="onFileChange($event)" name="file" accept=".xlsx, .xls" />
+  <button nz-button nzType="primary" type="submit">Thêm dữ liệu</button>
+</form>
+<div>
+  <table class="table-bct" #groupingTable Data="data">
+    <thead>
+      <tr>
+        <th rowspan="2">Lần trả </th>
+        <th rowspan="2">Ngày thanh toán theo quy định</th>
+        <th rowspan="2">Ngày thanh toán dự kiến</th>
+        <th rowspan="2">Ngày thanh toán thực tế</th>
+        <th rowspan="2">Thời gian tính lãi theo ngày</th>
+        <th rowspan="2">Lãi suất tính theo ngày</th>
+
+        <th colspan="3">Số tiền phải trả (VNĐ)</th>
+        <th colspan="3">Tình hình thanh tốn (VNĐ)</th>
+
+        <th rowspan="2">Ghi Chú </th>
+      </tr>
+      <tr>
+        <th rowspan="1">Số tiền phải trả từng tháng </th>
+        <th rowspan="1"> Số tiền lãi phát sinh do chậm thanh toán </th>
+        <th rowspan="1">Số tiền đến kỳ phải thanh toán</th>
+        <!--  -->
+        <th rowspan="1">Số tiền phải thanh toán </th>
+        <th rowspan="1">Số tiền đã thanh toán </th>
+        <th rowspan="1">Chênh lệch</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data">
+        <td>{{ item.PaymentTimes }}</td>
+        <td>{{ item.PaymentTimes == null ? 'Nợ cũ' : (item.PaymentDatePrescribed | date: 'dd/MM/yyyy') }}</td>
+        <td>{{ item.PaymentDatePrescribed1 | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ item.ExpectedPaymentDate | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ item.DailyInterest }}</td>
+        <td *ngIf="item.DailyInterestRate === undefined">{{ item.DailyInterestRate }}</td>
+        <td *ngIf="item.DailyInterestRate !== undefined">{{ item.DailyInterestRate + '%' }}</td>
+        <td>{{ item.UnitPay | number: '0.0-2':'de-DE'}}</td>
+        <td>{{ item.PriceEarnings | number: '0.0-2':'de-DE'}}</td>
+        <td>{{ item.PricePaymentPeriod | number: '0.0-2':'de-DE'}}</td>
+        <td *ngIf="item.RowCheck === undefined">{{ item.Pay | number: '0.0-2':'de-DE'}}</td>
+        <td *ngIf="item.RowCheck === undefined">{{ item.Paid | number: '0.0-2':'de-DE'}} </td>
+        <td *ngIf="item.RowCheck === undefined">{{ item.PriceDifference }} </td>
+        <td *ngIf="item.RowCheck" [attr.rowspan]="item.RowSpans">{{ item.Pay | number: '0.0-2':'de-DE'}}</td>
+        <td *ngIf="item.RowCheck" [attr.rowspan]="item.RowSpans">{{ item.Paid | number: '0.0-2':'de-DE'}} </td>
+        <td *ngIf="item.RowCheck" [attr.rowspan]="item.RowSpans">{{ item.PriceDifference | number: '0.0-2':'de-DE'}}
+        </td>
+        <td>{{ item.Note }} </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

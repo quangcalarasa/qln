@@ -1,0 +1,54 @@
+<div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="24">Danh sách thông tin quy hoạch</nz-form-label>
+        </nz-form-item>
+    </div>
+</div>
+<div nz-row>
+    <div nz-span>
+        <a nz-button nzType="link" (click)="addRow()">
+            <span nz-icon nzType="plus-circle"></span>
+            Thêm mới
+        </a>
+    </div>
+</div>
+<div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+        <div class="card-body">
+            <st #tableItemRef [data]="data" (change)="tableItemRefChange($event)" [columns]="columnsItem"
+                [size]="'small'" [loading]="loading" [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+
+                <ng-template st-row="CodeHeader" type="title"><span class="danger-star">*</span>&nbsp;Số công văn
+                    <span class="danger-star">*</span>
+                </ng-template>
+                <ng-template st-row="DateHeader" type="title"><span class="danger-star">*</span>&nbsp;Ngày công văn
+                </ng-template>
+                <ng-template st-row="ContentHeader" type="title"><span class="danger-star">*</span>&nbsp;Nội dung công
+                    văn<span class="danger-star">*</span>
+                </ng-template>
+                <ng-template st-row="Code" let-item let-index="index">
+                    <input nz-input type="text" *ngIf="item.edit" [ngModel]="item.Code"
+                        [ngClass]="item.submit && !item.Code ? 'danger-st-row' : ''"
+                        (ngModelChange)="tableItemRef.setRow(index, { Code: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.Code }}</ng-container>
+                </ng-template>
+                <ng-template st-row="Date" let-item let-index="index">
+                    <input nz-input *ngIf="item.edit" [ngModel]="item.Date" type="date" max="9999-12-31"
+                        [ngClass]="item.submit && !item.Date ? 'danger-st-row' : ''"
+                        (ngModelChange)="tableItemRef.setRow(index, { Date: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.Date | date: 'dd/MM/yyyy'}}</ng-container>
+                </ng-template>
+                <ng-template st-row="Content" let-item let-index="index">
+                    <input nz-input type="text" *ngIf="item.edit" [ngModel]="item.Content"
+                        [ngClass]="item.submit && !item.Content ? 'danger-st-row' : ''"
+                        (ngModelChange)="tableItemRef.setRow(index, { Content: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.Content }}</ng-container>
+                </ng-template>
+            </st>
+        </div>
+    </div>
+</div>

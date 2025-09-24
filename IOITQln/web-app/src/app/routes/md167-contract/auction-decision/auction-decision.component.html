@@ -1,0 +1,69 @@
+<div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="24">Danh sách Quyết định đấu giá</nz-form-label>
+        </nz-form-item>
+    </div>
+</div>
+<div nz-row>
+    <div nz-span>
+        <a nz-button nzType="link" (click)="addRow()">
+            <span nz-icon nzType="plus-circle"></span>
+            Thêm mới
+        </a>
+    </div>
+</div>
+<div nz-row>
+    <div nz-span>
+        <div class="card-body">
+            <st #tableItemRef [data]="auctionDecisions" (change)="tableItemRefChange($event)" [columns]="columnsItem"
+                [size]="'small'" [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+                <ng-template st-row="DecisionTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Quyết định đấu
+                    giá
+                </ng-template>
+                <ng-template st-row="PriceTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Giá trúng đấu giá
+                    được phê duyệt
+                </ng-template>
+                <ng-template st-row="AuctionUnitTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Đơn vị đấu giá
+                </ng-template>
+                <ng-template st-row="DateEffectTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Ngày có hiệu
+                    lực
+                </ng-template>
+
+                <ng-template st-row="DecisionTpl" let-item let-index="index">
+                    <input *ngIf="item.edit" nz-input [ngModel]="item.Decision"
+                        [ngClass]="item.submit && (!item.Decision || item.Decision == '') ? 'danger-st-row' : ''"
+                        (ngModelChange)="tableItemRef.setRow(index, { Decision: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.Decision }}</ng-container>
+                </ng-template>
+                <ng-template st-row="PriceTpl" let-item let-index="index">
+                    <input *ngIf="item.edit" nz-input
+                        [ngClass]="item.submit && (!item.Price || item.Price == '') ? 'danger-st-row' : ''"
+                        [ngModel]="item.Price" (ngModelChange)="tableItemRef.setRow(index, { Price: $event })"
+                        [ngModelOptions]="{ standalone: true }" type="text" currencyMask />
+                    <ng-container *ngIf="!item.edit">{{ item.Price | number: '0.0-2':'de-DE'}}</ng-container>
+                </ng-template>
+                <ng-template st-row="AuctionUnitTpl" let-item let-index="index">
+                    <input *ngIf="item.edit" nz-input [ngModel]="item.AuctionUnit"
+                        [ngClass]="item.submit && (!item.AuctionUnit || item.AuctionUnit == '') ? 'danger-st-row' : ''"
+                        (ngModelChange)="tableItemRef.setRow(index, { AuctionUnit: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.AuctionUnit }}</ng-container>
+                </ng-template>
+                <ng-template st-row="DateEffectTpl" let-item let-index="index">
+                    <input *ngIf="item.edit"
+                        [ngClass]="item.submit && (item.DateEffect == undefined || item.DateEffect=='') ? 'danger-st-row' : ''"
+                        nz-input type="date" max="9999-12-31" [ngModel]="item.DateEffect"
+                        (ngModelChange)="tableItemRef.setRow(index, { DateEffect: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.DateEffect | date: 'dd/MM/yyyy' }}</ng-container>
+                </ng-template>
+            </st>
+        </div>
+    </div>
+</div>

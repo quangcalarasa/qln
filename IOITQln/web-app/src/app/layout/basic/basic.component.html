@@ -1,0 +1,114 @@
+<nz-layout style="min-height: 100vh">
+  <nz-sider nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0" [(nzCollapsed)]="isCollapsed" class="hidden-pc"
+    style="background: #fff" [nzTrigger]="null">
+    <div style="height: 54px; padding: 0 16px 0 26px; background: #187de4">
+      <img routerLink="/" class="logo" src="{{ options.logoExpanded }}" />
+    </div>
+    <!-- <div style="height: 54px; padding: 0 16px 0 26px;">
+        <img routerLink="/" class="logo" src="./assets/vnpt-logo.svg" />
+      </div> -->
+    <ul nz-menu nzTheme="light" nzMode="inline" nzMode="vertical">
+      <ng-container *ngFor="let item of menuData;">
+        <li nz-submenu nzTitle="{{item.Name}}" nzIcon="{{item.Icon}}">
+          <ul>
+            <ng-container *ngFor="let subItem of item.listMenus;">
+              <li nz-menu-item nzIcon="dashboard" [nzSelected]="isSelected(subItem.Url)"
+                routerLink="/{{item.Url}}/{{subItem.Url}}" *ngIf="subItem.listMenus.length == 0">{{subItem.Name}}
+              </li>
+              <li *ngIf="subItem.listMenus.length > 0" nz-submenu nzTitle="{{subItem.Name}}" nzIcon="{{subItem.Icon}}">
+                <ul>
+                  <li *ngFor="let lv3_subItem of subItem.listMenus;" nz-menu-item nzIcon="dashboard"
+                    [nzSelected]="isSelected(lv3_subItem.Url)"
+                    routerLink="/{{item.Url}}/{{subItem.Url}}/{{lv3_subItem.Url}}">{{lv3_subItem.Name}}
+                  </li>
+                </ul>
+              </li>
+            </ng-container>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </nz-sider>
+
+  <nz-layout>
+    <nz-header style="display: flex; line-height: 54px; height: max-content;" class="hidden-mobile">
+      <div class="top-nav-header-main-left" style="position: relative;width: 50px;">
+        <img routerLink="/" class="logo" src="{{ options.logoExpanded }}"
+          style="padding: 3px; border-radius: 25px;border: 1px solid;background-color: white;height: 50px;margin-top: 2px; width: 50px; position: absolute; top: 50%; margin-top: -25px;" />
+      </div>
+      <ul style="flex: 1 1 0%; height: max-content;" nz-menu nzTheme="dark" nzMode="horizontal">
+        <ng-container *ngFor="let item of menuData;">
+          <li nz-menu-item *ngIf="item.listMenus.length == 0" [nzSelected]="isSelected(item.Url)"
+            style="margin-top: 0px !important; height: 100%;line-height: unset;">
+            <a href="javascript:void(0)" routerLink="/{{item.Url}}">{{item.Name}}</a>
+          </li>
+          <li *ngIf="item.listMenus.length > 0" nz-submenu nzTitle="{{item.Name}}" nzIcon="{{item.Icon}}">
+            <ul>
+              <ng-container *ngFor="let subItem of item.listMenus;">
+                <li nz-menu-item nzIcon="dashboard" [nzSelected]="isSelected(item.Url + '/' + subItem.Url)"
+                  *ngIf="subItem.listMenus.length == 0">
+                  <a href="javascript:void(0)" routerLink="/{{item.Url}}/{{subItem.Url}}">{{subItem.Name}}</a>
+                </li>
+                <li *ngIf="subItem.listMenus.length > 0" nz-submenu nzTitle="{{subItem.Name}}"
+                  nzIcon="{{subItem.Icon}}">
+                  <ul>
+                    <ng-container *ngFor="let lv3_subItem of subItem.listMenus;">
+                      <li nz-menu-item nzIcon="dashboard"
+                        [nzSelected]="isSelected(item.Url + '/' + subItem.Url + '/' + lv3_subItem.Url)">
+                        <a href="javascript:void(0)"
+                          routerLink="/{{item.Url}}/{{subItem.Url}}/{{lv3_subItem.Url}}">{{lv3_subItem.Name}}</a>
+                      </li>
+                    </ng-container>
+                  </ul>
+                </li>
+              </ng-container>
+            </ul>
+          </li>
+        </ng-container>
+        <li nz-menu-item nzIcon="dashboard"
+          style="margin-top: 0px !important; height: 100%;line-height: unset; font-style: italic; float: right;">
+          <a href="{{ linkCe }}" target="_blank">Quy trình</a>
+        </li>
+      </ul>
+      <div style="display: flex; align-items: center; justify-content: flex-end">
+        <!-- <div>
+          <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="changeSubSystem($event)" nzButtonStyle="solid"
+            style="padding: 5px;background: white;border-radius: 5px;">
+            <label nz-radio-button nzValue="2">NOC</label>
+            <label nz-radio-button nzValue="3">TDC</label>
+          </nz-radio-group>
+        </div> -->
+        <header-user></header-user>
+      </div>
+    </nz-header>
+
+    <nz-header style="display: flex; padding-right: 10px; line-height: 54px" class="hidden-pc">
+      <div style="width: 5%" [hidden]="!isCollapsed">
+        <img routerLink="/" class="logo" src="{{ options.logoCollapsed }}" />
+      </div>
+      <div style="
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          width: 95%;
+          min-width: 100px;
+        ">
+        <i style="padding: 2px 8px; font-size: 18px" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          (click)="isCollapsed = !isCollapsed"></i>
+        <header-user></header-user>
+      </div>
+    </nz-header>
+
+    <nz-content>
+      <div style="padding: 16px 20px 0 20px">
+        <div class="d-inline-block">
+          <span nz-icon nzType="menu-unfold" nzTheme="outline"></span>
+          <nz-breadcrumb style="display: inline-block; margin-left: 5px;">
+              <nz-breadcrumb-item *ngFor="let breadcrumb of breadcrumbData">{{ breadcrumb }}</nz-breadcrumb-item>
+          </nz-breadcrumb>
+        </div>
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

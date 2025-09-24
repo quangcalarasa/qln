@@ -1,0 +1,105 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <!-- <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ParentId">Loại nhà ở</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzErrorTip="Chưa chọn Căn nhà!">
+                    <nz-select nzAllowClear formControlName="ParentId" name="ParentId" id="ParentId" nzPlaceHolder=""
+                        [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of data_parent; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+        <!-- <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Code">Mã loại căn nhà</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzErrorTip="Chưa nhập Mã loại căn nhà!">
+                    <input nz-input formControlName="Code" />
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Name" nzRequired>Chi tiết loại nhà ở</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Tên loại căn nhà!">
+                    <input nz-input formControlName="Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="6">
+            <span class="title">Tỷ lệ giá trị của kết cấu chính (%)</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TypeMainTexTure1">Móng</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="TypeMainTexTure1" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TypeMainTexTure2">Khung cột</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="TypeMainTexTure2" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TypeMainTexTure3">Tường</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="TypeMainTexTure3" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TypeMainTexTure4">Nền, sàn</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="TypeMainTexTure4" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TypeMainTexTure5">Khung cột đỡ mái</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="TypeMainTexTure5" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TypeMainTexTure6">Mái</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="TypeMainTexTure6" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

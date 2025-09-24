@@ -1,0 +1,68 @@
+<ng-container [formGroup]="validateForm">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <span class="note-drawer" *ngIf="block?.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">Thông tin
+                chính: Đối với nhà ở 1 tầng hoặc nhiều tầng có nhiều hộ ở</span>
+            <span class="note-drawer" *ngIf="block?.TypeReportApply == TypeReportApplyEnum.NHA_RIENG_LE">Thông tin
+                chính: Đối với nhà ở một tầng hoặc nhiều tầng có một hộ ở ̉(Nhà riêng lẻ/ Sử dụng
+                riêng)</span>
+            <span class="note-drawer" *ngIf="block?.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">Thông tin
+                chính: Đối với nhà ở nhiều tầng có nhiều hộ ở cấu trúc kiểu căn hộ (Nhà chung cư)</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24" *ngIf="block">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">Loại nhà</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear [(ngModel)]="block.TypeBlockId" [ngModelOptions]="{ standalone: true }"
+                        [nzDisabled]="true" nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of typehouse_data; let idx = index" [nzLabel]="i.Name"
+                            [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DateCreate">Ngày ra biên bản</nz-form-label>
+                <nz-form-control [nzSpan]="24" class="form-control-disabled">
+                    <div style="display: inline-block; height: 100%; line-height: 30px;"><span>{{ validateForm.value.DateCreate | date: 'dd/MM/yyyy' }}</span></div>
+                    <input style="width: 40px; float: right;" nz-input type="date" max="9999-12-31" formControlName="DateCreate" (ngModelChange)="getByDecreeAndDate()"
+                        (keydown)="$event.preventDefault()" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="pricingReplaceds">Biên bản này thay thế biên bản
+                    ngày</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzMode="multiple" nzAllowClear [compareWith]="compareFn"
+                        formControlName="pricingReplaceds" name="pricingReplaceds" id="pricingReplaceds"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of pricing_data; let idx = index"
+                            [nzLabel]="i.DateCreate | date: 'dd/MM/yyyy'" [nzValue]="i">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ProcessProfileCeCode">Mã hồ sơ quy trình</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear formControlName="ProcessProfileCeCode" nzPlaceHolder=""
+                        [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of process_profile_ce_data; let idx = index" [nzLabel]="i.Code"
+                            [nzValue]="i.Code">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-container>

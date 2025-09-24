@@ -1,0 +1,68 @@
+<ng-container [formGroup]="validateForm">
+    <div nz-row class="row-title">
+        <div nz-col [nzMd]="6">
+            <span class="title">Phạm vi tìm kiếm</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TypeReportApply" nzRequired>Loại biên bản áp dụng</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Loại biên bản áp dụng!">
+                    <nz-select nzAllowClear formControlName="TypeReportApply" name="TypeReportApply"
+                        id="TypeReportApply" nzPlaceHolder="" [nzShowSearch]="true"
+                        (ngModelChange)="[getDataBlock(false), targetBlock()]">
+                        <nz-option
+                            *ngFor="let i of typeReportApply_data | keyvalue | filterTypeReportApplyWithoutAnyItem: TypeReportApplyEnum.NHA_RIENG_LE | filterTypeReportApplyWithoutAnyItem: TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE; let idx = index"
+                            [nzLabel]="i.value" [nzValue]="i.key">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="BlockId" nzRequired>Căn hộ thuộc căn nhà số</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Căn hộ thuộc căn nhà số!">
+                    <nz-select nzAllowClear formControlName="BlockId" name="BlockId" id="BlockId" nzPlaceHolder=""
+                        [nzShowSearch]="true" (ngModelChange)="changeBlock($event, false)">
+                        <nz-option *ngFor="let i of block_data; let idx = index" [nzLabel]="i.Address" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8" *ngIf="block">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzRequired>Cấp nhà</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear [compareWith]="compareFn" nzMode="multiple" nzPlaceHolder=""
+                        [(ngModel)]="block.levelBlockMaps" [ngModelOptions]="{ standalone: true }" [nzShowSearch]="true"
+                        [nzDisabled]="true">
+                        <nz-option *ngFor="let levelblockmap of level_data | keyvalue" [nzValue]="levelblockmap"
+                            [nzLabel]="levelblockmap.value"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row class="row-title mt-lg" *ngIf="block">
+        <div nz-col [nzMd]="3">
+            <span class="title">Phạm vi áp dụng</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24" *ngIf="block">
+        <div nz-col [nzSpan]="16">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="decreeMaps" nzRequired>Nghị định</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Nghị định">
+                    <nz-select nzAllowClear [compareWith]="compareFnDecree" nzMode="multiple" nzPlaceHolder=""
+                        [(ngModel)]="block.decreeMaps" [ngModelOptions]="{ standalone: true }" [nzShowSearch]="true">
+                        <nz-option *ngFor="let decree_type1 of decree_type1_data | keyvalue" [nzValue]="decree_type1"
+                            [nzLabel]="decree_type1.value"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-container>

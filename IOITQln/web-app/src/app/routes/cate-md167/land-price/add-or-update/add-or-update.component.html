@@ -1,0 +1,209 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DecreeType1Id" nzRequired>Nghị định áp dụng cho biên
+                    bản</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Nghị định áp dụng cho biên bản!">
+                    <nz-select nzAllowClear formControlName="DecreeType1Id" name="DecreeType1Id" id="DecreeType1Id"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of decree_type1_data | keyvalue; let idx = index" [nzLabel]="i.value"
+                            [nzValue]="i.key">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DecreeType2Id">Văn bản pháp luật liên
+                    quan</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear formControlName="DecreeType2Id" name="DecreeType2Id" id="DecreeType2Id"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of decree_type2_data; let idx = index" [nzLabel]="i.Code"
+                            [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <!-- <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LaneId" nzRequired>Tên đường</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Tên đường!">
+                    <nz-select nzAllowClear formControlName="LaneId" name="LaneId" id="LaneId" nzPlaceHolder=""
+                        [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of lane_date; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div> -->
+    <!-- <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LaneStartId" nzRequired>Đoạn đường từ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Tên đường!">
+                    <nz-select nzAllowClear formControlName="LaneStartId" name="LaneStartId" id="LaneStartId"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of lane_date; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LaneEndId">Đoạn đường đến</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear formControlName="LaneEndId" name="LaneEndId" id="LaneEndId" nzPlaceHolder=""
+                        [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of lane_date; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div> -->
+    <!-- <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Value" nzRequired>Giá đất</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Giá đất!">
+                    <input type="text" currencyMask nz-input formControlName="Value" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="UnitPriceId" nzRequired>Đơn vị tính</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Đơn vị tính!">
+                    <nz-select nzAllowClear formControlName="UnitPriceId" name="UnitPriceId" id="UnitPriceId"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of unit_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div> -->
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Des" nzRequired>Căn cứ theo</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Căn cứ theo!">
+                    <textarea formControlName="Des" nz-input rows="2"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Pd" nzRequired>Tỉnh (Tp) /Quận (huyện)
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Tỉnh (Tp) /Quận (huyện)!">
+                    <nz-cascader [nzShowSearch]="true" formControlName="Pd" name="Pd" id="Pd" nzPlaceHolder=""
+                        [nzOptions]="pd_data" (ngModelChange)="changePd()">
+                    </nz-cascader>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="MinValue">Giá đất ở tối thiểu</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask nz-input formControlName="MinValue" />
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+    </div>
+    <div nz-row class="row-title">
+        <div nz-col [nzMd]="3">
+            <span class="title">Chi tiết giá đất</span>
+        </div>
+    </div>
+    <div nz-row>
+        <div nz-span>
+            <a nz-button nzType="link" (click)="addRow()">
+                <span nz-icon nzType="plus-circle"></span>
+                Thêm chi tiết giá đất
+            </a>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <div class="card-body">
+                <st #tableItemRef [data]="validateForm.value.landPriceItems" (change)="tableItemRefChange($event)"
+                    [columns]="columnsItem" [size]="'small'" [loading]="loading" [widthMode]="{ type: 'strict' }"
+                    [page]="{ front: false }" virtualScroll [scroll]="{ y: '350px' }">
+                    <ng-template st-row="laneNameHeader" type="title"><span
+                            class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Tên đường
+                    </ng-template>
+                    <ng-template st-row="laneNameStartHeader" type="title"><span
+                            class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Đoạn
+                        đường từ
+                    </ng-template>
+                    <ng-template st-row="valueHeader" type="title"><span
+                            class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Giá đất
+                    </ng-template>
+                    <ng-template st-row="descHeader" type="title"><span
+                            class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Căn cứ theo
+                    </ng-template>
+
+
+                    <ng-template st-row="laneNameTpl" let-item let-index="index">
+                        <input *ngIf="item.edit" nz-input
+                            [ngClass]="item.submit && (!item.LaneName || item.LaneName == '') ? 'danger-st-row' : ''"
+                            [ngModel]="item.LaneName" (ngModelChange)="tableItemRef.setRow(index, { LaneName: $event })"
+                            [ngModelOptions]="{ standalone: true }" />
+                        <ng-container *ngIf="!item.edit">{{ item.LaneName }}</ng-container>
+                    </ng-template>
+                    <ng-template st-row="laneNameStartTpl" let-item let-index="index">
+                        <input *ngIf="item.edit" nz-input
+                            [ngClass]="item.submit && (!item.LaneStartName || item.LaneStartName == '') ? 'danger-st-row' : ''"
+                            [ngModel]="item.LaneStartName"
+                            (ngModelChange)="tableItemRef.setRow(index, { LaneStartName: $event })"
+                            [ngModelOptions]="{ standalone: true }" />
+                        <ng-container *ngIf="!item.edit">{{ item.LaneStartName }}</ng-container>
+                    </ng-template>
+                    <ng-template st-row="laneNameEndTpl" let-item let-index="index">
+                        <input *ngIf="item.edit" nz-input [ngModel]="item.LaneEndName"
+                            (ngModelChange)="tableItemRef.setRow(index, { LaneEndName: $event })"
+                            [ngModelOptions]="{ standalone: true }" />
+                        <ng-container *ngIf="!item.edit">{{ item.LaneEndName }}</ng-container>
+                    </ng-template>
+                    <ng-template st-row="valueTpl" let-item let-index="index">
+                        <input *ngIf="item.edit" nz-input
+                            [ngClass]="item.submit && (!item.Value || item.Value == '') ? 'danger-st-row' : ''"
+                            [ngModel]="item.Value" (ngModelChange)="tableItemRef.setRow(index, { Value: $event })"
+                            [ngModelOptions]="{ standalone: true }" type="text" currencyMask />
+                        <ng-container *ngIf="!item.edit">{{ item.Value | number: '0.0-2':'de-DE'}}</ng-container>
+                    </ng-template>
+                    <ng-template st-row="desTpl" let-item let-index="index">
+                        <input *ngIf="item.edit" nz-input
+                            [ngClass]="item.submit && (!item.Des || item.Des == '') ? 'danger-st-row' : ''"
+                            [ngModel]="item.Des" (ngModelChange)="tableItemRef.setRow(index, { Des: $event })"
+                            [ngModelOptions]="{ standalone: true }" />
+                        <ng-container *ngIf="!item.edit">{{ item.Des }}</ng-container>
+                    </ng-template>
+                </st>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || invalid_tableItemRef || loading"
+        (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

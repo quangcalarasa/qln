@@ -1,0 +1,151 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DecreeType1Id" nzRequired>Nghị định áp dụng cho biên
+                    bản</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Nghị định áp dụng cho biên bản!">
+                    <nz-select nzAllowClear formControlName="DecreeType1Id" name="DecreeType1Id" id="DecreeType1Id"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of decree_type1_data | keyvalue; let idx = index" [nzLabel]="i.value"
+                            [nzValue]="i.key">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DecreeType2Id">Văn bản pháp luật liên
+                    quan</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear formControlName="DecreeType2Id" name="DecreeType2Id" id="DecreeType2Id"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of decree_type2_data; let idx = index" [nzLabel]="i.Code"
+                            [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DoApply">Ngày áp dụng</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input type="date" max="9999-12-31" formControlName="DoApply" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Value1" nzRequired>Có phần S không mặt tiền đường (hẻm) từ 15m2 trở
+                    lên</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback
+                    nzErrorTip="Chưa nhập thông tin Có phần S không mặt tiền đường (hẻm) từ 15m2 trở lên!">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="Value1" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="6">
+            <span class="title">Có chiều dài lớn gấp nhiều lần so với chiều rộng</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Value2" nzRequired>5R< D <=8R</nz-form-label>
+                        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập thông tin 5R< D <=8R">
+                            <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                                formControlName="Value2" />
+                        </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Value3" nzRequired>D >8R</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập thông tin 5R< D <=8R">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="Value3" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="6">
+            <span class="title">Thửa đất, khu đất thuộc</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Value4" nzRequired>Đoạn đường nằm hai bên dạ cầu (song song
+                    cầu)</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback
+                    nzErrorTip="Chưa nhập thông tin Đoạn đường nằm hai bên dạ cầu (song song cầu)">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="Value4" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Value5" nzRequired>Đoạn đường nằm hai bên cầu vượt (song song
+                    cầu)</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback
+                    nzErrorTip="Chưa nhập thông tin Đoạn đường nằm hai bên cầu vượt (song song cầu)">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="Value5" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Value6" nzRequired>Nằm trong hành lang bảo vệ của đường điện cao
+                    thế</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback
+                    nzErrorTip="Chưa nhập thông tin Nằm trong hành lang bảo vệ của đường điện cao thế">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="Value6" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Value7" nzRequired>Đường nhánh dẫn lên cầu vượt</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback
+                    nzErrorTip="Chưa nhập thông tin Đường nhánh dẫn lên cầu vượt">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="Value7" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Value8" nzRequired>Cách lề đường bằng một con kênh, rạch không được
+                    san lấp</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback
+                    nzErrorTip="Chưa nhập thông tin Cách lề đường bằng một con kênh, rạch không được san lấp">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="Value8" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

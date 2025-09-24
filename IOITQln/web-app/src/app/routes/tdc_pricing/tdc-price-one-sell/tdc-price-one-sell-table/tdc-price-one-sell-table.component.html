@@ -1,0 +1,203 @@
+<div style="overflow-x: auto">
+  <ng-container *ngFor="let item of data; let index = index">
+    <table class="table-bct" style="width: auto">
+      <thead>
+        <tr>
+
+          <th rowspan="2">STT </th>
+          <th colspan="3">Chủ căn hộ</th>
+          <th colspan="6">Thông tin căn hộ</th>
+
+          <th colspan="3" *ngFor="let childItem of item.temporaryDatas">
+            {{ childItem.Name }}
+          </th>
+
+          <th colspan="2">Giá bán(tạm thời) </th>
+          <th [attr.colspan]="item.priceTaxTTs.length + 1" style="color: red"> Do not Show</th>
+          <th colspan="3">Quyết định bố trí (tạm)</th>
+
+          <th colspan="3" *ngFor="let childItem of item.officialDatas">
+            {{ childItem.Name }}
+          </th>
+
+          <th colspan="2">Giá bán (Chính thức) </th>
+
+          <th [attr.colspan]="item.priceTaxes.length + 1" style="color: red"> Do not Show(Chính Thức)</th>
+          <th colspan="2">QĐ bố trí (chính thức)</th>
+          <th colspan="2">Tiền Nộp Về </th>
+          <th [attr.colspan]="item.priceTaxTTs.length + 2">Số tiền đã nộp (tạm thời)</th>
+          <th [attr.colspan]="item.priceTaxes.length + 2">Số tiền đã nộp (chính thức)</th>
+          <th [attr.colspan]="item.priceTaxCLs.length + 2">Số tiền đã nộp (chênh lệch)</th>
+          <th colspan="2">Thuế</th>
+          <th [attr.colspan]="item.oneselltaxes.length * 2">Thuế phí nông nghiệp </th>
+
+        </tr>
+
+        <tr>
+
+          <th rowspan="1">Số Hợp đồng </th>
+          <th rowspan="1">Ngày ký hợp đồng </th>
+          <th rowspan="1">Họ tên</th>
+          <th rowspan="1">Căn hộ </th>
+          <th rowspan="1">Lô góc </th>
+          <th rowspan="1">khối</th>
+          <th rowspan="1">Lô </th>
+          <th rowspan="1">Lầu </th>
+          <th rowspan="1">Tầng</th>
+
+          <ng-container *ngFor="let childItem of item.temporaryDatas">
+            <th rowspan="1"> Diện tích </th>
+            <th rowspan="1"> Đơn Giá </th>
+            <th rowspan="1"> Thành Tiền </th>
+          </ng-container>
+
+          <th rowspan="1">Diện tích </th>
+          <th rowspan="1">Thành tiền</th>
+          <th rowspan="1">% gốc</th>
+          <ng-container *ngFor="let childItem of item.priceTaxTTs">
+            <th rowspan="1">{{ childItem.Name }}</th>
+          </ng-container>
+
+          <th rowspan="1">Số quyết định </th>
+          <th rowspan="1">Ngày quyết định </th>
+          <th rowspan="1">Thanh toán lần đầu </th>
+
+          <ng-container *ngFor="let childItem of item.officialDatas">
+            <th rowspan="1"> Diện tích </th>
+            <th rowspan="1"> Đơn Giá </th>
+            <th rowspan="1"> Thành Tiền </th>
+          </ng-container>
+
+          <th rowspan="1">Diện tích </th>
+          <th rowspan="1">Thành tiền</th>
+
+          <th rowspan="1">% gốc</th>
+          <ng-container *ngFor="let childItem of item.priceTaxes">
+            <th rowspan="1">{{ childItem.Name }} </th>
+          </ng-container>
+
+          <th rowspan="1">Số QĐ </th>
+          <th rowspan="1">Ngày QĐ</th>
+
+          <th rowspan="1">Tiền nộp về Trung Tâm</th>
+          <th rowspan="1">Tiền nộp về công ích </th>
+
+          <th rowspan="1">Số tiền phải nộp (tạm thời)</th>
+          <th rowspan="1">Tiền gốc (tạm thời)</th>
+          <th rowspan="1">VAT</th>
+          <ng-container *ngFor="let childItem of item.priceTaxTTs">
+            <th rowspan="1" *ngIf="childItem.Name != 'VAT'">{{ childItem.Name }}</th>
+          </ng-container>
+
+          <th rowspan="1">Số tiền phải nộp (chính thức)</th>
+          <th rowspan="1">Tiền gốc (chính thức)</th>
+          <th rowspan="1">VAT</th>
+          <ng-container *ngFor="let childItem of item.priceTaxes">
+            <th rowspan="1" *ngIf="childItem.Name != 'VAT'">{{ childItem.Name }}</th>
+          </ng-container>
+
+          <th rowspan="1">Số tiền phải nộp (chênh lệch)</th>
+          <th rowspan="1">Tiền gốc (chênh lệch)</th>
+          <th rowspan="1">VAT</th>
+          <ng-container *ngFor="let childItem of item.priceTaxCLs">
+            <th rowspan="1" *ngIf="childItem.Name != 'VAT'">{{ childItem.Name }}</th>
+          </ng-container>
+
+          <th rowspan="1">Thuế THCN</th>
+          <th rowspan="1">Thuế trước bạ</th>
+          <ng-container *ngFor="let childItem of item.oneselltaxes">
+            <th rowspan="1"> Năm </th>
+            <th rowspan="1"> Tiền </th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="text-center">{{ index + 1 }}</td>
+          <td class="text-center">{{ item.Code }}</td>
+          <td class="text-center">{{ item.ContractDate | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ item.CustomerName }}</td>
+          <td class="text-center">{{ item.ApartmentName }}</td>
+          <td><input type="checkbox" [(ngModel)]="item.Corner" disabled></td>
+          <td class="text-center">{{ item.BlockHouseName }}</td>
+          <td class="text-center">{{ item.LandName }}</td>
+          <td class="text-center">{{ item.Floor1 }}</td>
+          <td class="text-center">{{ item.FloorName }}</td>
+
+          <ng-container *ngFor="let childItem of item.temporaryDatas">
+            <td class="text-center">{{ childItem.Area }}</td>
+            <td class="text-right">{{ childItem.UnitPrice | number: '0.0-2':'de-DE'}}</td>
+            <td class="text-right">{{ childItem.Price | number: '0.0-2':'de-DE'}}</td>
+          </ng-container>
+
+          <td class="text-right">{{ item.TotalAreaTT | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-right">{{ item.TotalPirceTT | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center"> {{ item.MoneyPrincipalTT }} %</td>
+          <ng-container *ngFor="let childItem of item.priceTaxTTs">
+            <td class="text-center">{{ childItem.TotalTt }} %</td>
+          </ng-container>
+
+          <td class="text-center">{{ item.DecisionNumberTT }}</td>
+          <td class="text-center">{{ item.DecisionDateTT | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ item.FistPayment | date: 'dd/MM/yyyy' }}</td>
+
+          <ng-container *ngFor="let childItem of item.officialDatas">
+            <td class="text-center">{{ childItem.Area }}</td>
+            <td class="text-right">{{ childItem.UnitPrice | number: '0.0-2':'de-DE'}}</td>
+            <td class="text-right">{{ childItem.Price | number: '0.0-2':'de-DE'}}</td>
+          </ng-container>
+
+          <td class="text-right">{{ item.TotalAreaCT | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-right">{{ item.TotalPirceCT | number: '0.0-2':'de-DE'}}</td>
+
+          <td class="text-center"> {{ item.MoneyPrincipalCT }} %</td>
+          <ng-container *ngFor="let childItem of item.priceTaxes">
+            <td class="text-center">{{ childItem.TotalCt }} %</td>
+          </ng-container>
+
+          <td class="text-center">{{ item.DecisionNumberCT }}</td>
+          <td class="text-center">{{ item.DecisionDateCT | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-right">{{ item.PaymentCenter | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-right">{{ item.PaymentPublic | number: '0.0-2':'de-DE'}}</td>
+
+          <td class="text-right">{{ item.TotalPirceTT | number: '0.0-2':'de-DE'}}</td> <!--Tiền phải nộp-->
+          <td class="text-right"> {{ item.PrincipalPaidTT | number: '0.0-2':'de-DE'}}</td><!--Tiền gốc-->
+          <td class="text-right">{{item.VatTT | number: '0.0-2':'de-DE'}}</td>
+          <ng-container *ngFor="let childItem of item.priceTaxTTs">
+            <td class="text-right" *ngIf="childItem.Name != 'VAT'">{{ childItem.Price | number: '0.0-2':'de-DE'}}</td>
+          </ng-container>
+
+          <td class="text-right">{{ item.TotalPirceCT | number: '0.0-2':'de-DE'}}</td> <!--Tiền phải nộp-->
+          <td class="text-right"> {{ item.PrincipalPaid | number: '0.0-2':'de-DE'}}</td><!--Tiền gốc-->
+          <td class="text-right">{{item.Vat | number: '0.0-2':'de-DE'}}</td>
+          <ng-container *ngFor="let childItem of item.priceTaxes">
+            <td class="text-right" *ngIf="childItem.Name != 'VAT'">{{ childItem.Price | number: '0.0-2':'de-DE'}}</td>
+          </ng-container>
+
+          <td class="text-right">{{ item.TotalPirceCL | number: '0.0-2':'de-DE'}}</td> <!--Tiền phải nộp-->
+          <td class="text-right"> {{ item.PrincipalPaidCL | number: '0.0-2':'de-DE'}}</td><!--Tiền gốc-->
+          <td class="text-right">{{item.VatCL | number: '0.0-2':'de-DE'}}</td>
+          <ng-container *ngFor="let childItem of item.priceTaxCLs">
+            <td class="text-right" *ngIf="childItem.Name != 'VAT'">{{ childItem.Price | number: '0.0-2':'de-DE'}}</td>
+          </ng-container>
+
+          <td class="text-right">{{item.PersonalTax | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-right">{{item.RegistrationTax | number: '0.0-2':'de-DE'}}</td>
+
+          <ng-container *ngFor="let childItem of item.oneselltaxes">
+            <td class="text-center">{{childItem.Year}}</td>
+            <td class="text-right">{{childItem.Total | number: '0.0-2':'de-DE'}}</td>
+          </ng-container>
+
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</div>
+<div>
+  <button nz-button nzType="primary" nz-button (click)="getExportEx()">
+    <i nz-icon nzType="database" nzTheme="outline"></i>
+    Xuất báo cáo
+  </button>
+</div>

@@ -1,0 +1,80 @@
+<div nz-row>
+  <div nz-span>
+    <a nz-button nzType="link" (click)="addRow()">
+      <span nz-icon nzType="plus-circle"></span>
+      Thêm thành phần giá gốc thuế phí
+    </a>
+  </div>
+</div>
+<div nz-row [nzGutter]="24">
+  <div nz-col [nzSpan]="24">
+    <div class="card-body">
+      <st #tableItemRef [data]="tdcProjectPriceAndTax" (change)="tableItemRefChange($event)" [columns]="columnsItem"
+        [size]="'small'" [loading]="loading" [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+        <ng-template st-row="IngrePriceHeader" type="title"><span class="danger-star">*</span>
+          &nbsp;Thành phần giá bán cấu thành
+        </ng-template>
+        <ng-template st-row="PATHeader" type="title"><span class="danger-star">*</span>
+          &nbsp;Thành phần giá gốc thuế phí
+        </ng-template>
+        <ng-template st-row="ValueHeader" type="title"><span class="danger-star">*</span>&nbsp;Hệ số </ng-template>
+        <ng-template st-row="LocationHeader" type="title"><span class="danger-star">*</span>&nbsp;Thứ tự hiển thị
+        </ng-template>
+        <ng-template st-row="tDCProjectPriceAndTaxDetails" *ngIf="add" let-item let-index="index" nzWidth="500px">
+          <nz-select nzMode="multiple" nzPlaceHolder="" class="width-40" [ngModel]="item.TDCProjectPriceAndTaxDetails"
+            [compareWith]="compareFn" (ngModelChange)="onSelectIngre(item, $event)"
+            [ngClass]="item.submit && !item.TDCProjectPriceAndTaxDetails ? 'danger-st-row' : ''"
+            [ngModelOptions]="{ standalone: true }" *ngIf="item.edit1" [nzDropdownMatchSelectWidth]="false">
+            <nz-option *ngFor="let i of ingre_price_data" [nzValue]="i" [nzLabel]="i.IngrePriceName"> </nz-option>
+          </nz-select>
+          <ng-container *ngIf="!item.edit1">
+            <span class="d-block" *ngFor="let idx of item.TDCProjectPriceAndTaxDetails">
+              {{ idx.IngrePriceName }}
+            </span>
+          </ng-container>
+        </ng-template>
+        <ng-template st-row="tDCProjectPriceAndTaxDetails" *ngIf="!add" let-item let-index="index" nzWidth="500px">
+          <nz-select nzMode="multiple" nzPlaceHolder="" [ngModel]="item.TDCProjectPriceAndTaxDetails"
+            (ngModelChange)="onSelectIngre(item, $event)" [ngModelOptions]="{ standalone: true }"
+            [ngClass]="item.submit && !item.TDCProjectPriceAndTaxDetails ? 'danger-st-row' : ''" *ngIf="item.edit1"
+            [nzDropdownMatchSelectWidth]="false">
+            <nz-option *ngFor="let i of ingre_price_data" [nzValue]="i" [nzLabel]="i.IngrePriceName"> </nz-option>
+          </nz-select>
+          <ng-container *ngIf="!item.edit1">
+            <span class="d-block" *ngFor="let idx of item.TDCProjectPriceAndTaxDetails">
+              {{ idx.IngrePriceName }}
+            </span>
+          </ng-container>
+        </ng-template>
+        <ng-template st-row="PriceAndTaxId" let-item let-index="index" nzWidth="500px">
+          <nz-select *ngIf="item.edit1" nzAllowClear name="PriceAndTaxId" id="PriceAndTaxId" nzPlaceHolder=""
+            [ngModel]="item.PriceAndTaxId" [nzDropdownMatchSelectWidth]="false"
+            (ngModelChange)="onSelect(index, $event)" [ngModelOptions]="{ standalone: true }"
+            [ngClass]="item.submit && !item.PriceAndTaxId ? 'danger-st-row' : ''">
+            <nz-option *ngFor="let i of originPAT; let idx = index" [nzDisabled]="i.disabled" [nzLabel]="i.Name"
+              [nzValue]="i.Id">
+            </nz-option>
+          </nz-select>
+          <ng-container *ngIf="!item.edit1">{{ item.PATName }}</ng-container>
+        </ng-template>
+
+        <ng-template st-row="Value" let-item let-index="index">
+          <input
+            nz-input
+            *ngIf="item.edit1" [ngModel]="item.Value"
+            [ngClass]="item.submit && !item.Value ? 'danger-st-row' : ''"
+            (ngModelChange)="tableItemRef.setRow(index, { Value: $event })" [ngModelOptions]="{ standalone: true }"/>
+          <ng-container *ngIf="!item.edit1">{{ item.Value | number:'0.0-2':'de-DE'}}</ng-container>
+        </ng-template>
+        <ng-template st-row="Location" let-item let-index="index">
+          <input 
+            nz-input
+            *ngIf="item.edit1" [ngModel]="item.Location"
+            [ngClass]="item.submit && !item.Location ? 'danger-st-row' : ''"
+            (ngModelChange)="tableItemRef.setRow(index, { Location: $event })" [ngModelOptions]="{ standalone: true }"/>
+          <ng-container *ngIf="!item.edit1">{{ item.Location }}</ng-container>
+        </ng-template>
+      </st>
+    </div>
+  </div>
+</div>

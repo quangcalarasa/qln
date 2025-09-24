@@ -1,0 +1,54 @@
+<ng-container [formGroup]="validateForm">
+    <ng-container *ngIf="checkDecree(DecreeEnum.ND_99)" [ngTemplateOutlet]="flatCoefficientTpl"
+        [ngTemplateOutletContext]="{ decree: DecreeEnum.ND_99, form: validateForm}">
+    </ng-container>
+    <ng-container *ngIf="checkDecree(DecreeEnum.ND_34)" [ngTemplateOutlet]="flatCoefficientTpl"
+        [ngTemplateOutletContext]="{ decree: DecreeEnum.ND_34, form: validateForm}">
+    </ng-container>
+    <ng-container *ngIf="checkDecree(DecreeEnum.ND_61)" [ngTemplateOutlet]="flatCoefficientTpl"
+        [ngTemplateOutletContext]="{ decree: DecreeEnum.ND_61, form: validateForm}">
+    </ng-container>
+</ng-container>
+
+<!-- flatCoefficientTpl -->
+<ng-template #flatCoefficientTpl let-decree='decree' let-form='form'>
+    <div nz-row [nzGutter]="24" [formGroup]="form">
+        <div nz-col [nzSpan]="16">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="FlatCoefficientId_{{decree}}">Hệ số nhà chung cư áp dụng theo Nghị
+                    định {{ viewNameDecree(decree) }}</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear [formControlName]="'FlatCoefficientId_' + decree" nzPlaceHolder=""
+                        [nzShowSearch]="true" (ngModelChange)="changeFlatCoefficient($event, decree)">
+                        <nz-option
+                            *ngFor="let i of flat_coefficient_data | filterItemsByDecreeType1Id: decree; let idx = index"
+                            [nzLabel]="i.Note" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">&nbsp;</nz-form-label>
+                <nz-form-control [nzSpan]="24" *ngIf="decree==DecreeEnum.ND_99">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        [(ngModel)]="validateForm.value.FlatCoefficient_99" [ngModelOptions]="{ standalone: true }"
+                        class="width-100" disabled="true" />
+                </nz-form-control>
+
+                <nz-form-control [nzSpan]="24" *ngIf="decree==DecreeEnum.ND_34">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        [(ngModel)]="validateForm.value.FlatCoefficient_34" [ngModelOptions]="{ standalone: true }"
+                        class="width-100" disabled="true" />
+                </nz-form-control>
+
+                <nz-form-control [nzSpan]="24" *ngIf="decree==DecreeEnum.ND_61">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        [(ngModel)]="validateForm.value.FlatCoefficient_61" [ngModelOptions]="{ standalone: true }"
+                        class="width-100" disabled="true" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>

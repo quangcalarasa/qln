@@ -1,0 +1,48 @@
+<ng-container [formGroup]="validateForm">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <span class="note-drawer">Thông tin diện tích đất liền kề với nhà ở cũ
+                <span class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                    [nzPopoverContent]="contentPpvTpl19" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+            </span>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="SellLandArea">Diện tích đất có nhà ở đã bán (m2)</nz-form-label>
+                <nz-form-control [nzSpan]="24" class="form-control-disabled pl-sm">
+                    <span> {{ validateForm.value.SellLandArea | number:'0.0-2':'de-DE' }} </span>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16">
+            <nz-table #basicTable nzBordered="true" nzShowPagination="false"
+                [nzData]="validateForm.value.pricingApartmentLandDetails ?? []">
+                <thead>
+                    <tr>
+                        <th nzWidth="40%" class="text-left">Nghị định</th>
+                        <th nzWidth="40%" class="text-left">Điều</th>
+                        <th nzWidth="20%" class="text-center">
+                            DT đất liền kề</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data; let index = index">
+                        <td>
+                            <span>{{ data.DecreeType1Id | showDecreeName }}</span>
+                        </td>
+                        <td>
+                            <span>{{ data.TermApply | showTermApplyName }}</span>
+                        </td>
+                        <td class="text-center">
+                            {{ data.PrivateArea | number: '0.0-2':'de-DE'}}
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</ng-container>
+<ng-template #contentPpvTpl19>
+    <app-shared-popover [cs]="19">
+    </app-shared-popover>
+</ng-template>

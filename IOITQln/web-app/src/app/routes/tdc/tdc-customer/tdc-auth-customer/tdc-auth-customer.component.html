@@ -1,0 +1,243 @@
+<div nz-row>
+  <div nz-span>
+    <a nz-button nzType="link" (click)="addRow()">
+      <span nz-icon nzType="plus-circle"></span>
+      Thêm người ủy quyền
+    </a>
+  </div>
+</div>
+<div nz-row [nzGutter]="24">
+  <div nz-col [nzSpan]="24">
+    <div class="card-body">
+      <st
+        #tableItemRef
+        [data]="tdcAuthCustomerDetailDatas"
+        (change)="tableItemRefChange($event)"
+        [columns]="columnsItem"
+        [size]="'small'"
+        [loading]="loading"
+        [widthMode]="{ type: 'strict' }"
+        [page]="{ front: false }"
+      >
+        <ng-template st-row="Họ Tên" type="title"><span class="danger-star">*</span>&nbsp;Họ Tên </ng-template>
+        <ng-template st-row="CCCD" type="title"
+          ><span class="danger-star" style="left: unset">*</span>&nbsp;&nbsp;&nbsp;CCCD/CMND
+        </ng-template>
+        <ng-template st-row="Ngày Sinh" type="title"
+          ><span class="danger-star" style="left: unset">*</span>&nbsp;&nbsp;&nbsp;Ngày Sinh
+        </ng-template>
+        <ng-template st-row="SDT" type="title"
+          ><span class="danger-star" style="left: unset">*</span>&nbsp;&nbsp;&nbsp;Số Điện Thoại
+        </ng-template>
+        <ng-template st-row="Ghi Chú" type="title"><span style="left: unset"></span>&nbsp;&nbsp;&nbsp;Ghi Chú </ng-template>
+        <ng-template st-row="FullNameTpl" let-item let-index="index">
+          <input
+            *ngIf="item.edit"
+            nz-input
+            [ngClass]="item.submit && (!item.FullName || item.FullName == '') ? 'danger-st-row' : ''"
+            [ngModel]="item.FullName"
+            (ngModelChange)="tableItemRef.setRow(index, { FullName: $event })"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <ng-container *ngIf="!item.edit">{{ item.FullName }}</ng-container>
+        </ng-template>
+        <ng-template st-row="CCCDTpl" let-item let-index="index">
+          <input
+            *ngIf="item.edit"
+            nz-input
+            [ngClass]="item.submit && (!item.CCCD || item.CCCD == '') ? 'danger-st-row' : ''"
+            [ngModel]="item.CCCD"
+            (ngModelChange)="tableItemRef.setRow(index, { CCCD: $event })"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <ng-container *ngIf="!item.edit">{{ item.CCCD }}</ng-container>
+        </ng-template>
+        <ng-template st-row="DobTpl" let-item let-index="index">
+          <input
+            nz-input
+            *ngIf="item.edit"
+            type="date" max="9999-12-31"
+            [ngModel]="item.Dob"
+            [ngClass]="item.submit && !item.Dob ? 'danger-st-row' : ''"
+            (ngModelChange)="tableItemRef.setRow(index, { Dob: $event })"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <ng-container *ngIf="!item.edit">{{ item.Dob | date: 'dd/MM/yyyy' }}</ng-container>
+        </ng-template>
+
+        <!-- Địa Chỉ Tạm Trú Người Ủy Quyền Start -->
+        <ng-template st-row="AddressTtTpl" let-item let-index="index">
+          <input
+            *ngIf="item.edit"
+            nz-input
+            [ngClass]="item.submit && (!item.AddressTt || item.AddressTt == '') ? 'danger-st-row' : ''"
+            [ngModel]="item.AddressTt"
+            (ngModelChange)="tableItemRef.setRow(index, { AddressTt: $event })"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <ng-container *ngIf="!item.edit">{{ item.AddressTt }}</ng-container>
+        </ng-template>
+        <ng-template st-row="LaneTtTpl" let-item let-index="index">
+          <nz-form-item>
+            <nz-form-control nzHasFeedback nzErrorTip="Chưa chọn Đường!">
+              <nz-select
+                *ngIf="!item.edit"
+                [nzDisabled]="true"
+                nzAllowClear
+                [nzShowSearch]="true"
+                [ngClass]="item.submit && (!item.LaneTT || item.LaneTT == '') ? 'danger-st-row' : ''"
+                [ngModel]="item.LaneTt"
+                (ngModelChange)="tableItemRef.setRow(index, { LaneTt: $event })"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <nz-option *ngFor="let i of lane_data | filterLaneByWard: item.PdwTTC; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                </nz-option>
+              </nz-select>
+              <nz-select
+                *ngIf="item.edit"
+                nzAllowClear
+                [nzShowSearch]="true"
+                [ngClass]="item.submit && (!item.LaneTT || item.LaneTT == '') ? 'danger-st-row' : ''"
+                [ngModel]="item.LaneTt"
+                (ngModelChange)="tableItemRef.setRow(index, { LaneTt: $event })"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <nz-option *ngFor="let i of lane_data | filterLaneByWard: item.PdwTTC; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-template>
+        <ng-template st-row="PdwTtTpl" let-item let-index="index">
+          <nz-form-item>
+            <nz-form-control nzHasFeedback nzErrorTip="Chưa chọn Tỉnh (Tp) /Quận (huyện) /Phường (xã)!">
+              <nz-cascader
+                *ngIf="!item.edit"
+                [nzDisabled]="true"
+                [nzShowSearch]="true"
+                [(ngModel)]="item.PdwTTC"
+                nzPlaceHolder=""
+                [nzOptions]="pdwTT_data"
+                [ngModelOptions]="{ standalone: true }"
+                [ngClass]="item.submit && (!item.fullAddressTt || item.fullAddressTt == '') ? 'danger-st-row' : ''"
+                (ngModelChange)="tableItemRef.setRow(index, { PdwTt: $event })"
+              >
+              </nz-cascader>
+              <nz-cascader
+                *ngIf="item.edit"
+                [nzShowSearch]="true"
+                [(ngModel)]="item.PdwTTC"
+                nzPlaceHolder=""
+                [nzOptions]="pdwTT_data"
+                [ngModelOptions]="{ standalone: true }"
+                [ngClass]="item.submit && (!item.fullAddressTt || item.fullAddressTt == '') ? 'danger-st-row' : ''"
+                (ngModelChange)="tableItemRef.setRow(index, { PdwTt: $event })"
+              >
+              </nz-cascader>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-template>
+        <!-- Địa Chỉ Tạm trú Người Ủy Quyền End -->
+
+        <!-- Địa Chỉ Liên Hệ Người Ủy Quyền Start -->
+        <ng-template st-row="AddressLhTpl" let-item let-index="index">
+          <input
+            *ngIf="item.edit"
+            nz-input
+            [ngClass]="item.submit && (!item.AddressLh || item.AddressLh == '') ? 'danger-st-row' : ''"
+            [ngModel]="item.AddressLh"
+            (ngModelChange)="tableItemRef.setRow(index, { AddressLh: $event })"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <ng-container *ngIf="!item.edit">{{ item.AddressLh }}</ng-container>
+        </ng-template>
+
+        <ng-template st-row="LaneLhTpl" let-item let-index="index">
+          <nz-form-item>
+            <nz-form-control nzHasFeedback nzErrorTip="Chưa chọn Đường!">
+              <nz-select
+                *ngIf="!item.edit"
+                [nzDisabled]="true"
+                nzAllowClear
+                [nzShowSearch]="true"
+                [ngClass]="item.submit && !item.LaneLh ? 'danger-st-row' : ''"
+                [ngModel]="item.LaneLh"
+                (ngModelChange)="tableItemRef.setRow(index, { LaneLh: $event })"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <nz-option *ngFor="let i of lane_data | filterLaneByWard: item.PdwLHC; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                </nz-option>
+              </nz-select>
+              <nz-select
+                *ngIf="item.edit"
+                nzAllowClear
+                [nzShowSearch]="true"
+                [ngClass]="item.submit && !item.LaneLh ? 'danger-st-row' : ''"
+                [ngModel]="item.LaneLh"
+                (ngModelChange)="tableItemRef.setRow(index, { LaneLh: $event })"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <nz-option *ngFor="let i of lane_data | filterLaneByWard: item.PdwLHC; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-template>
+
+        <ng-template st-row="PdwLhTpl" let-item let-index="index">
+          <nz-form-item>
+            <nz-form-control nzHasFeedback nzErrorTip="Chưa chọn Tỉnh (Tp) /Quận (huyện) /Phường (xã)!">
+              <nz-cascader
+                *ngIf="!item.edit"
+                [nzDisabled]="true"
+                [nzShowSearch]="true"
+                [(ngModel)]="item.PdwLHC"
+                nzPlaceHolder=""
+                [nzOptions]="pdwLH_data"
+                [ngModelOptions]="{ standalone: true }"
+                [ngClass]="item.submit && !item.PdwLh ? 'danger-st-row' : ''"
+                (ngModelChange)="tableItemRef.setRow(index, { PdwLh: $event })"
+              >
+              </nz-cascader>
+              <nz-cascader
+                *ngIf="item.edit"
+                [nzShowSearch]="true"
+                [(ngModel)]="item.PdwLHC"
+                nzPlaceHolder=""
+                [nzOptions]="pdwLH_data"
+                [ngModelOptions]="{ standalone: true }"
+                [ngClass]="item.submit && !item.PdwLh ? 'danger-st-row' : ''"
+                (ngModelChange)="tableItemRef.setRow(index, { PdwLh: $event })"
+              >
+              </nz-cascader>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-template>
+        <!-- Địa Chỉ Liên Hệ Người Ủy Quyền End -->
+
+        <ng-template st-row="PhoneTpl" let-item let-index="index">
+          <input
+            *ngIf="item.edit"
+            nz-input
+            [ngClass]="item.submit && !item.Phone ? 'danger-st-row' : ''"
+            [ngModel]="item.Phone"
+            (ngModelChange)="tableItemRef.setRow(index, { Phone: $event })"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <ng-container *ngIf="!item.edit">{{ item.Phone }}</ng-container>
+        </ng-template>
+        <ng-template st-row="NoteTpl" let-item let-index="index">
+          <input
+            *ngIf="item.edit"
+            nz-input
+            [ngClass]="item.submit && (!item.Note || item.Note == '') ? 'danger-st-row' : ''"
+            [ngModel]="item.Note"
+            (ngModelChange)="tableItemRef.setRow(index, { Note: $event })"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <ng-container *ngIf="!item.edit">{{ item.Note }}</ng-container>
+        </ng-template>
+      </st>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<input #myInput placeholder="Nhập từ khoá" nz-input [nzAutocomplete]="auto"
+    style="height: 27px;outline: none;border:none;" [(ngModel)]="cellValue" (input)="processDataInput($event)" />
+
+<nz-autocomplete #auto nzBackfill [nzWidth]="360">
+    <nz-auto-option *ngIf="isLoading">
+        <span class='text-processing-dark'>Đang tìm kiếm...</span>
+    </nz-auto-option>
+    <nz-auto-option *ngIf="!isLoading&&optionList.length==0">
+        <span class='text-red-dark'>Gõ từ khoá muốn tìm kiếm</span>
+    </nz-auto-option>
+    <ng-container *ngIf="!isLoading">
+        <nz-auto-option *ngFor="let option of optionList" [nzValue]="option[keyField]">{{ option[keyField] + ' '
+            +option[labelField] }}
+        </nz-auto-option>
+    </ng-container>
+</nz-autocomplete>

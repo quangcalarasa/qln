@@ -1,0 +1,1389 @@
+<nz-tabset [nzSize]="'large'" style="margin-bottom: 100px;">
+  <nz-tab [nzTitle]="'Thực hiện import'">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-control [nzSpan]="24">
+            <nz-upload [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" [nzDisabled]="loading">
+              <button nz-button type="button">
+                <span nz-icon nzType="upload" *ngIf="!loading"></span>
+                <span nz-icon nzType="loading" *ngIf="loading"></span>
+                Import file excel
+              </button>
+            </nz-upload>
+            <a nz-button nzType="link" (click)="downloadTemplate()">Tải file mẫu</a>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div class="mb-xxl">
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Md167Receipt" [ngTemplateOutlet]="md167Receipt"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Md167Landprice || importHistoryType == ImportHistoryTypeEnum.Noc_Landprice" [ngTemplateOutlet]="md167Lanprice"
+      [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Md167House" [ngTemplateOutlet]="md167House"
+      [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Md167Kios" [ngTemplateOutlet]="md167Kios"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Md167ExtraContract || importHistoryType == ImportHistoryTypeEnum.Md167MainContract" [ngTemplateOutlet]="md167Contract"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocSalary" [ngTemplateOutlet]="nocSalary"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocCoefficient" [ngTemplateOutlet]="nocCoefficient"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocConversion" [ngTemplateOutlet]="nocConversion"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocDefaultCoeficient" [ngTemplateOutlet]="nocDefaultCoeficient"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocDiscountCoefficient" [ngTemplateOutlet]="nocDiscountCoefficient"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocRentingPrice" [ngTemplateOutlet]="nocRentingPrice"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Common_Department" [ngTemplateOutlet]="cmDepartmentTpl"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Common_Position" [ngTemplateOutlet]="cmPositionTpl"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Common_Lane" [ngTemplateOutlet]="cmLaneTpl"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Noc_Contract_Rent_Receipt" [ngTemplateOutlet]="contractSellReceiptTpl"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Noc_Contract_Rent" [ngTemplateOutlet]="contractSellTpl"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcIngredientsPrice" [ngTemplateOutlet]="tdcIngredientsPrice"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcOriginalPriceAndTax" [ngTemplateOutlet]="tdcOriginalPriceAndTax"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcProfitValue" [ngTemplateOutlet]="tdcProfitValue"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcInstallmentRate" [ngTemplateOutlet]="tdcInstallmentRate"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcResettlement" [ngTemplateOutlet]="tdcResettlement"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcBlockHouse" [ngTemplateOutlet]="tdcBlockHouse"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcFloor" [ngTemplateOutlet]="tdcFloor"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcApartment" [ngTemplateOutlet]="tdcApartment"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcPlatform" [ngTemplateOutlet]="tdcPlatform"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcLand" [ngTemplateOutlet]="tdcLand"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcProject" [ngTemplateOutlet]="tdcProject"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcCustomer" [ngTemplateOutlet]="tdcCustomer"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+    </div>
+  </nz-tab>
+  <nz-tab [nzTitle]="'Lịch sử import'">
+    <div nz-row class="row-title mt-lg">
+      <div nz-col [nzMd]="3">
+          <span class="title">Danh sách import</span>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24" class="p-md">
+      <div nz-col [nzSpan]="16">
+        <st #tableRef [data]="dataImport" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'"
+        [loading]="loading" [ps]="paging.page_size" [total]="paging.item_count"
+        [widthMode]="{ type: 'strict',strictBehavior:'truncate' }" [page]="{front:false}">
+        <ng-template st-row="no-column" let-item let-index="index">
+            <span>{{ ((paging.page - 1) * paging.page_size) + index + 1 }}</span>
+        </ng-template>
+      </st>
+      </div>
+    </div>
+    <div nz-row class="row-title mt-lg">
+      <div nz-col [nzMd]="6">
+          <span class="title">Chi tiết các bản ghi được import</span>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Md167Receipt" [ngTemplateOutlet]="md167Receipt"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Md167Landprice || importHistoryType == ImportHistoryTypeEnum.Noc_Landprice" [ngTemplateOutlet]="md167Lanprice"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Md167House" [ngTemplateOutlet]="md167House"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Md167Kios" [ngTemplateOutlet]="md167Kios"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Md167ExtraContract || importHistoryType == ImportHistoryTypeEnum.Md167MainContract" [ngTemplateOutlet]="md167Contract"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocSalary" [ngTemplateOutlet]="nocSalary"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocCoefficient" [ngTemplateOutlet]="nocCoefficient"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocConversion" [ngTemplateOutlet]="nocConversion"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocDefaultCoeficient" [ngTemplateOutlet]="nocDefaultCoeficient"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocDiscountCoefficient" [ngTemplateOutlet]="nocDiscountCoefficient"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.NocRentingPrice" [ngTemplateOutlet]="nocRentingPrice"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Common_Department" [ngTemplateOutlet]="cmDepartmentTpl"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Common_Position" [ngTemplateOutlet]="cmPositionTpl"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Common_Lane" [ngTemplateOutlet]="cmLaneTpl"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Noc_Contract_Rent_Receipt" [ngTemplateOutlet]="contractSellReceiptTpl"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.Noc_Contract_Rent" [ngTemplateOutlet]="contractSellTpl"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcIngredientsPrice" [ngTemplateOutlet]="tdcIngredientsPrice"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcOriginalPriceAndTax" [ngTemplateOutlet]="tdcOriginalPriceAndTax"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcProfitValue" [ngTemplateOutlet]="tdcProfitValue"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcInstallmentRate" [ngTemplateOutlet]="tdcInstallmentRate"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcResettlement" [ngTemplateOutlet]="tdcResettlement"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcBlockHouse" [ngTemplateOutlet]="tdcBlockHouse"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcFloor" [ngTemplateOutlet]="tdcFloor"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcApartment" [ngTemplateOutlet]="tdcApartment"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcPlatform" [ngTemplateOutlet]="tdcPlatform"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcLand" [ngTemplateOutlet]="tdcLand"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcProject" [ngTemplateOutlet]="tdcProject"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+      <ng-container *ngIf="importHistoryType == ImportHistoryTypeEnum.TdcCustomer" [ngTemplateOutlet]="tdcCustomer"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+    </div>
+  </nz-tab>
+</nz-tabset>
+
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+</div>
+
+<ng-template #md167Receipt let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th>Mã hóa đơn</th>
+            <th class="text-center" nzWidth="150px">Ngày nộp tiền</th>
+            <th class="text-center" nzWidth="150px">Ngày xuất hóa đơn</th>
+            <th class="text-right" nzWidth="150px">Số tiền thanh toán</th>
+            <th>Mã hợp đồng/Phụ lục</th>
+            <th nzWidth="150px">Trạng thái</th>
+            <th>Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td>{{ item.ReceiptCode }}</td>
+            <td class="text-center">{{ item.DateOfPayment | date: 'dd/MM/yyyy' }}</td>
+            <td class="text-center">{{ item.DateOfReceipt | date: 'dd/MM/yyyy' }}</td>
+            <td class="text-right">{{ item.Amount | number: '0.0-2': 'de-DE' }}</td>
+            <td>{{ item.ContractCode }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #md167Lanprice let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: '2400px' }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th rowspan="2" class="text-center" nzWidth="50px">Stt</th>
+            <th rowspan="2" class="text-center">Nghị định áp dụng cho biên bản</th>
+            <th rowspan="2" class="text-center">Văn bản pháp luật liên quan</th>
+            <th rowspan="2" class="text-center">Căn cứ theo</th>
+            <th rowspan="2" class="text-center">Quận (huyện)</th>
+            <th rowspan="2" class="text-center">Tỉnh (Tp)</th>
+            <th rowspan="2" class="text-center">Tên đường</th>
+            <th colspan="2" class="text-center">Đoạn đường</th>
+            <th rowspan="2" class="text-right">Giá</th>
+            <th rowspan="2" class="text-center">Căn cứ theo</th>
+            <th rowspan="2" class="text-center">Trạng thái</th>
+            <th rowspan="2" class="text-center">Ghi chú </th>
+
+          </tr>
+          <tr>
+            <th rowspan="1" class="text-center">Từ</th>
+            <th rowspan="1" class="text-center">Đến</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td>{{ item.DecreeType1Name }}</td>
+            <td>{{ item.DecreeType2Name }}</td>
+            <td>{{ item.DeslandPrice }}</td>
+            <td>{{ item.DistrictName }}</td>
+            <td>{{ item.ProviceName }}</td>
+            <td>{{ item.LaneName }}</td>
+            <td>{{ item.LaneStartName }}</td>
+            <td>{{ item.LaneEndName }}</td>
+            <td class="text-right">{{ item.Value | number: '0.0-2': 'de-DE' }}</td>
+            <td>{{ item.Des }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #md167House let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ x: '8000px' }">
+    <thead>
+      <tr>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="50px">Stt</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Số nhà</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Loại nhà</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Tỉnh Tp</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Quận huyện</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Xã phường</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Tên đường</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Số tờ</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Số thửa</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Thuế suất đất</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Loại đất</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Đơn vị chuyển giao</th>
+        <th rowspan="1" colspan="2" class="text-center">Phân loại vị trí</th>
+        <th rowspan="1" colspan="2" class="text-center">Quyết định xác lập SHNN</th>
+        <th rowspan="1" colspan="2" class="text-center">Hợp đồng thuê đất</th>
+        <th colspan="2" class="text-center">Quyết định giao/thuê đất</th>
+        <th colspan="2" class="text-center">Giấy chứng nhận quyền sử dụng đất</th>
+        <th colspan="2" class="text-center">Văn bản về Phương án sắp xếp của UBND TP</th>
+        <th rowspan="2" class="text-center" nzWidth="150px">Mục đích quản lý sử dụng phê duyệt theo quyết định</th>
+        <th rowspan="2" class="text-center" nzWidth="150px">Nội dung phương án được phê duyệt theo Quyết định</th>
+        <th rowspan="2" class="text-center" nzWidth="150px">Nguyên giá nhà, đất khi nhận bàn giao</th>
+        <th rowspan="2" class="text-center" nzWidth="150px">Giá trị còn lại của Nhà phố</th>
+        <th rowspan="2" class="text-center" nzWidth="150px">Hiện trạng sử dụng</th>
+        <th rowspan="2" class="text-center" nzWidth="150px">Quy mô kết cấu</th>
+        <th rowspan="2" class="text-center" nzWidth="150px">Nhà phố</th>
+        <th colspan="6" class="text-center" nzWidth="150px">Thông tin diện tích nhà phố</th>
+        <th rowspan="2" class="text-center" nzWidth="150px">Nhà chung cư/nhà nhiều tầng</th>
+        <th colspan="7" class="text-center" nzWidth="150px">Thông tin diện tích nhà Chung cư/nhà nhiều tầng</th>
+        <th colspan="6" class="text-center" nzWidth="150px">Thông tin diện tích</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Ghi chú</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Trạng thái</th>
+        <th rowspan="2" colspan="1" class="text-center" nzWidth="150px">Ghi chú </th>
+      </tr>
+      <tr>
+        <th rowspan="1">Nghị định</th>
+        <th rowspan="1">Vị trí đất ở</th>
+        <th rowspan="1">Số</th>
+        <th rowspan="1">Ngày</th>
+        <th rowspan="1">Số</th>
+        <th rowspan="1">Ngày</th>
+        <th rowspan="1">Số</th>
+        <th rowspan="1">Ngày</th>
+        <th rowspan="1">Số</th>
+        <th rowspan="1">Ngày</th>
+        <th rowspan="1">Số</th>
+        <th rowspan="1">Ngày</th>
+        <th rowspan="1" class="text-center">Diện tích của lô đất</th>
+        <th rowspan="1" class="text-center">Thuế đất phí nông nghiệp</th>
+        <th rowspan="1" class="text-center">Diện tích đất xây dựng chung</th>
+        <th rowspan="1" class="text-center">Diện tích đất xây dựng riêng</th>
+        <th rowspan="1" class="text-center">Diện tích đất thuộc hành lang an toàn sông</th>
+        <th rowspan="1" class="text-center">Diện tích nhà thuộc hành lang an toàn sông</th>
+        <th rowspan="1" class="text-center">Diện tích của sàn xây dựng</th>
+        <th rowspan="1" class="text-center">Diện tích hầm</th>
+        <th rowspan="1" class="text-center">Diện tích đất thuộc hành lang an toàn sông</th>
+        <th rowspan="1" class="text-center">Diện tích nhà thuộc hành lang an toàn sông</th>
+        <th rowspan="1" class="text-center">Số tầng</th>
+        <th rowspan="1" class="text-center">Số thuế miễn giảm</th>
+        <th rowspan="1" class="text-center">Có tầng hầm</th>
+        <th rowspan="1" class="text-center">Diện tích sàn sử dụng chung</th>
+        <th rowspan="1" class="text-center">Diện tích sàn sử dụng riêng</th>
+        <th rowspan="1" class="text-center">Diện tích đất sử dụng chung</th>
+        <th rowspan="1" class="text-center">Diện tích đất sử dụng riêng</th>
+        <th rowspan="1" class="text-center">Diện tích đất trong lộ giới</th>
+        <th rowspan="1" class="text-center">Diện tích nhà trong lộ giới</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data;">
+        <td class="text-center">{{ item.Index }}</td>
+        <td>{{ item.HouseNumber }}</td>
+        <td>{{ item.HouseTypeName }}</td>
+        <td>{{ item.ProviceName }}</td>
+        <td>{{ item.DistrictName }}</td>
+        <td>{{ item.WardName }}</td>
+        <td>{{ item.LaneName }}</td>
+        <td>{{ item.MapNumber }}</td>
+        <td>{{ item.ParcelNumber }}</td>
+		<!-- //Qfix -->
+        <!-- <td class="text-right">{{ item.LandTaxRateCode | number: '0.0-2': 'de-DE'}}</td> -->
+        <td class="text-right">{{ item.LandTaxRateCode}}</td>
+        <td>{{ item.PlanningInfor }}</td>
+        <td>{{ getLandName(item.LandId) }}</td>
+        <td>{{ item.Md167TransferUnitName }}</td>
+        <td>{{ item.DecreeType }}</td>
+        <td>{{ item.SHNNCode }}</td>
+        <td class="text-center">{{ item.SHNNDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{ item.ContractCode }}</td>
+        <td class="text-center">{{ item.ContractDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{ item.LeaseCode }}</td>
+        <td class="text-center">{{ item.LeaseDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{ item.LeaseCertCode }}</td>
+        <td class="text-right">{{ item.LeaseCertDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{ item.DocumentCode }}</td>
+        <td class="text-right">{{ item.DocumentDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{ item.PurposeUsingName }}</td>
+        <td>{{ item.PlanContentName }}</td>
+        <td class="text-right">{{ item.OriginPrice | number: '0.0-2': 'de-DE'}}</td>
+        <td class="text-right">{{ item.ValueLand | number: '0.0-2': 'de-DE'}}</td>
+        <td>{{ item.StatusOfUseName }}</td>
+        <td>{{ item.TextureScale }}</td>
+        <td class="text-center">
+          <span *ngIf="item.IsTownHouse" nz-icon nzType="check" nzTheme="outline"></span>
+        </td>
+        <td>{{ item.InfoValue.HouAreaLand }}</td>
+        <td>{{ item.InfoValue.TaxNN }}</td>
+        <td>{{ item.InfoValue.AreBuildPb }}</td>
+        <td>{{ item.InfoValue.AreBuildPr }}</td>
+        <td>{{ item.AreaLandInBankSafeHouse }}</td>
+        <td>{{ item.AreaHouseInBankSafeHouse }}</td>
+        <td class="text-center">
+          <span *ngIf="item.IsApartment" nz-icon nzType="check" nzTheme="outline"></span>
+        </td>
+        <td>{{ item.InfoValue.AreaFloorBuild }}</td>
+        <td>{{ item.InfoValue.AreaTunnel }}</td>
+        <td>{{ item.AreaLandInBankSafeApartment }}</td>
+        <td>{{ item.AreaHouseInBankSafeApartment }}</td>
+        <td>{{ item.InfoValue.ApaFloorCount }}</td>
+        <td>{{ item.InfoValue.ApaTax }}</td>
+        <td class="text-center">
+          <span *ngIf="item.InfoValue.ApaIsBasement" nz-icon nzType="check" nzTheme="outline"></span>
+        </td>
+        <td>{{ item.InfoValue.UseFloorPb }}</td>
+        <td>{{ item.InfoValue.UseFloorPr }}</td>
+        <td>{{ item.InfoValue.UseLandPb }}</td>
+        <td>{{ item.InfoValue.UseLandPr }}</td>
+        <td>{{ item.InfoValue.AreaLandInSafe }}</td>
+        <td>{{ item.InfoValue.AreaHouseInSafe }}</td>
+        <td>{{ item.Note }}</td>
+        <td>
+          <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+          <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+        </td>
+        <td>{{ item.ErrMsg }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</ng-template>
+
+<ng-template #md167Kios let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Mã nhà</th>
+            <th class="text-center">Tên Kios</th>
+            <th class="text-right">Diện tích sàn sử dụng chung</th>
+            <th class="text-right">Diện tích sàn sử dụng riêng</th>
+            <th class="text-center">Trạng thái Kios</th>
+            <th class="text-center">Ghi chú Kios</th>
+            <th class="text-center">Trạng thái</th>
+            <th class="text-center">Ghi chú </th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td>{{ item.CodeHouse }}</td>
+            <td>{{ item.HouseNumber }}</td>
+            <td class="text-right">{{ item.InfoValue.UseFloorPb | number: '0.0-2': 'de-DE' }}</td>
+            <td class="text-right">{{ item.InfoValue.UseFloorPr | number: '0.0-2': 'de-DE' }}</td>
+            <td>{{ item.KiosType }}</td>
+            <td>{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #md167Contract let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <ng-container *ngIf="importHistoryType==ImportHistoryTypeEnum.Md167ExtraContract">
+              <th nzWidth="200px">Số phụ lục</th>
+              <th class="text-center" nzWidth="150px">Ngày ký phụ lục</th>
+            </ng-container>
+            <th nzWidth="200px">Số hợp đồng</th>
+            <th class="text-center" nzWidth="150px">Ngày ký</th>
+            <th class="text-center" nzWidth="150px">Cá nhân</th>
+            <th nzWidth="200px">Tên tổ chức</th>
+            <th nzWidth="200px">Mã số thuế</th>
+            <th nzWidth="200px">Tên người thuê/đại diện</th>
+            <th nzWidth="200px">CMND/CCCD người thuê</th>
+            <th nzWidth="200px">Ngày cấp</th>
+            <th nzWidth="200px">Nơi cấp</th>
+            <th nzWidth="200px">Địa chỉ</th>
+            <th nzWidth="200px">Điện thoại</th>
+            <th nzWidth="200px">Giấy phép kinh doanh</th>
+            <th nzWidth="200px">Chức vụ</th>
+            <th nzWidth="200px">Số nhà</th>
+            <th nzWidth="200px">Số Kios</th>
+            <th nzWidth="200px">Giá niêm yết/Đấu giá</th>
+            <th nzWidth="200px">Thời gian thuê</th>
+            <th nzWidth="200px">Thời gian thuê - Khác</th>
+            <th nzWidth="200px">Mục đích cho thuê</th>
+            <th nzWidth="200px">Mục đích cho thuê - Khác</th>
+            <th nzWidth="200px">Kỳ thanh toán</th>
+            <th nzWidth="200px">Ngày bàn giao mặt bằng</th>
+            <th nzWidth="200px">Trạng thái hợp đồng</th>
+            <th nzWidth="150px">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <ng-container *ngIf="importHistoryType==ImportHistoryTypeEnum.Md167ExtraContract">
+              <td>{{ item.ExtraCode }}</td>
+              <td class="text-center">{{ item.ExtraDateSign | date: 'dd/MM/yyyy' }}</td>
+            </ng-container>
+            <td>{{ item.Code }}</td>
+            <td class="text-center">{{ item.DateSign | date: 'dd/MM/yyyy' }}</td>
+            <td class="text-center">
+              <span *ngIf="item.IsPersonal" nz-icon nzType="check" nzTheme="outline"></span>
+            </td>
+            <td>{{ item.OrganizationName }}</td>
+            <td>{{ item.TaxCode }}</td>
+            <td>{{ item.FullName }}</td>
+            <td>{{ item.IdentityCode }}</td>
+            <td>{{ item.IdentityDate | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ item.IdentityPlace }}</td>
+            <td>{{ item.Address }}</td>
+            <td>{{ item.Phone }}</td>
+            <td>{{ item.BusinessLicense }}</td>
+            <td>{{ item.Position }}</td>
+            <td>{{ item.HouseNumber }}</td>
+            <td>{{ item.KiosNumber }}</td>
+            <td>{{ item.TypePrice }}</td>
+            <td>{{ item.RentalPeriod }}</td>
+            <td>{{ item.NoteRentalPeriod }}</td>
+            <td>{{ item.RentalPurpose }}</td>
+            <td>{{ item.NoteRentalPurpose }}</td>
+            <td>{{ item.PaymentPeriod }}</td>
+            <td>{{ item.DateGroundHandover | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ item.ContractStatus }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #nocSalary let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Nghị định áp dụng cho biên bản</th>
+            <th class="text-center">Văn bản pháp luật liên quan</th>
+            <th class="text-center">Ngày áp dụng</th>
+            <th class="text-right">Giá trị</th>
+            <th class="text-center">Diễn giải</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td>{{ item.DecreeType1Name }}</td>
+            <td>{{ item.DecreeType2Name }}</td>
+            <td class="text-center">{{ item.DoApply | date: 'dd/MM/yyyy' }}</td>
+            <td class="text-right">{{ item.Value | number: '0.0-2': 'de-DE' }}</td>
+            <td>{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #nocCoefficient let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Ngày áp dụng</th>
+            <th class="text-center">Đơn vị tính</th>
+            <th class="text-right">Giá trị</th>
+            <th class="text-center">Diễn giải</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.DoApply | date: 'dd/MM/yyyy' }}</td>
+            <td class="text-center">{{ item.UnitPriceName }}</td>
+            <td class="text-right">{{ item.Value | number: '0.0-2': 'de-DE' }}</td>
+            <td>{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #nocConversion let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Thông tư/Văn bản/Quyết định</th>
+            <th class="text-center">Tên hệ số</th>
+            <th class="text-right">Tên kí hiệu</th>
+            <th class="text-center">Ghi chú</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.type_Qd }}</td>
+            <td class="text-center">{{ item.Coefficient_Name }}</td>
+            <td class="text-center">{{ item.Code }}</td>
+            <td>{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #nocDefaultCoeficient let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Tên hệ số</th>
+            <th class="text-center">Nội dung </th>
+            <th class="text-right">Giá trị</th>
+            <th class="text-center">Đơn vị tính</th>
+            <th class="text-center">Diễn giải</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.Coefficient_Name }}</td>
+            <td class="text-center">{{ item.Content }}</td>
+            <td class="text-right">{{ item.Value }}</td>
+            <td class="text-center">{{ item.UnitPriceName }}</td>
+            <td>{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #nocDiscountCoefficient let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Ngày áp dụng</th>
+            <th class="text-right">Giá trị</th>
+            <th class="text-center">Đơn vị tính</th>
+            <th class="text-center">Diễn giải</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.DoApply }}</td>
+            <td class="text-right">{{ item.Value }}</td>
+            <td class="text-center">{{ item.UnitPriceName }}</td>
+            <td>{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #nocRentingPrice let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-right">Thông tư/Văn bản/Quyết định</th>
+            <th class="text-center">Ngày áp dụng</th>
+            <th class="text-center">Loại nhà</th>
+            <th class="text-center">Cấp nhà</th>
+            <th class="text-center">Giá thuê</th>
+            <th class="text-center">Đơn vị tính</th>
+            <th nzWidth="250px">Ghi chú bảng giá thuê</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.type_Qd }}</td>
+            <td class="text-center">{{ item.EffectiveDate | date: 'dd/MM/yyyy' }}</td>
+            <td class="text-center">{{ item.TypeBlockName }}</td>
+            <td class="text-center">{{ item.LevelId }}</td>
+            <td class="text-right">{{ item.Price | number: '0.0-2': 'de-DE' }}</td>
+            <td class="text-center">{{ item.UnitPriceName }}</td>
+            <td>{{ item.Note}}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #cmDepartmentTpl let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-right">Mã phòng ban</th>
+            <th class="text-center">Tên phòng ban</th>
+            <th class="text-center">Ghi chú</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Chi tiết lỗi </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td>{{ item.Code}}</td>
+            <td>{{ item.Name}}</td>
+            <td>{{ item.Note}}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #cmPositionTpl let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-left">Mã chức danh</th>
+            <th class="text-left">Tên chức danh</th>
+            <th class="text-left">Phòng ban</th>
+            <th class="text-left">Mã VB ủy quyền</th>
+            <th class="text-left">Ghi chú</th>
+            <th class="text-left">Trạng thái</th>
+            <th nzWidth="250px">Chi tiết lỗi </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td>{{ item.Code}}</td>
+            <td>{{ item.Name}}</td>
+            <td>{{ item.DepartmentName}}</td>
+            <td>{{ item.AuthorDocsCode}}</td>
+            <td>{{ item.Note}}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #cmLaneTpl let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Tên đường</th>
+            <th class="text-center">Phường/Xã</th>
+            <th class="text-center">Quận/huyện</th>
+            <th class="text-center">Tỉnh/thành phố</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Chi tiết lỗi </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td>{{ item.Name}}</td>
+            <td>{{ item.WardName}}</td>
+            <td>{{ item.DistrictName}}</td>
+            <td>{{ item.ProvinceName}}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #contractSellReceiptTpl let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th>Stt phiếu</th>
+            <th>MDD</th>
+            <th class="text-center">Ngày thu</th>
+            <th>Nội dung thu</th>
+            <th class="text-right">Số tiền</th>
+            <th>Số phiếu chuyển</th>
+            <th class="text-center">Ngày phiếu chuyển</th>
+            <th>Mã xuất hóa đơn</th>
+            <th>Trạng thái</th>
+            <th nzWidth="250px">Chi tiết lỗi </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td>{{ item.Number}}</td>
+            <td>{{ item.Code}}</td>
+            <td class="text-center">{{ item.Date | date: 'dd/MM/yyyy'}}</td>
+            <td>{{ item.Note }}</td>
+            <td class="text-right">{{ item.Price| number: '0.0-2': 'de-DE'}}</td>
+            <td>{{ item.NumberOfTransfer}}</td>
+            <td class="text-center">{{ item.DateOfTransfer | date: 'dd/MM/yyyy'}}</td>
+            <td>{{ item.InvoiceCode}}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #contractSellTpl let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: '2250px' }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" >Stt</th>
+            <th class="text-center" >Số hợp đồng</th>
+            <th >Ngày ký hợp đồng</th>
+            <th >Chủ hợp đồng</th>
+            <th >CCCD</th>
+            <th >Địa chỉ</th>
+            <th >Đường</th>
+            <th >Phường</th>
+            <th >Quận</th>
+            <th >Mã định danh</th>
+            <th >Giá thuê/tháng (đã bao gồm VAT)</th>
+            <th >Thời điểm bố trí</th>
+            <th>Số xác nhận</th>
+            <th >Còn nợ (chưa Vat) Từ quá khứ đến 2023</th>
+            <th >Ghi chú</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Chi tiết lỗi </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{item.Index}}</td>
+            <td>{{item.CodeHD}}</td>
+            <td>{{item.DateAssign | date: 'dd/MM/yyyy'}}</td>
+            <td>{{item.CustomerName}}</td>
+            <td>{{item.CCCD}}</td>
+            <td>{{item.Address}}</td>
+            <td>{{item.Lane}}</td>
+            <td>{{item.Ward}}</td>
+            <td>{{item.Distric}}</td>
+            <td>{{item.Code}}</td>
+            <td>{{item.PriceRent | number: '0.0-2': 'de-DE'}}</td>
+            <td>{{item.PlacementTime | date: 'dd/MM/yyyy'}}</td>
+            <td>{{item.ConfirmationNumber}}</td>
+            <td>{{item.StillDbest | number: '0.0-2': 'de-DE'}}</td>
+            <td>{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #tdcIngredientsPrice let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+    [nzSimple]="true">
+    <thead>
+      <tr>
+        <th class="text-center" nzWidth="50px">Stt</th>
+        <th class="text-center">Tên thành phần</th>
+        <th class="text-center">Diễn giải</th>
+        <th class="text-center">Trạng thái</th>
+        <th nzWidth="250px">Chi tiết lỗi </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data;">
+        <td class="text-center">{{item.Index}}</td>
+        <td>{{item.Name}}</td>
+        <td>{{item.Note}}</td>
+        <td>
+          <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+          <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+        </td>
+        <td>{{ item.ErrMsg }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</ng-template>
+
+<ng-template #tdcOriginalPriceAndTax let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+    [nzSimple]="true">
+    <thead>
+      <tr>
+        <th class="text-center" nzWidth="50px">Stt</th>
+        <th class="text-center">Tên thành phần</th>
+        <th class="text-center">Diễn giải</th>
+        <th class="text-center">Trạng thái</th>
+        <th nzWidth="250px">Chi tiết lỗi </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data;">
+        <td class="text-center">{{item.Index}}</td>
+        <td>{{item.Name}}</td>
+        <td>{{item.Note}}</td>
+        <td>
+          <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+          <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+        </td>
+        <td>{{ item.ErrMsg }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</ng-template>
+
+<ng-template #tdcProfitValue let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Ngày áp dụng</th>
+            <th class="text-right">Giá trị</th>
+            <th class="text-center">Đơn vị tính</th>
+            <th class="text-center">Diễn giải</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.DoApply }}</td>
+            <td class="text-right">{{ item.Value }}</td>
+            <td class="text-center">{{ item.UnitPriceName }}</td>
+            <td>{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #tdcInstallmentRate let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Ngày áp dụng</th>
+            <th class="text-right">Giá trị</th>
+            <th class="text-center">Đơn vị tính</th>
+            <th class="text-center">Diễn giải</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.DoApply }}</td>
+            <td class="text-right">{{ item.Value }}</td>
+            <td class="text-center">{{ item.UnitPriceName }}</td>
+            <td>{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #tdcResettlement let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Tên chung cư</th>
+            <th class="text-center">Địa chỉ chung cư</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.Name }}</td>
+            <td class="text-center">{{ item.Address }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #tdcLand let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Tên Lô</th>
+            <th class="text-center">Dự án</th>
+            <th class="text-center">Loại lô</th>
+            <th class="text-center">Tổng diện tích</th>
+            <th class="text-center">Tổng số căn hộ</th>
+            <th class="text-center">Tổng số nền đất</th>
+            <th class="text-center">Tổng diện tích sử dụng</th>
+            <th class="text-center">Tổng diện tích xây dựng</th>
+            <th class="text-center">Ghi chú lô</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.Name }}</td>
+            <td class="text-center">{{ item.TDCProjectName }}</td>
+            <td class="text-center">{{ getPlotTypeName(item.PlotType) }}</td>
+            <td class="text-right">{{ item.TotalArea| number: '0.0-2': 'de-DE' }}</td>
+            <td class="text-right">{{ item.ConstructionApartment }}</td>
+            <td class="text-right">{{ item.ConstructionLand }}</td>
+            <td class="text-right">{{ item.ConstructionValue| number: '0.0-2': 'de-DE' }}</td>
+            <td class="text-right">{{ item.ContrustionBuild| number: '0.0-2': 'de-DE' }}</td>
+            <td class="text-center">{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #tdcBlockHouse let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Tên khối</th>
+            <th class="text-center">Lô</th>
+            <th class="text-right">Tổng diện tích sử dụng</th>
+            <th class="text-right">Tổng diện tích xây dựng</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.Name }}</td>
+            <td class="text-center">{{ item.LandName }}</td>
+            <td class="text-right">{{ item.ConstructionValue | number: '0.0-2': 'de-DE'}}</td>
+            <td class="text-right">{{ item.ContrustionBuild | number: '0.0-2': 'de-DE'}}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #tdcFloor let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Tên tầng</th>
+            <th class="text-center">Số</th>
+            <th class="text-center">Khối</th>
+            <th class="text-right">Tổng diện tích sử dụng</th>
+            <th class="text-right">Tổng diện tích xây dựng</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.Name }}</td>
+            <td class="text-center">{{ item.FloorNumber }}</td>
+            <td class="text-center">{{ item.BlockHouseName }}</td>
+            <td class="text-right">{{ item.ConstructionValue | number: '0.0-2': 'de-DE'}}</td>
+            <td class="text-right">{{ item.ContrustionBuild | number: '0.0-2': 'de-DE'}}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #tdcApartment let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Tên căn</th>
+            <th class="text-center">Tầng</th>
+            <th class="text-center">Lô góc</th>
+            <th class="text-center">Tổng diện tích sử dụng</th>
+            <th class="text-center">Tổng diện tích xây dựng</th>
+            <th class="text-center">Số phòng ngủ</th>
+            <th class="text-center">Ghi chú căn</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.Name }}</td>
+            <td class="text-center">{{ item.FloorTdcName }}</td>
+            <td class="text-center">
+              <span *ngIf="item.Corner" nz-icon nzType="check" nzTheme="outline"></span>
+            </td>
+            <td class="text-right">{{ item.ConstructionValue | number: '0.0-2': 'de-DE'}}</td>
+            <td class="text-right">{{ item.ContrustionBuild | number: '0.0-2': 'de-DE'}}</td>
+            <td class="text-center">{{ item.RoomNumber }}</td>
+            <td class="text-center">{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #tdcPlatform let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th class="text-center">Mã nền đất</th>
+            <th class="text-center">Nền đất số</th>
+            <th class="text-center">Lô số</th>
+            <th class="text-center">Lô góc</th>
+            <th class="text-right">Chiều dài</th>
+            <th class="text-right">Chiều rộng</th>
+            <th class="text-center">Số nền đất</th>
+            <th class="text-center">Ghi chú nền đất</th>
+            <th class="text-center">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td class="text-center">{{ item.Index }}</td>
+            <td class="text-center">{{ item.Code }}</td>
+            <td class="text-center">{{ item.Name }}</td>
+            <td class="text-center">{{ item.LandName }}</td>
+            <td class="text-center">
+              <span *ngIf="item.Corner" nz-icon nzType="check" nzTheme="outline"></span>
+            </td>
+            <td class="text-right">{{ item.LengthArea | number: '0.0-2': 'de-DE'}}</td>
+            <td class="text-right">{{ item.WidthArea | number: '0.0-2': 'de-DE'}}</td>
+            <td class="text-center">{{ item.Platcount }}</td>
+            <td class="text-center">{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #tdcProject let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th nzWidth="200px">Tên dự án</th>
+            <th nzWidth="200px">Hệ số lãi phạt trễ</th>
+            <th nzWidth="200px">Lãi nợ cũ</th>
+            <th nzWidth="200px">Tổng diện tích</th>
+            <th nzWidth="200px">Tổng số căn hộ</th>
+            <th nzWidth="200px">Tổng số nền đất</th>
+            <th nzWidth="200px">Tổng diện tích sàn</th>
+            <th nzWidth="200px">Tổng diện tích sử dụng</th>
+            <th nzWidth="200px">Tổng diện tích xây dựng</th>
+            <th nzWidth="200px">Căn nhà số</th>
+            <th nzWidth="200px">Tòa</th>
+            <th nzWidth="200px">Tỉnh Tp</th>
+            <th nzWidth="200px">Quận huyện</th>
+            <th nzWidth="200px">Xã phường</th>
+            <th nzWidth="200px">Tên đường</th>
+            <th nzWidth="200px">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td>{{ item.Index }}</td>
+            <td>{{ item.Name }}</td>
+            <td>{{ item.LateRate | number: '0.0-2': 'de-DE'}}</td>
+            <td>{{ item.DebtRate | number: '0.0-2': 'de-DE'}}</td>
+            <td>{{ item.TotalAreas | number: '0.0-2': 'de-DE'}}</td>
+            <td>{{ item.TotalApartment | number: '0.0-2': 'de-DE'}}</td>
+            <td>{{ item.TotalPlatform | number: '0.0-2': 'de-DE'}}</td>
+            <td>{{ item.TotalFloorAreas | number: '0.0-2': 'de-DE'}}</td>
+            <td>{{ item.TotalUseAreas | number: '0.0-2': 'de-DE'}}</td>
+            <td>{{ item.TotalBuildAreas | number: '0.0-2': 'de-DE'}}</td>
+            <td>{{ item.HouseNumber }}</td>
+            <td>{{ item.BuildingName }}</td>
+            <td>{{ item.ProvinceName }}</td>
+            <td>{{ item.DistrictName }}</td>
+            <td>{{ item.WardName }}</td>
+            <td>{{ item.LaneName }}</td>
+            <td class="text-center">
+              <span *ngIf="item.Corner" nz-icon nzType="check" nzTheme="outline"></span>
+            </td>
+            <td class="text-right">{{ item.LengthArea | number: '0.0-2': 'de-DE'}}</td>
+            <td class="text-right">{{ item.WidthArea | number: '0.0-2': 'de-DE'}}</td>
+            <td class="text-center">{{ item.Platcount }}</td>
+            <td class="text-center">{{ item.Note }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>
+
+<ng-template #tdcCustomer let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+        [nzSimple]="true">
+        <thead>
+          <tr>
+            <th class="text-center" nzWidth="50px">Stt</th>
+            <th nzWidth="200px">Dự án</th>
+            <th nzWidth="200px">Lô</th>
+            <th nzWidth="200px">Khối</th>
+            <th nzWidth="200px">Tầng</th>
+            <th nzWidth="200px">Căn</th>
+            <th nzWidth="200px">Tên khách hàng</th>
+            <th nzWidth="200px">Số CCCD</th>
+            <th nzWidth="200px">Ngày tháng năm sinh</th>
+            <th nzWidth="200px">Số điện thoại</th>
+            <th nzWidth="200px">Email</th>
+            <th nzWidth="200px">Ghi chú</th>
+            <th nzWidth="200px">Căn nhà số</th>
+            <th nzWidth="200px">Tỉnh Tp (ĐCTT)</th>
+            <th nzWidth="200px">Quận huyện (ĐCTT)</th>
+            <th nzWidth="200px">Xã phường (ĐCTT)</th>
+            <th nzWidth="200px">Tên đường (ĐCTT)</th>
+            <th nzWidth="200px">Tỉnh Tp (ĐCLH)</th>
+            <th nzWidth="200px">Quận huyện (ĐCLH)</th>
+            <th nzWidth="200px">Xã phường (ĐCLH)</th>
+            <th nzWidth="200px">Tên đường (ĐCLH)</th>
+            <th nzWidth="200px">Trạng thái</th>
+            <th nzWidth="250px">Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td>{{ item.Index }}</td>
+            <td>{{ item.TdcProjectName }}</td>
+            <td>{{ item.TdcLandName }}</td>
+            <td>{{ item.TdcBlockHouseName }}</td>
+            <td>{{ item.TdcFloorName }}</td>
+            <td>{{ item.TdcApartmentName }}</td>
+            <td>{{ item.FullName }}</td>
+            <td>{{ item.CCCD }}</td>
+            <td>{{ item.Dob | date: 'dd/MM/yyyy'}}</td>
+            <td>{{ item.Phone }}</td>
+            <td>{{ item.Email }}</td>
+            <td>{{ item.Note }}</td>
+            <td>{{ item.AddressTT }}</td>
+            <td>{{ item.ProvinceNameTT }}</td>
+            <td>{{ item.DistrictNameTT }}</td>
+            <td>{{ item.WardNameTT }}</td>
+            <td>{{ item.LaneTt }}</td>
+            <td>{{ item.AddressLH }}</td>
+            <td>{{ item.ProvinceNameLH }}</td>
+            <td>{{ item.DistrictNameLH }}</td>
+            <td>{{ item.WardNameLH }}</td>
+            <td>{{ item.LaneLh }}</td>
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>

@@ -1,0 +1,188 @@
+<div class="card-custom">
+    <div class="card-header">
+        <ng-container [ngTemplateOutlet]="nzExtra"></ng-container>
+    </div>
+
+    <div class="card-body">
+        <!-- <st #tableRef [data]="data" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'"
+            [loading]="loading" [ps]="paging.page_size" [total]="paging.item_count" [scroll]="{ x: '100%' }"
+            [widthMode]="{ type: 'strict',strictBehavior:'truncate' }" [page]="{front:false}">
+            <ng-template st-row="no-column" let-item let-index="index">
+                <span>{{ ((paging.page - 1) * paging.page_size) + index + 1 }}</span>
+            </ng-template>
+            <ng-template st-row="price-column" let-item let-index="index">
+                <span *ngIf="item.pricePerMonths.length > 0">{{ item.pricePerMonths[0].TotalPrice | number: '0.0-2':'de-DE'}}</span>
+            </ng-template>
+        </st> -->
+        <nz-table #nzTable [nzData]="data" nzTableLayout="fixed" [nzScroll]="{ x: '100%' }">
+            <thead>
+                <tr>
+                    <th nzWidth="60px"></th>
+                    <th nzWidth="60px" class="text-center">Stt</th>
+                    <th nzWidth="150px">Số hợp đồng</th>
+                    <th nzWidth="120px" class="text-center">Ngày ký hợp đồng</th>
+                    <th nzWidth="200px">Tên đơn vị thuê</th>
+                    <th nzWidth="120px" class="text-right">Giá cho thuê/tháng</th>
+                    <th nzWidth="150px">Trạng thái</th>
+                    <th nzWidth="150px">Mã nhà</th>
+                    <th nzWidth="250px">Địa chỉ</th>
+                    <th nzWidth="120px" class="text-center">Diện tích cho thuê</th>
+                    <th nzRight nzWidth="120px" class="text-center">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of nzTable.data; let index = index;">
+                    <tr>
+                        <td [nzExpand]="item.Expand" (nzExpandChange)="item.Expand=!item.Expand"></td>
+                        <td class="text-center">{{ ((paging.page - 1) * paging.page_size) + index + 1 }}</td>
+                        <td><strong>{{ item.Code }}</strong></td>
+                        <td class="text-center">{{ item.DateSign | date: 'dd/MM/yyy' }}</td>
+                        <td>{{ item.DelegateName }}</td>
+                        <td class="text-right">
+                            <span *ngIf="item.pricePerMonths.length > 0">{{ item.pricePerMonths[0].TotalPrice | number:
+                                '0.0-2':'de-DE'
+                                }}</span>
+                        </td>
+                        <td>
+                            {{ item.ContractStatus | showContractStatus167Name }}
+                        </td>
+                        <td>{{ item.HouseCode }}</td>
+                        <td *ngIf="item.isKios">{{ item.HouseNumber }}, {{item.HouseNumberPar}}, {{ item.Lane }}, {{
+                            item.Ward }}, {{ item.District }}, {{
+                            item.Province }}</td>
+                        <td *ngIf="!item.isKios">{{ item.HouseNumber }}, {{ item.Lane }}, {{
+                            item.Ward }}, {{ item.District }}, {{
+                            item.Province }}</td>
+                        <td class="text-center">{{ item.UseFloorPr | number: '0.0-2':'de-DE'}}</td>
+                        <td nzRight class="text-center">
+                            <span class="point" nz-icon nzType="table" nzTheme="outline" style="color: #096dd9;"
+                                (click)="debt(item)"></span>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <span class="point" nz-icon nzType="edit" nzTheme="twotone"
+                                (click)="addOrUpdate(item)"></span>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <span class="point" nz-icon nzType="delete" nzTheme="twotone"
+                                (click)="confirmDetele(item)"></span>
+                        </td>
+                    </tr>
+                    <ng-container *ngIf="item.Expand">
+                        <tr *ngFor="let childItem of item.extraData; let idx = index;">
+                            <td></td>
+                            <td class="text-center">{{ ((paging.page - 1) * paging.page_size) + index + 1 }}.{{idx + 1}}
+                            </td>
+                            <td>
+                                <strong class="d-block">{{ childItem.Code }}</strong>
+                                <span class="d-block" style="font-style: italic;">HĐ: {{ item.Code }}</span>
+                                <span class="d-block" style="font-style: italic;">Ngày ký: {{ item.DateSign | date: 'dd/MM/yyy' }}</span>
+                            </td>
+                            <td class="text-center">{{ childItem.DateSign | date: 'dd/MM/yyy' }}</td>
+                            <td>{{ childItem.DelegateName }}</td>
+                            <td class="text-right">
+                                <span *ngIf="childItem.pricePerMonths.length > 0">{{
+                                    childItem.pricePerMonths[0].TotalPrice | number: '0.0-2':'de-DE'
+                                    }}</span>
+                            </td>
+                            <td>
+                                {{ childItem.ContractStatus | showContractStatus167Name }}
+                            </td>
+                            <td>{{ childItem.HouseCode }}</td>
+                            <td>{{ childItem.HouseNumber }}, {{ childItem.Lane }}, {{ childItem.Ward }}, {{
+                                childItem.District }}, {{
+                                childItem.Province }}</td>
+                            <td class="text-center">{{ childItem.UseFloorPr | number: '0.0-2':'de-DE'}}</td>
+                            <td nzRight class="text-center">
+                                <span class="point" nz-icon nzType="table" nzTheme="outline" style="color: #096dd9;"
+                                    (click)="debt(childItem)"></span>
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <span class="point" nz-icon nzType="edit" nzTheme="twotone"
+                                    (click)="addOrUpdate(childItem)"></span>
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <span class="point" nz-icon nzType="delete" nzTheme="twotone"
+                                    (click)="confirmDetele(childItem)"></span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<ng-template #nzExtra>
+    <div nz-row>
+        <div nz-col [nzSm]="24" [nzMd]="6">
+            <h3 class="title-table">
+                <i nz-icon nzType="arrow-left" nzTheme="outline" (click)="onBack()"></i>
+                Danh sách hợp đồng cho thuê
+            </h3>
+        </div>
+
+        <div nz-col [nzSm]="24" [nzMd]="24" style="text-align: right;">
+            <form class="hidden-mobile table-form" nz-form [nzLayout]="'inline'">
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group [nzSuffix]="inputClearTpl">
+                            <input nz-input [maxlength]="30" [width]="160" [(ngModel)]="query.txtSearch" name="no"
+                                placeholder="Nhập từ khoá" id="no" />
+                        </nz-input-group>
+                        <ng-template #inputClearTpl>
+                            <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
+                                *ngIf="query.txtSearch" (click)="[query.txtSearch = undefined]"></i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control class="width-lg text-left">
+                        <nz-select nzAllowClear [nzDropdownMatchSelectWidth]="false" [(ngModel)]="query.type"
+                            name="type" id="type" [nzPlaceHolder]="'Căn nhà/Kios'" [nzShowSearch]="true">
+                            <nz-option *ngFor="let i of house_data; let idx = index" [nzLabel]="i.Address"
+                                [nzValue]="i.Id">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <!-- <nz-form-item>
+                    <nz-form-label>Ngày bắt đầu</nz-form-label>
+                    <nz-form-control class="width-sm text-left">
+                        <input nz-input type="date" max="9999-12-31" placeholder="Ngày bắt đầu" [(ngModel)]="query.dateStart"
+                            max="{{ query.dateEnd | date:'yyyy-MM-dd' }}" [ngModelOptions]="{standalone: true}" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label>Ngày kết thúc</nz-form-label>
+                    <nz-form-control class="width-sm text-left">
+                        <input nz-input type="date" max="9999-12-31" placeholder="Ngày kết thúc" [(ngModel)]="query.dateEnd"
+                            min="{{ query.dateStart | date:'yyyy-MM-dd' }}" [ngModelOptions]="{standalone: true}" />
+                    </nz-form-control>
+                </nz-form-item> -->
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button type="submit" (click)="searchData()">
+                            <i nz-icon nzType="search" nzTheme="outline"></i>
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+
+            <button nz-button nzType="text" nzTooltipTitle="Làm mới" nz-tooltip (click)="reset()">
+                <i nz-icon nzType="reload" nzTheme="outline"></i>
+            </button>
+            <button nz-button nzType="primary" nz-button (click)="addOrUpdate()">
+                <i nz-icon nzType="plus" nzTheme="outline"></i>
+                Thêm mới
+            </button>
+            <button nz-button nzType="primary" nz-button (click)="import(ImportHistoryTypeEnum.Md167Receipt)">
+                <i nz-icon nzType="import" nzTheme="outline"></i>
+                Import phiếu thu
+            </button>
+            <button nz-button nzType="primary" nz-button (click)="import(ImportHistoryTypeEnum.Md167MainContract)">
+                <i nz-icon nzType="import" nzTheme="outline"></i>
+                Import hợp đồng
+            </button>
+            <button nz-button nzType="primary" nz-button (click)="import(ImportHistoryTypeEnum.Md167ExtraContract)">
+                <i nz-icon nzType="import" nzTheme="outline"></i>
+                Import phụ lục
+            </button>
+        </div>
+    </div>
+</ng-template>

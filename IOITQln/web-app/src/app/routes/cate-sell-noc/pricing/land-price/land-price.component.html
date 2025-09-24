@@ -1,0 +1,387 @@
+<ng-container [formGroup]="validateForm">
+  <div nz-row [nzGutter]="24" class="mt-lg">
+    <div nz-col [nzSpan]="24">
+      <span class="note-drawer">II. VỀ ĐẤT Ở</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Về quy hoạch sử dụng đất</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <textarea [(ngModel)]="block.LandUsePlanningInfo" [ngModelOptions]="{ standalone: true }" nz-input rows="3"
+            disabled></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Về quy hoạch lộ giới</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <textarea [(ngModel)]="block.HighwayPlanningInfo" [ngModelOptions]="{ standalone: true }" nz-input rows="3"
+            disabled></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Tình hình thu hồi đất</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <textarea [(ngModel)]="block.LandAcquisitionSituationInfo" [ngModelOptions]="{ standalone: true }" nz-input
+            rows="3" disabled></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div class="border">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <!-- <nz-form-label [nzSpan]="24"></nz-form-label> -->
+          <strong>*&nbsp;&nbsp;&nbsp;Vị trí đất ở: </strong>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzOffset]="2" [nzSpan]="6">
+        <nz-form-item>
+          <!-- <nz-form-label [nzSpan]="12"></nz-form-label> -->
+          <strong>Thửa đất số: {{ block.LandNo }}</strong>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <!-- <nz-form-label [nzSpan]="12"></nz-form-label> -->
+          <strong>Tở bản đồ số: {{ block.MapNo }}</strong>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24" *ngIf="block.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+      <div nz-col [nzSpan]="24">
+        <div class="d-inline-block">
+          <strong>*&nbsp;&nbsp;&nbsp;Diện tích đất ở:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ block.TypeReportApply !=
+            TypeReportApplyEnum.NHA_RIENG_LE ? apartment?.LandscapeAreaValue : block.LandscapeAreaValue |
+            number:'0.0-2':'de-DE' }} m2
+            &nbsp;&nbsp;&nbsp;
+          </strong>
+        </div>
+        <div class="d-inline-block" style="vertical-align: top"
+          *ngIf="block.TypeReportApply != TypeReportApplyEnum.NHA_RIENG_LE && apartment">
+          <strong class="d-block">
+            <span nz-icon nzType="arrow-right" nzTheme="outline" [nzRotate]="0"></span> Diện tích chung =
+            {{ (apartment.LandscapeAreaValue1 ? apartment.LandscapeAreaValue1 : 0) | number: '0.0-2':'de-DE'}} m2
+          </strong>
+          <strong class="d-block">
+            <span nz-icon nzType="arrow-right" nzTheme="outline" [nzRotate]="30"></span> Diện tích riêng =
+            {{ (apartment.LandscapeAreaValue2 ? apartment.LandscapeAreaValue2 : 0) | number: '0.0-2':'de-DE'}} m2
+          </strong>
+          <strong class="d-block" *ngIf="block.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">
+            <span nz-icon nzType="arrow-right" nzTheme="outline" [nzRotate]="60"></span> Diện tích chung (sân chung phân
+            bổ) =
+            {{ (apartment.LandscapeAreaValue3 ? apartment.LandscapeAreaValue3 : 0) | number: '0.0-2':'de-DE'}} m2
+          </strong>
+        </div>
+        <div class="d-block" style="vertical-align: top"
+          *ngIf="block.TypeReportApply == TypeReportApplyEnum.NHA_RIENG_LE">
+          <div class="d-inline-block">
+            <strong>Hình thức sử dụng:</strong>
+          </div>
+          <div class="d-block ml-xxl">
+            <strong>- Riêng: {{
+              block?.LandscapePrivateAreaValue ?? 0 | number: '0.0-2':'de-DE'}} m2</strong>
+          </div>
+          <div class="d-block ml-xxl">
+            <strong>- Chung: &nbsp; m2</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="24" *ngIf="block.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+      <div nz-col [nzSpan]="24">
+        <div class="d-inline-block">
+          <strong>*&nbsp;&nbsp;&nbsp;Diện tích đất ở:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ apartment?.LandscapeAreaValue |
+            number:'0.0-2':'de-DE' }} m2
+          </strong>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <div class="d-inline-block">
+          <strong>Hình thức sử dụng:</strong>
+        </div>
+        <div class="d-block ml-xxl">
+          <strong *ngIf="block.ParentTypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">- DTXD (ĐÃ BÁN): {{
+            apartment?.LandscapeAreaValue1 ?? 0 | number: '0.0-2':'de-DE'}} m2</strong>
+          <strong *ngIf="block.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">- Riêng: {{
+            apartment?.LandscapeAreaValue2 ?? 0 | number: '0.0-2':'de-DE'}} m2</strong>
+        </div>
+        <div class="d-block ml-xxl">
+          <strong *ngIf="block.ParentTypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">- DTXD (BÁN BỔ SUNG): {{
+            apartment?.LandscapeAreaValue2 ?? 0 | number: '0.0-2':'de-DE'}} m2</strong>
+          <strong *ngIf="block.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">- Chung: {{
+            apartment?.LandscapeAreaValue1 ?? 0 | number: '0.0-2':'de-DE'}} m2</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div nz-row [nzGutter]="24" class="mt-lg mb-lg"
+    *ngIf="(block.TypeReportApply == TypeReportApplyEnum.NHA_RIENG_LE || block.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG || block.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG) && validateForm.value.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE">
+    <div nz-col [nzSpan]="18">
+      <nz-table #basicTable nzBordered="true" nzShowPagination="false"
+        [nzData]="block.TypeReportApply != TypeReportApplyEnum.NHA_RIENG_LE ? apartment?.apartmentLandDetails : block.apartmentLandDetails">
+        <thead>
+          <tr>
+            <th nzWidth="20%" class="text-left">Nghị định</th>
+            <th nzWidth="20%" class="text-left">Điều</th>
+            <th nzWidth="15%" class="text-center">
+              <span *ngIf="block.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">DT đất sử dụng
+                riêng</span>
+              <span *ngIf="block.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+                <span *ngIf="block.ParentTypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">DT đất ở xây dựng (Bán bổ
+                  sung)</span>
+                <span *ngIf="block.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">DT đất ở (m2)</span>
+              </span>
+            </th>
+            <th nzWidth="15%" class="text-center"
+              *ngIf="block.TypeReportApply != TypeReportApplyEnum.NHA_RIENG_LE && block.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+              DT
+              đất chung<br>(Sân chung phân bổ)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data; let index = index">
+            <td>
+              <span>{{ data.DecreeType1Id | showDecreeName }}</span>
+            </td>
+            <td>
+              <span>{{ data.TermApply | showTermApplyName }}</span>
+            </td>
+            <td class="text-center">
+              {{ data.PrivateArea | number: '0.0-2':'de-DE'}}
+            </td>
+            <td class="text-center"
+              *ngIf="block.TypeReportApply != TypeReportApplyEnum.NHA_RIENG_LE && block.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+              {{ data.GeneralArea | number: '0.0-2':'de-DE'}}
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+  <!-- Thông tin diện tích đất liền kề - Bán phần diện tích đất liền kề -->
+  <div nz-row [nzGutter]="24"
+    *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="SellLandArea">Diện tích đất có nhà ở đã bán (m2)</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input type="text" currencyMask [options]="{ precision: 2 }" nz-input formControlName="SellLandArea"
+            (ngModelChange)="adjacentLandChange(false)" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="16">
+      <app-pricing-adjacent-land #adjacentLandComponent [data]="validateForm.value.pricingApartmentLandDetails"
+        [decreeMaps]="block?.decreeMaps" (eventEmitter)="adjacentLandChange($event)"></app-pricing-adjacent-land>
+    </div>
+  </div>
+  <!-- Vị trí đất ở -->
+  <app-shared-component-landscape-position [validateForm]="validateFormLanscapePositionInfo"
+    [landprice_data]="landprice_data"></app-shared-component-landscape-position>
+  <!-- Thông tin vị trí đất ở -->
+  <app-shared-component-landscape-position-info
+    [validateForm]="validateFormLanscapePositionInfo"></app-shared-component-landscape-position-info>
+  <!-- Khu đất, thửa đất có hình thể đặc biệt -->
+  <app-shared-component-land-special
+    *ngIf="block.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG && validateForm.value.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE"
+    [validateForm]="validateFormLanscapePositionInfo"></app-shared-component-land-special>
+  <!-- Chi tiết đất -->
+  <div nz-row [nzGutter]="24" class="mt-lg mb-lg" *ngIf="block.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+    <div nz-col [nzSpan]="24">
+      <nz-table #basicTable nzBordered="true" nzShowPagination="false" [nzData]="apartment?.apartmentLandDetails">
+        <thead>
+          <tr>
+            <th nzWidth="15%" class="text-left">Nghị định</th>
+            <th nzWidth="15%" class="text-left">Điều</th>
+            <th nzWidth="10%" class="text-left">Cấp nhà</th>
+            <th nzWidth="10%" class="text-left">Căn hộ ở tầng số</th>
+            <th nzWidth="15%" class="text-left">Thông tin chi tiết tầng cụ thể</th>
+            <th nzWidth="15%" class="text-center">Số tầng chung cư (để áp dụng hệ số phân bổ đất)</th>
+            <th nzWidth="10%" class="text-center">DT</th>
+            <th nzWidth="10%" class="text-center">
+              Hệ số phân bổ các tầng
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data; let index = index">
+            <td>
+              <span>{{ data.DecreeType1Id | showDecreeName }}</span>
+            </td>
+            <td>
+              <span>{{ data.TermApply | showTermApplyName }}</span>
+            </td>
+            <td>
+              <span>{{ data.Level | showLevelBlock }}</span>
+            </td>
+            <td>
+              <span>{{ data.FloorId | showNameItem: floor_data : "Name"}}</span>
+            </td>
+            <td>
+              <span>{{ data.AreaId | showNameItem: area_data : "Name" }}</span>
+            </td>
+            <td class="text-center">
+              <span>{{ data.FloorApplyPriceChange }}</span>
+            </td>
+            <td class="text-center">
+              {{ data.PrivateArea | number: '0.0-2':'de-DE'}}
+            </td>
+            <td class="text-center">
+              {{ data.CoefficientDistribution | number: '0.0-2':'de-DE'}}
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+  <ng-container *ngIf="block.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+    <app-pricing-flat-coefficient [validateForm]="validateForm" [decreeMaps]="block.decreeMaps"
+      (eventEmitter)="changeFlatCoefficient()"></app-pricing-flat-coefficient>
+  </ng-container>
+  <!-- Các phần tính giá theo từng nghị định, điều -->
+  <ng-container
+    *ngIf="apartment && block.TypeReportApply != TypeReportApplyEnum.NHA_RIENG_LE && validateForm.value.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE && validateForm.value.landPricingTbl.length > 0">
+    <app-pricing-land-price-item #pricingLandPriceItemComponent [validateForm]="validateForm" [block]="block"
+      [apartment]="apartment" (eventEmitter)="calcTotalPrice()"></app-pricing-land-price-item>
+  </ng-container>
+  <ng-container
+    *ngIf="block.TypeReportApply == TypeReportApplyEnum.NHA_RIENG_LE && validateForm.value.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE && validateForm.value.landPricingTbl.length > 0">
+    <app-pricing-land-price-item [validateForm]="validateForm" [block]="block" [apartment]="apartment"
+      (eventEmitter)="calcTotalPrice()"></app-pricing-land-price-item>
+  </ng-container>
+  <ng-container
+    *ngIf="((apartment && block?.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG) || block?.TypeReportApply == TypeReportApplyEnum.NHA_RIENG_LE) && validateForm.value.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE">
+    <app-pricing-land-price-item #pricingLandPriceItemComponent [validateForm]="validateForm" [block]="block"
+      [apartment]="apartment" (eventEmitter)="calcTotalPrice()"></app-pricing-land-price-item>
+  </ng-container>
+
+
+
+
+
+
+  <!-- <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="16">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Đơn giá mặt tiền đường</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <nz-select nzAllowClear [(ngModel)]="block.LandPriceItemId" [ngModelOptions]="{ standalone: true }"
+            nzPlaceHolder="" [nzShowSearch]="true" [nzDisabled]="true">
+            <nz-option *ngFor="let i of landprice_data; let idx = index" [nzLabel]="i.LaneName" [nzValue]="i.Id">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24"></nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <span *ngIf="block.LandPriceItemValue">{{ block.LandPriceItemValue | number: '0.0-2':'de-DE'}} đồng/m2</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="LandscapeLocation">Vị trí đất ở</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <nz-select nzAllowClear [(ngModel)]="block.LandscapeLocation" [ngModelOptions]="{ standalone: true }"
+            name="LandscapeLocation" id="LandscapeLocation" nzPlaceHolder="" [nzShowSearch]="true" [nzDisabled]="true">
+            <nz-option *ngFor="let i of landscapelocation_data | keyvalue; let idx = index" [nzLabel]="i.value"
+              [nzValue]="i.key">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Width">Chiều rộng hẻm (m)</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Deep">Độ sâu vị trí (m)</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Hệ số vị trí</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input type="text" nz-input [value]="block.CalcLandscapeLocation" disabled />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="16">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Đơn giá đất ở (= Đơn giá mặt tiền đường * Hệ số ví trí)</nz-form-label>
+        <nz-form-control [nzSpan]="24" style="background-color: #f5f5f5">
+          <span>{{ block.LandPriceItemValue | number: '0.0-2':'de-DE'}} đ/m2 x
+            <span *ngFor="let positionCoefficient of block.PositionCoefficientArray; let last = last">
+              {{ positionCoefficient }}
+              <span *ngIf="!last"> x </span>
+            </span>
+            = {{ validateForm.value.LandPrice | number: '0.0-2':'de-DE'}} đ/m2
+          </span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="TextBasedInfo">Căn cứ văn bản số (của UBND phường/xã về việc thông tin vị
+          trí kết cấu hẻm)</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <textarea [(ngModel)]="block.TextBasedInfo" [ngModelOptions]="{ standalone: true }" nz-input rows="3"
+            disabled></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  
+  
+  <div nz-row [nzGutter]="24" *ngIf="block && apartment && validateForm.value.landPricingTbl">
+    <div nz-col [nzSpan]="24" class="d-block">
+      <span class="d-block">
+        Tiền sử dụng đất = {{ validateForm.value.LandPrice | number: '0.0-2':'de-DE'}} đ/m2 x
+        <span>(</span>
+        <span>{{ apartment.LandscapeAreaValue2 ?? 0 }} m2 + {{ validateForm.value.ConversionArea | number: '0.0-2':'de-DE'}}
+          m2 +
+          {{ apartment.LandscapeAreaValue3 ?? 0 }}m2</span>
+        <span>)</span>
+        x 10% x {{ 100 - validateForm.value.DeductionLandMoneyValue | number: '0.0-2':'de-DE'}}% =
+        {{ validateForm.value.LandPriceAfterReduced | number: '0.0-2':'de-DE'}} đồng <strong>(II)</strong>
+      </span>
+      <span class="d-block"> (Ghi bằng chữ: ) </span>
+      <span>Tổng giá bán căn nhà là (<strong>I</strong>) + (<strong>II</strong>): {{
+        validateForm.value.ApartmentPriceRemaining | number: '0.0-2':'de-DE'}} +
+        {{ validateForm.value.LandPriceAfterReduced | number: '0.0-2':'de-DE'}} = {{ validateForm.value.TotalPrice | number: '0.0-2':'de-DE'}}
+        đồng</span>
+    </div>
+  </div> -->
+</ng-container>

@@ -1,0 +1,146 @@
+<div nz-row>
+    <div nz-span>
+        <a nz-button nzType="link" (click)="addRow()">
+            <span nz-icon nzType="plus-circle"></span>
+            Thêm danh sách nhà/Kios
+        </a>
+    </div>
+</div>
+
+<div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+        <div class="card-body">
+            <st #tableItemRef [data]="housePayments" (change)="tableItemRefChange($event)"
+                [columns]="columnsItem" [size]="'small'" [loading]="loading" [widthMode]="{ type: 'strict' }"
+                [page]="{ front: false }">
+                <ng-template st-row="HouseHeader" type="title"><span class="danger-star"></span>&nbsp;Nhà/Kios
+                </ng-template>
+                <ng-template st-row="HouseNameHeader" type="title">Số nhà<span class="danger-star"></span>
+                </ng-template>
+                <ng-template st-row="fullAddressHeader" type="title">Tỉnh(Tp)/Quận(huyện)/Phường(xã)<span class="danger-star"></span>
+                </ng-template>
+                <!-- <ng-template st-row="ProviceNameHeader" type="title">Tỉnh/Thành phố<span class="danger-star"></span>
+                </ng-template>
+                <ng-template st-row="DistrictNameHeader" type="title">Quận/huyện<span class="danger-star"></span>
+                </ng-template>
+                <ng-template st-row="WardNameHeader" type="title">Phường/xã<span class="danger-star"></span>
+                </ng-template> -->
+                <ng-template st-row="LaneNameHeader" type="title">Đường<span class="danger-star"></span> 
+                </ng-template>
+                <ng-template st-row="TaxNNHeader" type="title">Thuế phí đất phải đóng<span class="danger-star"></span>
+                </ng-template>
+                <ng-template st-row="PaidHeader" type="title">Tiền đã đóng<span class="danger-star"></span>
+                </ng-template>
+                <ng-template st-row="DebtHeader" type="title">Tiền còn thiếu<span class="danger-star"></span>
+                </ng-template>
+                <ng-template st-row="HouseId" let-item let-index="index" nzWidth="500px">
+                    <nz-select *ngIf="item.edit" nzAllowClear name="HouseCode" id="HouseCode" nzPlaceHolder=""
+                        [nzShowSearch]="true" class="width-40" [ngModel]="item.HouseId" [nzDropdownMatchSelectWidth]=false
+                        (ngModelChange)="onSelect(index,$event)" [ngModelOptions]="{ standalone: true }"
+                        [ngClass]="item.submit && !item.HouseId ? 'danger-st-row' : ''" >
+                        <nz-option *ngFor="let i of md167_house_data; let idx = index" 
+                            [nzLabel]="i.HouseCode + ' - ' + i.HouseName + ', ' + i.fullAddress" 
+                            [nzValue]="i.HouseId" 
+                            [nzDisabled]="i.disabled">
+                        </nz-option>
+                    </nz-select>
+                    <ng-container *ngIf="!item.edit">{{ item?.HouseCode}}</ng-container>
+                </ng-template>
+                <ng-template st-row="HouseName" let-item let-index="index">
+                    <input
+                        nz-input
+                        *ngIf="item.edit" [ngModel]="item.HouseName"
+                        [ngClass]="item.submit && !item.HouseName ? 'danger-st-row' : ''"
+                        (ngModelChange)="onSelect(index,$event)"
+                        [ngModelOptions]="{ standalone: true }"
+                        disabled="true"/>
+                    <ng-container *ngIf="!item.edit">{{ item.HouseName}}</ng-container>
+                </ng-template>
+                <ng-template st-row="fullAddress" let-item let-index="index">
+                    <input
+                        nz-input
+                        *ngIf="item.edit" [ngModel]="item.fullAddress"
+                        [ngClass]="item.submit && !item.fullAddress ? 'danger-st-row' : ''"
+                        (ngModelChange)="onSelect(index,$event)"
+                        [ngModelOptions]="{ standalone: true }"
+                        disabled="true"/>
+                    <ng-container *ngIf="!item.edit">{{ item.fullAddress }}</ng-container>
+                </ng-template>
+                <!-- <ng-template st-row="ProviceName" let-item let-index="index">
+                    <input
+                        nz-input
+                        *ngIf="item.edit" [ngModel]="item.ProviceName"
+                        [ngClass]="item.submit && !item.ProviceName ? 'danger-st-row' : ''"
+                        (ngModelChange)="onSelect(index,$event)"
+                        [ngModelOptions]="{ standalone: true }"
+                        disabled="true"/>
+                    <ng-container *ngIf="!item.edit">{{ item.ProviceName }}</ng-container>
+                </ng-template>
+                <ng-template st-row="DistrictName" let-item let-index="index">
+                    <input
+                        nz-input
+                        *ngIf="item.edit" [ngModel]="item.DistrictName"
+                        [ngClass]="item.submit && !item.DistrictName ? 'danger-st-row' : ''"
+                        (ngModelChange)="onSelect(index,$event)"
+                        [ngModelOptions]="{ standalone: true }"
+                        disabled="true"/>
+                    <ng-container *ngIf="!item.edit">{{ item.DistrictName}}</ng-container>
+                </ng-template>
+                <ng-template st-row="WardName" let-item let-index="index">
+                    <input
+                        nz-input
+                        *ngIf="item.edit" [ngModel]="item.WardName"
+                        [ngClass]="item.submit && !item.WardName ? 'danger-st-row' : ''"
+                        (ngModelChange)="onSelect(index,$event)"
+                        [ngModelOptions]="{ standalone: true }"
+                        disabled="true"/>
+                    <ng-container *ngIf="!item.edit"  >{{ item.WardName}}</ng-container>
+                </ng-template> -->
+                <ng-template st-row="LaneName" let-item let-index="index">
+                    <input
+                        nz-input
+                        *ngIf="item.edit" [ngModel]="item.LaneName"
+                        [ngClass]="item.submit && !item.LaneName ? 'danger-st-row' : ''"
+                        (ngModelChange)="onSelect(index,$event)"
+                        [ngModelOptions]="{ standalone: true }"
+                        disabled="true"/>
+                    <ng-container *ngIf="!item.edit"  >{{ item.LaneName}}</ng-container>
+                </ng-template>
+                <ng-template st-row="TaxNN" let-item let-index="index">
+                    <input
+                        nz-input
+                        *ngIf="item.edit" [ngModel]="item.TaxNN"
+                        currencyMask [options]="{ precision: 2 }"
+                        [ngClass]="item.submit && !item.TaxNN ? 'danger-st-row' : ''"
+                        (ngModelChange)="ChangeTaxNN(index,$event)"
+                        [ngModelOptions]="{ standalone: true }"
+                        disabled="true"/>
+                    <ng-container *ngIf="!item.edit"  >{{ item.TaxNN | number: '0.0-2':'de-DE'}}</ng-container>
+                </ng-template>
+                <ng-template st-row="Paid" let-item let-index="index">
+                    <input
+                        nz-input
+                        *ngIf="item.edit" 
+                        [ngModel]="item.Paid"
+                        currencyMask [options]="{ precision: 2 }"
+                        [ngClass]="item.submit && !item.Paid ? 'danger-st-row' : ''"
+                        (ngModelChange)="ChangePrice(index,$event)"
+                        [ngModelOptions]="{ standalone: true }"
+                        />
+                    <ng-container *ngIf="!item.edit"  >{{ item.Paid | number: '0.0-2':'de-DE'}}</ng-container>
+                </ng-template>
+                <ng-template st-row="Debt" let-item let-index="index">
+                    <input
+                        nz-input
+                        *ngIf="item.edit" [ngModel]="item.Debt"
+                        currencyMask [options]="{ precision: 2 }"
+                        [ngClass]="item.submit && !item.Debt ? 'danger-st-row' : ''"
+                        (ngModelChange)="tableItemRef.setRow(index,{ Debt: $event})"
+                        [ngModelOptions]="{ standalone: true }"
+                        disabled="true"/>
+                    <ng-container *ngIf="!item.edit"  >{{ item.Debt | number: '0.0-2':'de-DE'}}</ng-container>
+                </ng-template>
+            </st>
+        </div>
+    </div>
+</div>

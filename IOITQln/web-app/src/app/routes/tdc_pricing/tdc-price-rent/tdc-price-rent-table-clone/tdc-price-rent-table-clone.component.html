@@ -1,0 +1,51 @@
+<nz-table #basicTable nzBordered="true" nzShowPagination="false" [nzData]="data">
+  <thead>
+    <tr>
+      <th class="text-center">Lần trả</th>
+      <th class="text-center">Ngày thanh toán theo quy định</th>
+      <th class="text-center">Ngày thanh toán dự kiến</th>
+      <th class="text-center">Ngày thanh toán thực tế</th>
+      <th class="text-center">Thời gian tính lãi theo ngày</th>
+      <th class="text-center">Lãi suất tính theo ngày</th>
+      <th class="text-center">Số tiền phải trả từng tháng</th>
+      <th class="text-center">Số tiền lãi phát sinh do chậm thanh toán</th>
+      <th class="text-center">Số tiền đến kỳ phải thanh toán</th>
+      <th class="text-center">Số tiền phải thanh toán</th>
+      <th class="text-center">Số tiền đã thanh toán</th>
+      <th class="text-center">Chênh lệch</th>
+      <th class="text-center">Tổng Số tiền phải thanh toán</th>
+      <th class="text-center">Tổng Số tiền đã thanh toán</th>
+      <th class="text-center">Tổng Chênh lệch</th>
+      <!-- <th class="text-center">Ghi chú</th> -->
+    </tr>
+  </thead>
+
+  <tbody>
+    <ng-container *ngFor="let item of data; let index = index; let first = first">
+      <tr *ngFor="let childItem of item.tdcPriceRentExcels; let firstChild = first; let lastChild = last">
+        <td class="text-center">{{ childItem.TypeRow == 4 ? '' : childItem.PaymentTimes }}</td>
+        <td class="text-center">{{ childItem.TypeRow == 4 ? 'Nợ cũ' : (childItem.PaymentDatePrescribed | date:
+          'dd/MM/yyyy') }}</td>
+        <td class="text-center"></td>
+        <td class="text-center">{{ childItem.ExpectedPaymentDate | date: 'dd/MM/yyyy' }}</td>
+        <td class="text-center">{{ childItem.DailyInterest }}</td>
+        <td class="text-center">{{ childItem.DailyInterestRate }}</td>
+        <td class="text-center">{{ childItem.UnitPay | number: '0.0-2':'de-DE'}}</td>
+        <td class="text-center">{{ childItem.PriceEarnings | number: '0.0-2':'de-DE'}}</td>
+        <td class="text-center">{{ childItem.PricePaymentPeriod | number: '0.0-2':'de-DE'}}</td>
+        <td class="text-center">{{ childItem.Pay | number: '0.0-2':'de-DE'}}</td>
+        <td class="text-center">{{ childItem.Paid | number: '0.0-2':'de-DE'}}</td>
+        <td class="text-center">{{ childItem.PriceDifference | number: '0.0-2':'de-DE'}}</td>
+
+        <td *ngIf="firstChild" [attr.rowspan]="item.tdcPriceRentExcels.length" class="text-center">{{ item.Pay | number:
+          '0.0-2':'de-DE'}}</td>
+        <td *ngIf="firstChild" [attr.rowspan]="item.tdcPriceRentExcels.length" class="text-center">{{ item.Paid |
+          number: '0.0-2':'de-DE'}} </td>
+        <td *ngIf="firstChild" [attr.rowspan]="item.tdcPriceRentExcels.length" class="text-center">{{
+          item.PriceDifference | number: '0.0-2':'de-DE'}} </td>
+        <!-- <td *ngIf="firstChild" [attr.rowspan]="item.tdcPriceRentExcels.length" class="text-center">{{ item.Note }}
+        </td> -->
+      </tr>
+    </ng-container>
+  </tbody>
+</nz-table>

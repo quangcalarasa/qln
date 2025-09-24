@@ -1,0 +1,149 @@
+<div nz-row>
+    <div nz-span>
+        <a nz-button nzType="link" (click)="addRow()">
+            <span nz-icon nzType="plus-circle"></span>
+            Thêm chi tiết căn hộ
+        </a>
+    </div>
+</div>
+<div nz-row>
+    <div nz-span>
+        <div class="card-body">
+            <st #tableItemRef [data]="apartmentDetails" (change)="tableItemRefChange($event)" [columns]="columnsItem"
+                [size]="'small'" [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+                <ng-template st-row="decreeTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Nghị định
+                </ng-template>
+                <ng-template st-row="termApplyTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Điều khoản
+                </ng-template>
+                <ng-template st-row="levelTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Cấp nhà
+                </ng-template>
+                <ng-template st-row="floorApplyCoefficientTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Số
+                    tầng căn nhà (để áp dụng hệ số phân bổ đất)
+                </ng-template>
+                <ng-template st-row="floorTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Căn hộ ở tầng số
+                </ng-template>
+                <ng-template st-row="areaTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Thông tin chi tiết
+                    tầng cụ thể </ng-template>
+                <ng-template st-row="generalAreaTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Nhà nhiều hộ
+                    (m2)
+                </ng-template>
+                <ng-template st-row="privateAreaTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;
+                    {{ typeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG ? 'DT sử dụng (m2)'
+                    : (typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU ? 'DT (m2)' : (typeReportApply == TypeReportApplyEnum.NHA_RIENG_LE ? 'Diện tích nhà (m2)' : 'Nhà riêng lẻ (m2)')) }}
+                </ng-template>
+                <ng-template st-row="coefficientDTitle" type="title">&nbsp;&nbsp;&nbsp;H.s phân bổ
+                    các tầng
+                </ng-template>
+                <ng-template st-row="coefficientUvTitle" type="title">&nbsp;&nbsp;&nbsp;H.s điều
+                    chỉnh gt sử dụng
+                </ng-template>
+                <ng-template st-row="applyInvestmentRateTitle" type="title">
+                    Áp dụng suất vốn đầu tư
+                    <span class="point text-lg" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    <ng-template #contentPpvTpl>
+                        <app-shared-popover [cs]="11">
+                        </app-shared-popover>
+                    </ng-template>
+                </ng-template>
+
+                <ng-template st-row="decreeTpl" let-item let-index="index">
+                    <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                        [ngClass]="item.submit && !item.DecreeType1Id ? 'danger-st-row' : ''"
+                        [ngModel]="item.DecreeType1Id"
+                        (ngModelChange)="[tableItemRef.setRow(index, { DecreeType1Id: $event }), item.TermApply=undefined]"
+                        [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                        <nz-option *ngFor="let i of decreeMaps; let idx = index" [nzLabel]="i.DecreeType1Name"
+                            [nzValue]="i.DecreeType1Id"> </nz-option>
+                    </nz-select>
+                </ng-template>
+                <ng-template st-row="termApplyTpl" let-item let-index="index">
+                    <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                        [ngClass]="item.submit && !item.TermApply ? 'danger-st-row' : ''" [ngModel]="item.TermApply"
+                        (ngModelChange)="tableItemRef.setRow(index, { TermApply: $event })"
+                        [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                        <nz-option
+                            *ngFor="let i of termApply_data | keyvalue | filterTermApplyByDecree: item.DecreeType1Id : typeReportApply; let idx = index"
+                            [nzLabel]="i.value" [nzValue]="i.key"> </nz-option>
+                    </nz-select>
+                </ng-template>
+                <ng-template st-row="levelTpl" let-item let-index="index">
+                    <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                        [ngClass]="item.submit && !item.Level ? 'danger-st-row' : ''" [ngModel]="item.Level"
+                        (ngModelChange)="tableItemRef.setRow(index, { Level: $event })"
+                        [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                        <nz-option *ngFor="let i of level_data | keyvalue; let idx = index" [nzLabel]="i.value"
+                            [nzValue]="i.key"> </nz-option>
+                    </nz-select>
+                </ng-template>
+                <ng-template st-row="floorApplyCoefficientTpl" let-item let-index="index">
+                    <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                        [ngClass]="item.submit && !item.FloorApplyPriceChange ? 'danger-st-row' : ''"
+                        [ngModel]="item.FloorApplyPriceChange"
+                        (ngModelChange)="tableItemRef.setRow(index, { FloorApplyPriceChange: $event })"
+                        [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                        <nz-option *ngFor="let i of [].constructor(40); let idx = index" [nzLabel]="idx + 1"
+                            [nzValue]="idx + 1"> </nz-option>
+                    </nz-select>
+                </ng-template>
+                <ng-template st-row="floorTpl" let-item let-index="index">
+                    <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                        [ngClass]="item.submit && !item.FloorId ? 'danger-st-row' : ''" [ngModel]="item.FloorId"
+                        (ngModelChange)="tableItemRef.setRow(index, { FloorId: $event })"
+                        [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                        <nz-option *ngFor="let i of floor_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </ng-template>
+
+                <ng-template st-row="areaTpl" let-item let-index="index">
+                    <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                        [ngClass]="item.submit && !item.AreaId ? 'danger-st-row' : ''" [ngModel]="item.AreaId"
+                        (ngModelChange)="[tableItemRef.setRow(index, { AreaId: $event }), item.IsMezzanine = getIsMezzanine(item)]"
+                        [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                        <nz-option *ngFor="let i of area_data | filterAreaByFloor: item.FloorId; let idx = index"
+                            [nzLabel]="i.Name" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </ng-template>
+                <ng-template st-row="generalAreaValueTpl" let-item let-index="index">
+                    <input *ngIf="item.edit" type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        [ngModel]="item.GeneralArea" [ngClass]="item.submit && !item.GeneralArea ? 'danger-st-row' : ''"
+                        (ngModelChange)="tableItemRef.setRow(index, { GeneralArea: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.GeneralArea | number:'0.0-2':'de-DE' }}</ng-container>
+                </ng-template>
+                <ng-template st-row="personalAreaValueTpl" let-item let-index="index">
+                    <input *ngIf="item.edit" type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        [ngModel]="item.PrivateArea" [ngClass]="item.submit && !item.PrivateArea ? 'danger-st-row' : ''"
+                        (ngModelChange)="tableItemRef.setRow(index, { PrivateArea: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.PrivateArea | number:'0.0-2':'de-DE' }}</ng-container>
+                </ng-template>
+                <ng-template st-row="coefficientDTpl" let-item let-index="index">
+                    <ng-container>{{ item.CoefficientDistribution | number:'0.0-2':'de-DE' }}</ng-container>
+                </ng-template>
+                <ng-template st-row="coefficientUvTpl" let-item let-index="index">
+                    <ng-container *ngIf="item.TermApply != TermApplyEnum.DIEU_70 && item.TermApply != TermApplyEnum.KHOAN_2_DIEU_34">{{ item.CoefficientUseValue | number:'0.0-2':'de-DE' }}</ng-container>
+                </ng-template>
+                <ng-template st-row="applyInvestmentRateTpl" let-item let-index="index">
+                    <label *ngIf="item.DecreeType1Id == DecreeEnum.ND_99 && item.IsMezzanine != true" class="pl-lg"
+                        nz-checkbox [nzDisabled]="!item.edit" [ngModel]="item.ApplyInvestmentRate"
+                        (ngModelChange)="tableItemRef.setRow(index, { ApplyInvestmentRate: $event })"
+                        [ngModelOptions]="{ standalone: true }">
+                        <span></span>
+                    </label>
+
+                </ng-template>
+            </st>
+        </div>
+    </div>
+</div>

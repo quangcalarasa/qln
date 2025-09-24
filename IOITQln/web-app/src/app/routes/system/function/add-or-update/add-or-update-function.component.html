@@ -1,0 +1,80 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Code" nzRequired>Mã chức năng</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Mã chức năng!">
+            <input nz-input formControlName="Code" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Name" nzRequired>Tên chức năng</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Tên chức năng!">
+            <input nz-input formControlName="Name" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="FunctionParentId">Chức năng cha</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <nz-tree-select nzVirtualHeight="300px" nzDefaultExpandAll="true" [nzNodes]="dataAll" nzShowSearch
+                nzPlaceHolder="Chọn danh mục cha" name="FunctionParentId" formControlName="FunctionParentId"
+                ngDefaultControl></nz-tree-select>
+
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Url" nzRequired>Router</nz-form-label>
+        <nz-form-control [nzSm]="14" nzHasFeedback [nzXs]="24" nzErrorTip="Chưa nhập Router">
+            <input nz-input formControlName="Url" id="Url" />
+        </nz-form-control>
+    </nz-form-item>
+    <!-- <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="SubSystem" nzRequired>Phân hệ</nz-form-label>
+        <nz-form-control [nzSm]="14" nzHasFeedback [nzXs]="24" nzErrorTip="Chưa chọn Phân hệ">
+            <nz-radio-group formControlName="SubSystem">
+                <label class="mr-xxl" nz-radio nzValue="1">Chung</label>
+                <label class="mr-xxl" nz-radio nzValue="2">Nhà ở cũ</label>
+                <label nz-radio nzValue="3">Nhà tái định cư</label>
+            </nz-radio-group>
+        </nz-form-control>
+    </nz-form-item> -->
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Location">Thứ tự</nz-form-label>
+        <nz-form-control [nzSm]="14" nzHasFeedback [nzXs]="24" [nzErrorTip]="locationErrorTpl">
+            <input nz-input type="number" formControlName="Location" id="Location" />
+            <ng-template #locationErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('min')">Thứ tự phải lớn hơn 0!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Icon">Icon</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+            <input nz-input formControlName="Icon" id="Icon" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <label nz-checkbox formControlName="IsSpecialFunc">
+                <span>
+                    Là chức năng đặc biệt
+                </span>
+            </label>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6">Ghi chú</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <textarea formControlName="Note" nz-input rows="2"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

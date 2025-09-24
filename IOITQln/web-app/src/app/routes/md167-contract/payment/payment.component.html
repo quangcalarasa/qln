@@ -1,0 +1,69 @@
+<div class="mb-xl">
+  <div nz-row>
+    <div nz-span>
+      <a nz-button nzType="link" (click)="addRow()">
+        <span nz-icon nzType="plus-circle"></span>
+        Thêm mới
+      </a>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-span>
+      <div class="card-body">
+        <st #tableItemRef [data]="data" (change)="tableItemRefChange($event)" [columns]="columnsItem" [size]="'small'"
+          [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+          <ng-template st-row="ReceiptCodeTitle" type="title"><span
+              class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Mã hóa đơn
+          </ng-template>
+          <ng-template st-row="DateOfPaymentTitle" type="title"><span
+              class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Ngày nộp tiền
+          </ng-template>
+          <ng-template st-row="DateOfReceiptTitle" type="title"><span
+              class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Ngày xuất hóa đơn
+          </ng-template>
+          <ng-template st-row="AmountTitle" type="title"><span
+              class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Số tiền thanh toán
+          </ng-template>
+
+          <ng-template st-row="ReceiptCodeTpl" let-item let-index="index">
+            <input *ngIf="item.edit"
+              [ngClass]="item.submit && (item.ReceiptCode == undefined || item.ReceiptCode=='') ? 'danger-st-row' : ''"
+              nz-input [ngModel]="item.ReceiptCode"
+              (ngModelChange)="tableItemRef.setRow(index, { ReceiptCode: $event })"
+              [ngModelOptions]="{ standalone: true }" />
+            <ng-container *ngIf="!item.edit">{{ item.ReceiptCode }}</ng-container>
+          </ng-template>
+          <ng-template st-row="DateOfPaymentTpl" let-item let-index="index">
+            <input *ngIf="item.edit"
+              [ngClass]="item.submit && (item.DateOfPayment == undefined || item.DateOfPayment=='') ? 'danger-st-row' : ''"
+              nz-input type="date" max="9999-12-31" [ngModel]="item.DateOfPayment"
+              (ngModelChange)="tableItemRef.setRow(index, { DateOfPayment: $event })"
+              [ngModelOptions]="{ standalone: true }" />
+            <ng-container *ngIf="!item.edit">{{ item.DateOfPayment | date: 'dd/MM/yyyy' }}</ng-container>
+          </ng-template>
+          <ng-template st-row="DateOfReceiptTpl" let-item let-index="index">
+            <input *ngIf="item.edit"
+              [ngClass]="item.submit && (item.DateOfReceipt == undefined || item.DateOfReceipt=='') ? 'danger-st-row' : ''"
+              nz-input type="date" max="9999-12-31" [ngModel]="item.DateOfReceipt"
+              (ngModelChange)="tableItemRef.setRow(index, { DateOfReceipt: $event })"
+              [ngModelOptions]="{ standalone: true }" />
+            <ng-container *ngIf="!item.edit">{{ item.DateOfReceipt | date: 'dd/MM/yyyy' }}</ng-container>
+          </ng-template>
+          <ng-template st-row="AmountTpl" let-item let-index="index">
+            <input *ngIf="item.edit" nz-input
+              [ngClass]="item.submit && (!item.Amount || item.Amount == '') ? 'danger-st-row' : ''"
+              [ngModel]="item.Amount" (ngModelChange)="tableItemRef.setRow(index, { Amount: $event })"
+              [ngModelOptions]="{ standalone: true }" type="text" currencyMask />
+            <ng-container *ngIf="!item.edit">{{ item.Amount | number: '0.0-2':'de-DE'}}</ng-container>
+          </ng-template>
+        </st>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="close()">Đóng</button>
+  <button nz-button nzType="primary" [disabled]="loading || invalidTbl" (click)="submitForm()">Lưu thông tin thanh
+    toán</button>
+</div>

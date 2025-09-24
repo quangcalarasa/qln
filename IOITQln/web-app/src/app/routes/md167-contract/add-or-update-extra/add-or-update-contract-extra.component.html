@@ -1,0 +1,351 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Code" nzRequired>Số phụ lục</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập số hợp đồng!">
+          <input nz-input formControlName="Code" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DateSign" nzRequired>
+          <span>Ngày ký phụ lục</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập ngày ký phụ lục">
+          <!-- <nz-date-picker 
+            style="width: 446px"
+            [nzFormat]="nzFormat"
+            formControlName="DateSign">
+          </nz-date-picker> -->
+          <input nz-input type="date" max="9999-12-31" formControlName="DateSign" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!-- <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="ProfileCode" nzRequired>Mã số hợp đồng</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Mã số hợp đồng!">
+          <input nz-input formControlName="ProfileCode" />
+        </nz-form-control>
+      </nz-form-item>
+    </div> -->
+  </div>
+  <div nz-row [nzGutter]="16">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired>Số hợp đồng</nz-form-label>
+        <nz-form-control [nzSpan]="24" class="form-control-disabled">
+          <span>{{ parent?.Code }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired>Ngày ký hợp đồng</nz-form-label>
+        <nz-form-control [nzSpan]="24" class="form-control-disabled">
+          <span>{{ parent?.DateSign | date: 'dd/MM/yyyy' }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="16">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DelegateId" nzRequired>Người thuê</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn người thuê">
+          <nz-select nzAllowClear formControlName="DelegateId" name="DelegateId" id="DelegateId" [nzPlaceHolder]="''"
+            [nzShowSearch]="true" (ngModelChange)="selectDelegate($event)" [nzDisabled]="true">
+            <nz-option *ngFor="let i of delegaties; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired>Số CMND/CCCD</nz-form-label>
+        <nz-form-control [nzSpan]="24" class="form-control-disabled">
+          <span>{{ delegate?.NationalId }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="16">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired>Điện thoại liên hệ</nz-form-label>
+        <nz-form-control [nzSpan]="24" class="form-control-disabled">
+          <span>{{ delegate?.PhoneNumber }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired>Địa chỉ liên hệ</nz-form-label>
+        <nz-form-control [nzSpan]="24" class="form-control-disabled">
+          <span>{{ delegate?.Address }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="16">
+    <div nz-col [nzSpan]="16">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="HouseId" nzRequired>Mã nhà</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn người thuê">
+          <nz-select nzAllowClear formControlName="HouseId" name="HouseId" id="HouseId" [nzPlaceHolder]="''"
+            [nzShowSearch]="true" (ngModelChange)="selectHouse($event)" [nzDisabled]="true"
+            [nzCustomTemplate]="defaultTemplate">
+            <nz-option *ngFor="let i of house_data; let idx = index" [nzLabel]="i.Address" [nzValue]="i.Id">
+            </nz-option>
+          </nz-select>
+          <ng-template #defaultTemplate let-selected>
+            {{ house?.Code }}
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired>
+          <span *ngIf="house?.TypeHouse!=TypeHouse167.Kios">Số nhà</span>
+          <span *ngIf="house?.TypeHouse==TypeHouse167.Kios">Tên Kios/Số nhà</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" class="form-control-disabled">
+          <span *ngIf="house?.TypeHouse!=TypeHouse167.Kios">{{ house?.HouseNumber }}</span>
+          <span *ngIf="house?.TypeHouse==TypeHouse167.Kios">{{ house?.HouseNumber }}. Số nhà: {{
+            house?.ParentHouseNumber }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="16">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired>Tỉnh (Tp) /Quận (huyện) /Phường (xã)
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" class="form-control-disabled">
+          <ng-container *ngIf="house">
+            <nz-cascader [nzShowSearch]="true" [ngModel]="house.Pdw" [ngModelOptions]="{standalone: true}"
+              nzPlaceHolder="" [nzOptions]="pdw_data" [nzDisabled]="true">
+            </nz-cascader>
+          </ng-container>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired>Đường</nz-form-label>
+        <nz-form-control [nzSpan]="24" class="form-control-disabled">
+          <ng-container *ngIf="house">
+            <nz-select nzAllowClear [ngModel]="house.LaneId" [ngModelOptions]="{standalone: true}" nzPlaceHolder=""
+              [nzShowSearch]="true" [nzDisabled]="true">
+              <nz-option *ngFor="let i of lane_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+              </nz-option>
+            </nz-select>
+          </ng-container>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Diện tích cho thuê</nz-form-label>
+        <nz-form-control [nzSpan]="24" class="form-control-disabled">
+          <span>{{ house?.UseFloorPr | number: '0.0-2':'de-DE'}}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="TypePrice" nzRequired>Giá niêm yết/đấu giá</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn thông tin giá niêm yết/đấu giá">
+          <nz-select nzAllowClear formControlName="TypePrice" name="TypePrice" id="TypePrice" [nzPlaceHolder]="''"
+            [nzShowSearch]="true">
+            <nz-option *ngFor="let i of type_price_data | keyvalue; let idx = index" [nzLabel]="i.value"
+              [nzValue]="i.key"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="RentalPeriod" nzRequired>Thời gian thuê</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn thời gian thuê">
+          <nz-select nzAllowClear formControlName="RentalPeriod" name="RentalPeriod" id="RentalPeriod"
+            [nzPlaceHolder]="''" [nzShowSearch]="true" (ngModelChange)="selectRentalPeriod($event)">
+            <nz-option *ngFor="let i of rental_period_data | keyvalue; let idx = index" [nzLabel]="i.value"
+              [nzValue]="i.key"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm.value.RentalPeriod == RentalPeriodContract167Enum.KHAC">
+        <nz-form-label [nzSpan]="4" nzFor="NoteRentalPeriod">Khác</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+          <input nz-input formControlName="NoteRentalPeriod" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="RentalPurpose" nzRequired>Mục đích thuê</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn mục đích thuê">
+          <nz-select nzAllowClear formControlName="RentalPurpose" name="RentalPurpose" id="RentalPurpose"
+            [nzPlaceHolder]="''" [nzShowSearch]="true">
+            <nz-option *ngFor="let i of rental_purpose_data | keyvalue; let idx = index" [nzLabel]="i.value"
+              [nzValue]="i.key"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm.value.RentalPurpose == RentalPurposeContract167Enum.KHAC">
+        <nz-form-label [nzSpan]="4" nzFor="NoteRentalPurpose">Khác</nz-form-label>
+        <nz-form-control [nzSpan]="20">
+          <input nz-input formControlName="NoteRentalPurpose" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <app-md167-contract-price-per-month #pricePerMonthComponent [data]="validateForm.value.pricePerMonths"
+    (eventEmitter)="invalid_price_per_month=$event"></app-md167-contract-price-per-month>
+  <app-md167-contract-valuation #valuationComponent [data]="validateForm.value.valuations"
+    (eventEmitter)="invalid_valuation=$event"></app-md167-contract-valuation>
+  <app-md167-contract-auction-decision #auctionDecisionComponent [data]="validateForm.value.auctionDecisions"
+    (eventEmitter)="invalid_auction_decision=$event"></app-md167-contract-auction-decision>
+
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="PaymentPeriod" nzRequired>Kỳ thanh toán</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn kỳ thanh toán">
+          <nz-select nzAllowClear formControlName="PaymentPeriod" name="PaymentPeriod" id="PaymentPeriod"
+            [nzPlaceHolder]="''" [nzShowSearch]="true">
+            <nz-option *ngFor="let i of payment_period_data | keyvalue; let idx = index" [nzLabel]="i.value"
+              [nzValue]="i.key"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DateGroundHandover" nzRequired>
+          <span>Ngày bàn giao mặt bằng</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập ngày bàn giao mặt bằng">
+          <!-- <nz-date-picker 
+            style="width: 446px"
+            [nzFormat]="nzFormat"
+            formControlName="DateGroundHandover">
+          </nz-date-picker> -->
+          <input nz-input type="date" max="9999-12-31" formControlName="DateGroundHandover" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Danh sách Ngày gia hạn hợp đồng
+          <a nz-button nzType="link" (click)="addRow(1)">
+            <span nz-icon nzType="plus-circle"></span>
+          </a>
+        </nz-form-label>
+      </nz-form-item>
+      <nz-table nzBordered="true" nzShowPagination="false">
+        <thead>
+          <tr>
+            <th nzWidth="40%" class="text-center">Ngày</th>
+            <th nzWidth="20%" class="text-center">
+              Chức năng
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of validateForm.value.contractExtensions; let index = index">
+            <td>
+              <input nz-input type="date" max="9999-12-31" [(ngModel)]="validateForm.value.contractExtensions[index]"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <td class="text-center">
+              <a nz-button [nzSize]="'small'" [nzType]="'text'" (click)="removeRow(index, 1)">
+                <span nz-icon nzType="delete" nzTheme="outline" class="text-red"></span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24">Danh sách Ngày thanh lý hợp đồng
+          <a nz-button nzType="link" (click)="addRow(2)">
+            <span nz-icon nzType="plus-circle"></span>
+          </a>
+        </nz-form-label>
+      </nz-form-item>
+      <nz-table nzBordered="true" nzShowPagination="false">
+        <thead>
+          <tr>
+            <th nzWidth="40%" class="text-center">Ngày</th>
+            <th nzWidth="20%" class="text-center">
+              Chức năng
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of validateForm.value.liquidations; let index = index">
+            <td>
+              <input nz-input type="date" max="9999-12-31" [(ngModel)]="validateForm.value.liquidations[index]"
+                [ngModelOptions]="{ standalone: true }" />
+            </td>
+            <td class="text-center">
+              <a nz-button [nzSize]="'small'" [nzType]="'text'" (click)="removeRow(index, 2)">
+                <span nz-icon nzType="delete" nzTheme="outline" class="text-red"></span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="ContractStatus" nzRequired>Trạng thái hợp đồng</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn trạng thái hợp đồng">
+          <nz-select nzAllowClear formControlName="ContractStatus" name="ContractStatus" id="ContractStatus"
+            [nzPlaceHolder]="''" [nzShowSearch]="true">
+            <nz-option *ngFor="let i of contract_status_data | keyvalue; let idx = index" [nzLabel]="i.value"
+              [nzValue]="i.key"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</form>
+
+<!-- <div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button nz-button [nzType]="'primary'" [disabled]="
+      !validateForm.valid || loading || invalid_auction_decision || invalid_price_per_month || invalid_valuation
+    " (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div> -->
+<div *nzModalFooter>
+  <button nz-button [nzType]="'primary'" (click)="onClick()" style="z-index: 11;" class="float-left">Xuất phụ lục hợp đồng</button>
+  <button nz-button [nzType]="'primary'" (click)="onClick1()" style="z-index: 11;" class="float-left">Xuất thông báo thu hồi công nợ</button>
+  <button nz-button nzType="default" (click)="close()">Hủy</button>
+  <button nz-button nzType="primary" [disabled]="
+  !validateForm.valid || loading || invalid_auction_decision || invalid_price_per_month || invalid_valuation
+" (click)="submitForm()">Lưu</button>
+</div>

@@ -1,0 +1,164 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div *ngIf="record" nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Code" nzRequired>Mã đại diện</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <input nz-input formControlName="Code" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-control [nzSpan]="12">
+                        <nz-form-label>Cá nhân</nz-form-label>
+                        <input type="checkbox" (change)="change()" [checked]="validateForm.value.PersonOrCompany==1" />
+
+                    </nz-form-control>
+                    <nz-form-control [nzSpan]="12">
+                        <nz-form-label>Tổ chức</nz-form-label>
+                        <input type="checkbox" (change)="change()" [checked]="validateForm.value.PersonOrCompany==2" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="validateForm.value.PersonOrCompany==1">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="Name" nzRequired>Cá nhân thuê</nz-form-label>
+                    <input nz-input formControlName="Name" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="NationalId">Số CMND/CCCD</nz-form-label>
+                    <input nz-input formControlName="NationalId" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="DateOfIssue">Ngày cấp</nz-form-label>
+                    <input type="date" max="9999-12-31" nz-input formControlName="DateOfIssue" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="PlaceOfIssue">Nơi cấp</nz-form-label>
+                    <input nz-input formControlName="PlaceOfIssue" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="Address" nzRequired>Địa chỉ liên hệ</nz-form-label>
+                    <input nz-input formControlName="Address" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="PhoneNumber" nzRequired>Điện thoại liên hệ</nz-form-label>
+                    <input nz-input formControlName="PhoneNumber" />
+                </nz-form-item>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="validateForm.value.PersonOrCompany==2">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="Name" nzRequired>Tên tổ chức</nz-form-label>
+                    <input nz-input formControlName="Name" />
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="ComTaxNumber" nzRequired>Mã số thuế</nz-form-label>
+                    <input nz-input formControlName="ComTaxNumber" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="ComBusinessLicense" nzRequired>Giấy phép kinh doanh
+                    </nz-form-label>
+                    <input nz-input formControlName="ComBusinessLicense" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="ComOrganizationRepresentativeName" nzRequired>Họ và tên người
+                        đại diện tổ chức</nz-form-label>
+                    <input nz-input formControlName="ComOrganizationRepresentativeName" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="ComPosition" nzRequired>Chức vụ</nz-form-label>
+                    <input nz-input formControlName="ComPosition" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="AutInfo">Thông tin giấy uỷ quyền </nz-form-label>
+                    <nz-upload [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload">
+                        <button nz-button type="button">
+                            <span nz-icon nzType="upload"></span>
+                            Tải file thông tin giấy uỷ quyền
+                        </button>
+                    </nz-upload>
+                    <a *ngIf="validateForm.value.AutInfo" href="javascript:void(0)" (click)="downloadFile(validateForm.value.AutInfo)">{{
+                        validateForm.value.AutInfo }}</a>
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="NationalId">Số CMND/CCCD</nz-form-label>
+                    <input nz-input formControlName="NationalId" />
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="DateOfIssue">Ngày cấp</nz-form-label>
+                    <input type="date" max="9999-12-31" nz-input formControlName="DateOfIssue" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="PlaceOfIssue">Nơi cấp</nz-form-label>
+                    <input nz-input formControlName="PlaceOfIssue" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="Address" nzRequired>Địa chỉ liên hệ</nz-form-label>
+                    <input nz-input formControlName="Address" />
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="PhoneNumber" nzRequired>Điện thoại liên hệ</nz-form-label>
+                    <input nz-input formControlName="PhoneNumber" />
+                </nz-form-item>
+            </div>
+
+        </div>
+    </div>
+
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

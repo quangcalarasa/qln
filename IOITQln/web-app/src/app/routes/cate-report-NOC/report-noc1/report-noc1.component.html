@@ -1,0 +1,109 @@
+<nz-form nz-form [formGroup]="validateForm" style="padding-bottom: 30px">
+  <div nz-row class="row-title">
+    <div nz-col [nzMd]="5">
+      <span class="title">Bộ lọc</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DistrictId">Quận/Huyện</nz-form-label>
+        <nz-select
+          nzAllowClear
+          formControlName="DistrictId"
+          name="DistrictId"
+          id="DistrictId"
+          nzPlaceHolder=""
+          [nzShowSearch]="true"
+          (ngModelChange)="changeDistrict()"
+        >
+          <nz-option *ngFor="let i of lstDistrict; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="WardId">Phường/Xã</nz-form-label>
+        <nz-select
+          nzAllowClear
+          formControlName="WardId"
+          name="WardId"
+          id="WardId"
+          nzPlaceHolder=""
+          [nzShowSearch]="true"
+          (ngModelChange)="changeWard()"
+        >
+          <nz-option *ngFor="let i of lstWard; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="LaneId">Đường</nz-form-label>
+        <nz-select nzAllowClear formControlName="LaneId" name="LaneId" id="LaneId" nzPlaceHolder="" [nzShowSearch]="true">
+          <nz-option *ngFor="let i of lstLane; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="TypeBlock">Loại nhà</nz-form-label>
+        <nz-select nzAllowClear formControlName="TypeBlock" name="TypeBlock" id="TypeBlock" nzPlaceHolder="" [nzShowSearch]="true">
+          <nz-option *ngFor="let i of typehouse_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-form>
+<div style="margin: 10px">
+  <button nz-button nzType="primary" (click)="click()">
+    <span nz-icon nzType="search"></span>
+    Hiển thị dữ liệu
+  </button>
+  <button nz-button nzType="primary" (click)="dowloadReportNOC1()">
+    <span nz-icon nzType="download"></span>
+    Xuất báo cáo phụ lục 1</button
+  >
+</div>
+
+<div class="table-bct">
+  <table>
+    <thead>
+      <tr>
+        <th rowspan="2">STT</th>
+        <th rowspan="2">Địa chỉ</th>
+        <th rowspan="2">Loại nhà</th>
+        <th rowspan="2">Cấu trúc</th>
+        <th rowspan="2">Số tầng</th>
+        <th colspan="3">Số hộ sử dụng</th>
+        <th colspan="2">Diện tích</th>
+        <th rowspan="2">Ghi chú</th>
+      </tr>
+
+      <tr>
+        <th rowspan="1">Thuê</th>
+        <th rowspan="1">Bán</th>
+        <th rowspan="1">Trống</th>
+        <th rowspan="1">Diện tích đất(m2)</th>
+        <th rowspan="1">Diện tích sàn(m2)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let item of data; let i = index">
+        <tr>
+          <td class="text-center">{{ i + 1 }}</td>
+          <td class="text-center">{{ item.DistrictName }}</td>
+          <td class="text-center">{{ item.TypeBlockName }}</td>
+          <td class="text-left">{{ item.Structure }}</td>
+          <td class="text-center">{{ item.FloorNumber + ' Tầng' }}</td>
+          <td class="text-center">{{ item.Rent }}</td>
+          <td class="text-center">{{ item.Sell }}</td>
+          <td class="text-center">{{ item.Empty }}</td>
+          <td class="text-center">{{ item.LandArea }}</td>
+          <td class="text-center">{{ item.UsableArea }}</td>
+          <td></td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

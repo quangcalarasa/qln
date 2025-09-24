@@ -1,0 +1,81 @@
+<div nz-row>
+  <div nz-span>
+    <a nz-button nzType="link" (click)="addRow()">
+      <span nz-icon nzType="plus-circle"></span>
+      Thêm Tài Liệu Liên Quan
+    </a>
+  </div>
+</div>
+<div nz-row [nzGutter]="24">
+  <div nz-col [nzSpan]="24">
+    <div class="card-body">
+      <st
+        #tableItemRef
+        [data]="tdcCustomerFiles"
+        (change)="tableItemRefChange($event)"
+        [columns]="columnsItem"
+        [size]="'small'"
+        [loading]="loading"
+        [widthMode]="{ type: 'strict' }"
+        [page]="{ front: false }"
+      >
+        <ng-template st-row="FileNameHeader" type="title"><span class="danger-star">*</span>Tên File </ng-template>
+        <ng-template st-row="NoteHeader" type="title">Ghi Chú</ng-template>
+        <ng-template st-row="FileHeader" type="title"> <span class="danger-star">*</span>Văn Bản Thêm</ng-template>
+
+        <ng-template st-row="FileName" let-item let-index="index">
+          <input
+            *ngIf="item.edit"
+            nz-input
+            [ngClass]="item.submit && (!item.FileName || item.FileName == '') ? 'danger-st-row' : ''"
+            [ngModel]="item.FileName"
+            (ngModelChange)="tableItemRef.setRow(index, { FileName: $event })"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <ng-container *ngIf="!item.edit">{{ item.FileName }}</ng-container>
+        </ng-template>
+
+        <ng-template st-row="Note" let-item let-index="index">
+          <input
+            type="text"
+            *ngIf="item.edit"
+            nz-input
+            [ngModel]="item.Note"
+            [ngClass]="item.submit && (!item.Note || item.Note == '') ? 'danger-st-row' : ''"
+            (ngModelChange)="tableItemRef.setRow(index, { Note: $event })"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <ng-container *ngIf="!item.edit">{{ item.Note }}</ng-container>
+        </ng-template>
+
+        <ng-template st-row="File" let-item let-index="index">
+          <nz-form-item>
+            <nz-form-control [nzSpan]="14">
+              <nz-upload
+                *ngIf="item.edit"
+                nzName="File"
+                [nzShowUploadList]="false"
+                (click)="currItemUpload = item"
+                [nzBeforeUpload]="beforeUpload"
+              >
+                <button nz-button type="button">
+                  <span nz-icon nzType="upload"></span>
+                  Click to Upload
+                </button>
+                <ng-container>{{ item.File }}</ng-container>
+              </nz-upload>
+              <div class="ant-upload-list-item-info box-file-upload" *ngIf="!item.edit">
+                <div class="ant-upload-span">
+                  <span class="ant-upload-list-item-name" *ngIf="item.File">
+                    <i nz-icon nzType="paper-clip" nzTheme="outline"></i>
+                    <a href="javascript:void(0)" (click)="downloadFile(item.File)"> {{ item.File }}</a>
+                  </span>
+                </div>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-template>
+      </st>
+    </div>
+  </div>
+</div>

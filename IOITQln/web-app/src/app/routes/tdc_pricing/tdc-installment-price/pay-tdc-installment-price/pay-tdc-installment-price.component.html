@@ -1,0 +1,130 @@
+<nz-form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Date" nzRequired>
+          <span>Ngày Thanh Toán Thực Tế</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Ngày Kí Hợp Đồng">
+          <input nz-input type="date" max="9999-12-31" formControlName="Date" (change)="selectDay()" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Value">Số Tiền Thanh Toán</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input formControlName="Value" [ngModel]="valueMax"
+            (ngModelChange)="calcPayCount($event)" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="PublicPay"></nz-form-label>
+        <label nz-checkbox formControlName="PublicPay" [ngModel]="isPublicPay" (change)="onCheckboxChange()">Nộp cho
+          công ích</label>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="IsPayOff"></nz-form-label>
+        <label nz-checkbox formControlName="IsPayOff" [ngModel]="isPayOff" (change)="onChange()">Tất toán</label>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-form>
+
+<div>
+  <table #groupingTable Data="dataTable" class="table-bct">
+    <thead>
+      <tr>
+        <th rowspan="2">Lần trả </th>
+        <th rowspan="2">Ngày thanh toán theo quy định</th>
+        <th rowspan="2">Ngày thanh toán kì trước</th>
+        <th rowspan="2">Ngày thanh toán kì này dự kiến</th>
+        <th rowspan="2">Thời gian tính lãi theo tháng</th>
+        <th rowspan="2">Thời gian tính lãi theo ngày</th>
+        <th rowspan="2">Lãi suất tính theo tháng</th>
+        <th rowspan="2">Lãi suất tính theo ngày</th>
+        <th colspan="4">Số tiền thanh toán (VNĐ)</th>
+        <th rowspan="2">Tổng số tiền phải thanh toán</th>
+        <th rowspan="2">Note</th>
+      </tr>
+      <tr>
+        <th rowspan="1">Số tiền gốc tính lãi </th>
+        <th rowspan="1"> Số tiền gốc phải trả hàng năm </th>
+        <th rowspan="1">Lãi phát sinh theo tháng và ngày</th>
+        <th rowspan="1">Số tiền đến kỳ phải thanh toán </th>
+
+        <!--  -->
+      </tr>
+    </thead>
+    <tbody id="tbody">
+      <ng-container *ngFor="let item of dataTable; let i = index">
+        <tr *ngFor="let childItem of item.tdcInstallmentPriceTables; let firstChild = first; let lastChild = last">
+          <td class="text-center"> {{ childItem.PaymentTimes }}</td>
+          <td class="text-center">{{
+            childItem.RowStatus == 2
+            ? 'Nợ Cũ'
+            : childItem.RowStatus == 3
+            ? 'Phạt trễ
+            hạn'
+            : childItem.RowStatus == 5
+            ? 'Tổng cộng'
+            : childItem.PayDateDefault
+             | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ childItem.PayDateBefore  | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ childItem.PayDateGuess  | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ childItem.MonthInterest }}</td>
+          <td class="text-center">{{ childItem.DailyInterest }}</td>
+          <td class="text-center">{{ childItem.MonthInterestRate | number: '0.0-6' }}</td>
+          <td class="text-center">{{ childItem.DailyInterestRate | number: '0.0-6' }}</td>
+          <td style="text-align: right;">{{ childItem.TotalPay | number: '0.0-2':'de-DE'}}</td>
+          <td style="text-align: right;">{{ childItem.PayAnnual | number: '0.0-2':'de-DE'}}</td>
+          <td style="text-align: right;">{{ childItem.TotalInterest | number: '0.0-2':'de-DE'}}</td>
+          <td style="text-align: right;">{{ childItem.TotalPayAnnual | number: '0.0-2':'de-DE'}}</td>
+          <td *ngIf="firstChild" [attr.rowspan]="item.tdcInstallmentPriceTables.length" style="text-align: right;">{{ item.Pay
+            | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center">{{ childItem.Note }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<div style="float: right; margin: 20px">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>
+
+<div nz-row>
+  <div class="card-header">
+    <label style="color: red; font-weight: 300">LỊCH SỬ THANH TOÁN</label>
+  </div>
+  <div class="card-custom" style="margin-top: 50px; width: 100%">
+    <div class="card-body">
+      <st #tableItemRef [data]="data" (change)="tableItemRefChange()" [columns]="columnsItem" [size]="'small'"
+        [loading]="loading" [widthMode]="{ type: 'strict' }">
+        <ng-template st-row="DateHeader" type="title">&nbsp;Ngày thanh toán </ng-template>
+        <ng-template st-row="ValueHeader" type="title">&nbsp;Số tiền thanh toán </ng-template>
+        <ng-template st-row="NoteHeader" type="title">&nbsp;Ghi chú </ng-template>
+        <ng-template st-row="Date" let-item let-index="index" nzWidth="500px">
+          <ng-container>{{ item.Date | date: 'dd/MM/yyyy' }}</ng-container>
+        </ng-template>
+        <ng-template st-row="Value" let-item let-index="index" nzWidth="500px">
+          <ng-container>{{ item.Value | number: '0.0-2':'de-DE'}}</ng-container>
+        </ng-template>
+        <ng-template st-row="Note" let-item let-index="index" nzWidth="500px">
+          <ng-container>{{ item.Note }}</ng-container>
+        </ng-template>
+      </st>
+    </div>
+  </div>
+</div>

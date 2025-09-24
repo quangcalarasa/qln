@@ -1,0 +1,55 @@
+  <div nz-row>
+    <div nz-span>
+        <a nz-button nzType="link" (click)="addRow()">
+            <span nz-icon nzType="plus-circle"></span>
+            Thuế Phí Nông Nghiệp
+        </a>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <div class="card-body">
+        <st
+          #tableItemRef
+          [data]="tdcPriceOneSellTaxes"
+          (change)="tableItemRefChange($event)"
+          [columns]="columnsItem"
+          [size]="'small'"
+          [loading]="loading"
+          [widthMode]="{ type: 'strict' }"
+          [page]="{ front: false }"
+        >
+          <ng-template st-row="YearHeader" type="title"><span class="danger-star">*</span>Năm</ng-template>
+          <ng-template st-row="TotalHeader" type="title"><span class="danger-star">*</span>Số Tiền</ng-template>
+  
+          <ng-template st-row="Year" let-item let-index="index">
+            <input
+              *ngIf="item.edit"
+              nz-input
+              [ngClass]="item.submit && (!item.Year || item.Year == '') ? 'danger-st-row' : ''"
+              [ngModel]="item.Year"
+              (ngModelChange)="tableItemRef.setRow(index, { Year: $event })"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <ng-container *ngIf="!item.edit">{{ item.Year }}</ng-container>
+          </ng-template>
+  
+          <ng-template st-row="totalClmn" let-item let-index="index">
+            <input
+              *ngIf="item.edit"
+              nz-input
+              type="text"
+              currencyMask [options]="{ precision: 2 }"
+              [ngModel]="item.Total"
+              [ngClass]="item.submit && (!item.Total || item.Total == '') ? 'danger-st-row' : ''"
+              (ngModelChange)="tableItemRef.setRow(index, { Total: $event })"
+              [ngModelOptions]="{ standalone: true }"
+              style="width: 100%"
+            />
+            <ng-container *ngIf="!item.edit">{{ item.Total | number:'0.0-2':'de-DE'}}</ng-container>
+          </ng-template>
+        </st>
+      </div>
+    </div>
+  </div>
+  

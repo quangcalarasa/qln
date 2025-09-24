@@ -1,0 +1,66 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="DebtType" nzRequired>Loại công nợ</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Loại công nợ!">
+            <input nz-input formControlName="DebtType" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="TypeNotificationForm" nzRequired>Biểu mẫu thông báo</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa chọn Biểu mẫu thông báo">
+          <nz-select
+            formControlName="TypeNotificationForm"
+            name="TypeNotificationForm"
+            id="TypeNotificationForm"
+            [nzPlaceHolder]="'Chưa chọn Biểu mẫu thông báo'"
+            [nzShowSearch]="true"
+            [nzAllowClear]="true"
+          >
+            <nz-option *ngFor="let i of TypeNotificationForm | keyvalue; let idx = index" [nzLabel]="i.value" [nzValue]="i.key"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Title" nzRequired>Tiêu đề</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập tiêu đề!">
+            <input nz-input formControlName="Title" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Content" nzRequired>Nội dung</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập nội dung!">
+            <input nz-input formControlName="Content" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="GroupNotification" nzRequired>Nhóm đối tượng nhận thông báo</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Nhóm đối tượng nhận thông báo!">
+            <input nz-input formControlName="GroupNotification" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="ListNotification" nzRequired>Danh sách đối tượng nhận thông báo</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Danh sách đối tượng nhận thông báo!">
+            <input nz-input formControlName="ListNotification" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzMd]="6" nzFor="ToDate" nzRequired>Ngày giờ gửi</nz-form-label>
+        <nz-form-control [nzMd]="14" nzHasFeedback [nzErrorTip]="timeReqErrorTpl">
+            <input nz-input type="date" max="9999-12-31" formControlName="ToDate" />
+            <ng-template #timeReqErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Ngày giờ gửi!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

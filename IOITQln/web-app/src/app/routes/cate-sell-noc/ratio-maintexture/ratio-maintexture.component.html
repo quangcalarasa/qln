@@ -1,0 +1,69 @@
+<div class="card-custom">
+    <div class="card-header">
+        <ng-container [ngTemplateOutlet]="nzExtra"></ng-container>
+    </div>
+
+    <div class="card-body">
+        <st #tableRef [data]="data" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'"
+            [loading]="loading" [ps]="paging.page_size" [total]="paging.item_count"
+            [widthMode]="{ type: 'strict',strictBehavior:'truncate' }" [page]="{front:false}">
+            <ng-template st-row="value-column" let-item let-index="index">
+                <!-- <span>{{ typeMainTexTure[] }}</span> -->
+                <span *ngFor="let i of typeMainTexTure | keyvalue; let idx = index; let last = last">
+                    <span>{{ i.value }}:</span>
+                    <span *ngIf="idx + 1 == 1">{{ item.TypeMainTexTure1 }}</span>
+                    <span *ngIf="idx + 1 == 2">{{ item.TypeMainTexTure2 }}</span>
+                    <span *ngIf="idx + 1 == 3">{{ item.TypeMainTexTure3 }}</span>
+                    <span *ngIf="idx + 1 == 4">{{ item.TypeMainTexTure4 }}</span>
+                    <span *ngIf="idx + 1 == 5">{{ item.TypeMainTexTure5 }}</span>
+                    <span *ngIf="idx + 1 == 6">{{ item.TypeMainTexTure6 }}</span>
+                    <span *ngIf="!last">&nbsp;, </span>
+                </span>
+            </ng-template>
+        </st>
+    </div>
+</div>
+
+<ng-template #nzExtra>
+    <div nz-row>
+        <div nz-col [nzSm]="24" [nzMd]="6">
+            <h3 class="title-table">
+                <i nz-icon nzType="arrow-left" nzTheme="outline" (click)="onBack()"></i>
+                Thông tin Tỷ lệ giá trị kết cấu chính
+            </h3>
+        </div>
+
+        <div nz-col [nzSm]="24" [nzMd]="24" style="text-align: right;">
+            <form class="hidden-mobile table-form" nz-form [nzLayout]="'inline'">
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group [nzSuffix]="inputClearTpl">
+                            <input nz-input [maxlength]="30" [width]="160" [(ngModel)]="query.txtSearch" name="no"
+                                placeholder="Nhập từ khoá" id="no" />
+                        </nz-input-group>
+                        <ng-template #inputClearTpl>
+                            <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
+                                *ngIf="query.txtSearch" (click)="[query.txtSearch = undefined]"></i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button type="submit" (click)="searchData()">
+                            <i nz-icon nzType="search" nzTheme="outline"></i>
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+
+            <button nz-button nzType="text" nzTooltipTitle="Làm mới" nz-tooltip (click)="reset()">
+                <i nz-icon nzType="reload" nzTheme="outline"></i>
+            </button>
+
+            <button nz-button *ngIf="role.Create" nzType="primary" nz-button (click)="addOrUpdate()">
+                <i nz-icon nzType="plus" nzTheme="outline"></i>
+                Thêm mới
+            </button>
+        </div>
+    </div>
+</ng-template>

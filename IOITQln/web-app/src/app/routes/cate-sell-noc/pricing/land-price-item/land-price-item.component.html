@@ -1,0 +1,337 @@
+<ng-container [formGroup]="validateForm">
+    <ng-container *ngFor="let item of pricingApartmentLandDetails; let index = index;">
+        <div nz-row [nzGutter]="24" class="mt-lg">
+            <div nz-col [nzSpan]="24">
+                <span class="bg-blue-light pr-lg pl-xs">
+                    <span>* Tính giá đất theo {{ item.TermApply |
+                        showTermApplyName }} Nghị định {{ item.DecreeType1Id | showDecreeName }}</span>
+                </span>
+            </div>
+            <ng-container
+                *ngIf="item.TermApply==TermApplyEnum.DIEU_65 || item.TermApply==TermApplyEnum.KHOAN_1_DIEU_34 || item.TermApply==TermApplyEnum.DIEU_7">
+                <div nz-col [nzSpan]="18">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="24">Tiền đất miễn giảm</nz-form-label>
+                        <nz-form-control [nzSpan]="24">
+                            <nz-select nzAllowClear [(ngModel)]="item.DeductionLandMoneyId"
+                                [ngModelOptions]="{standalone: true}" nzPlaceHolder="" [nzShowSearch]="true"
+                                (ngModelChange)="changeDeductionLandMoney($event, index)">
+                                <nz-option
+                                    *ngFor="let i of deduction_land_money_data | filterItemsByDecreeType1Id:item.DecreeType1Id; let idx = index"
+                                    [nzLabel]="i.Condition" [nzValue]="i.Id"> </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="6">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="24">&nbsp;</nz-form-label>
+                        <nz-form-control [nzSpan]="24" class="form-control-disabled">
+                            <span *ngIf="item.DeductionLandMoneyValue">{{
+                                item.DeductionLandMoneyValue |
+                                number:'0.0-2':'de-DE' }}%</span>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </ng-container>
+        </div>
+        <!-- Tính giá đất Nhà hộ chung -->
+        <div nz-row [nzGutter]="24"
+            *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG && apartment && validateForm.value.landPricingTbl">
+            <div nz-col [nzSpan]="6" class="d-block">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24">
+                        <strong>*&nbsp;&nbsp;&nbsp;Diện tích đất chung quy đổi</strong>
+                        <span class="point text-lg ml-xs" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                            [nzPopoverContent]="contentPpvTpl8"
+                            [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>&nbsp;:
+                    </nz-form-label>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="12" class="d-block">
+                <div class="All">
+                    <span class="Fraction">
+                        <span class="Numerator">
+                            <span
+                                *ngFor="let landPricingTbl of convertLandPricingTbl(item.DecreeType1Id, item.TermApply); let last = last">(
+                                <span *ngIf="landPricingTbl.items.length > 1">(</span>
+                                <span *ngFor="let landPricingTblItem of landPricingTbl.items; let lastItem = last">
+                                    <span>{{ landPricingTblItem.GeneralArea ?? 0 | number: '0.0-2':'de-DE'}}</span>
+                                    <span *ngIf="!lastItem"> + </span>
+                                </span>
+                                <span *ngIf="landPricingTbl.items.length > 1">)</span>
+                                <span> * {{ landPricingTbl.CoefficientDistribution | number: '0.0-2':'de-DE'}})</span>
+                                <span *ngIf="!last"> + </span>
+                            </span>
+                        </span>
+                        <span class="Denominator">
+                            <span
+                                *ngFor="let convertBlockDetail of convertBlockDetailData(item.DecreeType1Id, item.TermApply); let last = last">(
+                                <span *ngIf="convertBlockDetail.items.length > 1">(</span>
+                                <span
+                                    *ngFor="let convertBlockDetailItem of convertBlockDetail.items; let lastItem = last">
+                                    <span>{{ convertBlockDetailItem.GeneralArea | number: '0.0-2':'de-DE'}}</span>
+                                    <span *ngIf="!lastItem"> + </span>
+                                </span>
+                                <span *ngIf="convertBlockDetail.items.length > 1">)</span>
+                                <span> * {{ convertBlockDetail.Coefficient | number: '0.0-2':'de-DE'}})</span>
+                                <span *ngIf="!last"> + </span>
+                            </span>
+                        </span>
+                    </span>
+                    <div class="Sum"> * {{ apartment.LandscapeAreaValue1 | number: '0.0-2':'de-DE'}} = {{ item.ConversionArea | number: '0.0-2':'de-DE' }} m2</div>
+                </div>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24"
+            *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG && item.ConversionArea!=undefined">
+            <div nz-col [nzSpan]="24" class="d-block font-weight-bold "
+                *ngIf="item.TermApply==TermApplyEnum.DIEU_65 || item.TermApply==TermApplyEnum.KHOAN_1_DIEU_34 || item.TermApply==TermApplyEnum.DIEU_7">
+                <span class="d-block block-land-price">
+                    Giá đất
+                    <span class="point text-lg ml-xs" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl9651347" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    = {{ item.LandUnitPrice | number: '0.0-2':'de-DE'}} *
+                    <span>(</span>
+                    <span>{{ (item.PrivateArea ?? 0) | number: '0.0-2':'de-DE' }} * 40% + {{ item.ConversionArea |
+                        number: '0.0-2':'de-DE' }} * 10% + {{ (item.GeneralArea ?? 0) | number: '0.0-2':'de-DE' }} *
+                        40%</span>
+                    <span>)</span>
+                    <span *ngIf="item.DeductionLandMoneyValue"> * (100% - {{ item.DeductionLandMoneyValue | number:
+                        '0.0-2':'de-DE'}}%)
+                    </span>
+                    = {{ item.LandPrice | number: '0.0-2':'de-DE'}} đồng
+                </span>
+            </div>
+
+            <div nz-col [nzSpan]="24" class="d-block font-weight-bold "
+                *ngIf="item.TermApply==TermApplyEnum.DIEU_70 || item.TermApply==TermApplyEnum.KHOAN_2_DIEU_34">
+                <span class="d-block block-land-price">
+                    Giá đất
+                    <span class="point text-lg ml-xs" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl70234" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    = {{ item.LandUnitPrice | number: '0.0-2':'de-DE'}} *
+                    <span>(</span>
+                    <span>{{ (item.PrivateArea ?? 0) | number: '0.0-2':'de-DE' }} + {{ item.ConversionArea | number:'0.0-2':'de-DE'}}
+                        +
+                        {{ (item.GeneralArea ?? 0) | number: '0.0-2':'de-DE' }}</span>
+                    <span>) * 100%</span>
+                    = {{ item.LandPrice | number: '0.0-2':'de-DE'}} đồng
+                </span>
+            </div>
+
+        </div>
+        <!-- Tính giá đất Nhà riêng lẻ -->
+        <div nz-row [nzGutter]="24" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_RIENG_LE">
+            <div nz-col [nzSpan]="24" class="d-block font-weight-bold">
+                <span>
+                    - Phần diện tích đất ở = {{ item.SumLimitAreaStr }} = {{ item.SumLimitArea }} m2
+                    <span *ngIf="item.LandscapeAreaLimit">{{ item.SumLimitArea < item.LandscapeAreaLimit ? '<' :
+                            (item.SumLimitArea> item.LandscapeAreaLimit ? '>' : '=') }} {{
+                            item.LandscapeAreaLimit | number:'0.0-2':'de-DE' }} m2
+                            (Hạn mức đất ở)</span>
+                    <span *ngIf="!item.LandscapeAreaLimit">(Không tìm thấy dữ liệu Hạn mức đất ở)</span>
+                    => Phần
+                    đất của nhà ở trong hạn mức = {{ item.InLimitArea | number:'0.0-2':'de-DE' }} m2 và ngoài hạn mức
+                    đất ở là {{
+                    item.OutLimitArea | number:'0.0-2':'de-DE' }} m2
+                </span>
+            </div>
+            <div nz-col [nzSpan]="24" class="d-block font-weight-bold"
+                *ngIf="item.TermApply==TermApplyEnum.DIEU_65 || item.TermApply==TermApplyEnum.KHOAN_1_DIEU_34 || item.TermApply==TermApplyEnum.DIEU_7">
+                <span class="d-block block-land-price">
+                    Giá đất
+                    <span *ngIf="item.TermApply==TermApplyEnum.DIEU_65 || item.TermApply==TermApplyEnum.KHOAN_1_DIEU_34"
+                        class="point text-lg ml-xs" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl1165134" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    <span *ngIf="item.TermApply==TermApplyEnum.DIEU_7" class="point text-lg ml-xs" nz-icon
+                        nzType="question-circle" nzTheme="twotone" nz-popover [nzPopoverContent]="contentPpvTpl117"
+                        [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    = {{ item.LandUnitPrice | number: '0.0-2':'de-DE'}} *
+                    <span>(</span>
+                    <span>{{ (item.InLimitArea ?? 0) | number:'0.0-2':'de-DE' }} * {{ (item.InLimitPercent ?? 0) |
+                        number:'0.0-2':'de-DE' }}% +
+                        {{ (item.OutLimitArea ?? 0) | number:'0.0-2':'de-DE' }} * {{ (item.OutLimitPercent ?? 0) |
+                        number:'0.0-2':'de-DE' }}%</span>
+                    <span>)</span>
+                    <span *ngIf="item.DeductionLandMoneyValue"> * (100% - {{ item.DeductionLandMoneyValue | number:
+                        '0.0-2':'de-DE'}}%)
+                    </span>
+                    = {{ item.LandPrice | number: '0.0-2':'de-DE'}} đồng
+                </span>
+            </div>
+            <div nz-col [nzSpan]="24" class="d-block font-weight-bold "
+                *ngIf="item.TermApply==TermApplyEnum.DIEU_70 || item.TermApply==TermApplyEnum.KHOAN_2_DIEU_34">
+                <span class="d-block block-land-price">
+                    Giá đất
+                    <span class="point text-lg ml-xs" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl1170234" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    = {{ item.LandUnitPrice | number: '0.0-2':'de-DE'}} *
+                    <span>(</span>
+                    <span>{{ (item.InLimitArea ?? 0) | number:'0.0-2':'de-DE' }} + {{ (item.OutLimitArea ?? 0) |
+                        number:'0.0-2':'de-DE' }}</span>
+                    <span>) * 100%</span>
+                    = {{ item.LandPrice | number: '0.0-2':'de-DE'}} đồng
+                </span>
+            </div>
+        </div>
+        <!-- Tính giá đất Nhà chung cư -->
+        <div nz-row [nzGutter]="24" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+            <div nz-col [nzSpan]="24" class="d-block font-weight-bold"
+                *ngIf="item.TermApply==TermApplyEnum.DIEU_65 || item.TermApply==TermApplyEnum.KHOAN_1_DIEU_34 || item.TermApply==TermApplyEnum.DIEU_7">
+                <span class="d-block block-land-price">
+                    Giá đất
+                    <span *ngIf="item.TermApply==TermApplyEnum.DIEU_65 || item.TermApply==TermApplyEnum.KHOAN_1_DIEU_34"
+                        class="point text-lg ml-xs" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl1465134" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    <span *ngIf="item.TermApply==TermApplyEnum.DIEU_7" class="point text-lg ml-xs" nz-icon
+                        nzType="question-circle" nzTheme="twotone" nz-popover [nzPopoverContent]="contentPpvTpl147"
+                        [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    = {{ item.LandUnitPrice | number: '0.0-2':'de-DE'}} *
+                    <span>{{ (item.PrivateArea ?? 0) | number:'0.0-2':'de-DE' }}
+                        <span *ngIf="item.CoefficientDistribution != undefined"> * {{ item.CoefficientDistribution |
+                            number:'0.0-2':'de-DE' }}</span>
+                        * 10%</span>
+                    <span *ngIf="item.DecreeType1Id == DecreeEnum.ND_99 && validateForm.value.FlatCoefficient_99"> * {{
+                        validateForm.value.FlatCoefficient_99 | number:'0.0-2':'de-DE' }}</span>
+                    <span *ngIf="item.DecreeType1Id == DecreeEnum.ND_34 && validateForm.value.FlatCoefficient_34"> * {{
+                        validateForm.value.FlatCoefficient_34 | number:'0.0-2':'de-DE' }}</span>
+                    <span *ngIf="item.DecreeType1Id == DecreeEnum.ND_61 && validateForm.value.FlatCoefficient_61"> * {{
+                        validateForm.value.FlatCoefficient_61 | number:'0.0-2':'de-DE' }}</span>
+                    <span *ngIf="item.DeductionLandMoneyValue"> * (100% - {{ item.DeductionLandMoneyValue | number:
+                        '0.0-2':'de-DE'}}%)
+                    </span>
+                    = {{ item.LandPrice | number: '0.0-2':'de-DE'}} đồng
+                </span>
+            </div>
+            <div nz-col [nzSpan]="24" class="d-block font-weight-bold "
+                *ngIf="item.TermApply==TermApplyEnum.DIEU_70 || item.TermApply==TermApplyEnum.KHOAN_2_DIEU_34">
+                <span class="d-block block-land-price">
+                    Giá đất
+                    <span class="point text-lg ml-xs" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl1470234" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    = {{ item.LandUnitPrice | number: '0.0-2':'de-DE'}} *
+                    <span>(</span>
+                    <span>{{ (item.PrivateArea ?? 0) | number:'0.0-2':'de-DE' }}
+                        <span *ngIf="item.CoefficientDistribution != undefined"> * {{ item.CoefficientDistribution |
+                            number:'0.0-2':'de-DE' }}</span>
+                    </span>
+                    <span>) * 100%
+                        <span *ngIf="item.DecreeType1Id == DecreeEnum.ND_99 && validateForm.value.FlatCoefficient_99"> *
+                            {{ validateForm.value.FlatCoefficient_99 | number:'0.0-2':'de-DE' }}</span>
+                        <span *ngIf="item.DecreeType1Id == DecreeEnum.ND_34 && validateForm.value.FlatCoefficient_34"> *
+                            {{ validateForm.value.FlatCoefficient_34 | number:'0.0-2':'de-DE' }}</span>
+                        <span *ngIf="item.DecreeType1Id == DecreeEnum.ND_61 && validateForm.value.FlatCoefficient_61"> *
+                            {{ validateForm.value.FlatCoefficient_61 | number:'0.0-2':'de-DE' }}</span>
+                    </span>
+                    = {{ item.LandPrice | number: '0.0-2':'de-DE'}} đồng
+                </span>
+            </div>
+        </div>
+        <!-- Tính giá đất Phần sử dụng chung -->
+        <div nz-row [nzGutter]="24"
+            *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+            <div nz-col [nzSpan]="24" class="d-block font-weight-bold">
+                <span class="d-block block-land-price">
+                    Giá đất
+                    <span *ngIf="block.ParentTypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG"
+                        class="point text-lg ml-xs" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl16" [nzPopoverOverlayClassName]="'fix-pd-ppv'">
+                    </span>
+                    <span *ngIf="block.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU"
+                        class="point text-lg ml-xs" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl17" [nzPopoverOverlayClassName]="'fix-pd-ppv'">
+                    </span>
+                    = {{ item.LandUnitPrice | number: '0.0-2':'de-DE'}} *
+                    <span>{{ (item.PrivateArea ?? 0) | number:'0.0-2':'de-DE' }}
+                    </span>
+                    <span> * 100%
+                    </span>
+                    = {{ item.LandPrice | number: '0.0-2':'de-DE'}} đồng
+                </span>
+            </div>
+        </div>
+        <!-- Tính tiền sử dung đất Phần diện tích liền kề -->
+        <div nz-row [nzGutter]="24"
+            *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE">
+            <div nz-col [nzSpan]="24" class="d-block font-weight-bold">
+                <span>
+                    - Phần diện tích đất ở = {{ item.SumLimitAreaStr }} = {{ item.SumLimitArea }} m2
+                    <span *ngIf="item.LandscapeAreaLimit">{{ item.SumLimitArea < item.LandscapeAreaLimit ? '<' :
+                            (item.SumLimitArea> item.LandscapeAreaLimit ? '>' : '=') }} {{
+                            item.LandscapeAreaLimit | number:'0.0-2':'de-DE' }} m2
+                            (Hạn mức đất ở)</span>
+                    <span *ngIf="!item.LandscapeAreaLimit">(Không tìm thấy dữ liệu Hạn mức đất ở)</span>
+                    => Phần đất của nhà ở trong hạn mức = {{ item.InLimitArea | number:'0.0-2':'de-DE' }} m2 và ngoài hạn mức đất ở là {{ item.OutLimitArea | number:'0.0-2':'de-DE' }} m2
+                </span>
+            </div>
+            <div nz-col [nzSpan]="24" class="d-block font-weight-bold">
+                <span class="d-block block-land-price">
+                    Giá đất
+                    <span class="point text-lg ml-xs" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl18" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    = {{ item.LandUnitPrice | number: '0.0-2':'de-DE'}} *
+                    <span>(</span>
+                    <span>{{ (item.InLimitArea ?? 0) | number:'0.0-2':'de-DE' }} * {{ (item.InLimitPercent ?? 0) |
+                        number:'0.0-2':'de-DE' }}% +
+                        {{ (item.OutLimitArea ?? 0) | number:'0.0-2':'de-DE' }} * {{ (item.OutLimitPercent ?? 0) |
+                        number:'0.0-2':'de-DE' }}%</span>
+                    <span>)</span> = {{ item.LandPrice | number: '0.0-2':'de-DE'}} đồng
+                </span>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+<ng-template #contentPpvTpl8>
+    <app-shared-popover [cs]="8">
+    </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl9651347>
+    <app-shared-popover [cs]="9651347">
+    </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl70234>
+    <app-shared-popover [cs]="70234">
+    </app-shared-popover>
+</ng-template>
+<!-- Ghi chú tính giá đất Nhà riêng lẻ -->
+<ng-template #contentPpvTpl1165134>
+    <app-shared-popover [cs]="1165134">
+    </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl1170234>
+    <app-shared-popover [cs]="1170234">
+    </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl117>
+    <app-shared-popover [cs]="117">
+    </app-shared-popover>
+</ng-template>
+<!-- Ghi chú tính giá đất Nhà riêng lẻ -->
+<ng-template #contentPpvTpl1465134>
+    <app-shared-popover [cs]="1465134">
+    </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl1470234>
+    <app-shared-popover [cs]="1470234">
+    </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl147>
+    <app-shared-popover [cs]="147">
+    </app-shared-popover>
+</ng-template>
+<!-- Ghi chú tính giá đất Nhà hộ chung - Phần diện tích sử dụng chung -->
+<ng-template #contentPpvTpl16>
+    <app-shared-popover [cs]="16">
+    </app-shared-popover>
+</ng-template>
+<!-- Ghi chú tính giá đất Nhà chung cư - Phần diện tích sử dụng chung -->
+<ng-template #contentPpvTpl17>
+    <app-shared-popover [cs]="17">
+    </app-shared-popover>
+</ng-template>
+<!-- Ghi chú tính giá đất Phần diện tích đất liền kề -->
+<ng-template #contentPpvTpl18>
+    <app-shared-popover [cs]="18">
+    </app-shared-popover>
+</ng-template>

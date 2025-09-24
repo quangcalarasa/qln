@@ -1,0 +1,188 @@
+<div nz-row>
+    <div nz-col [nzSm]="24" [nzMd]="6">
+        <h3 class="title-table mb-lg">
+            <i nz-icon nzType="arrow-left" nzTheme="outline" (click)="onBack()"></i>
+            Báo cáo yêu cầu hỗ trợ
+        </h3>
+    </div>
+</div>
+<form nz-form [formGroup]="validateForm" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Code">Hợp đồng</nz-form-label>
+                <nz-select class="width-100" nzAllowClear formControlName="Code"
+                    name="Code" id="Code" nzPlaceHolder="" [nzShowSearch]="true">
+                    <nz-option 
+                        *ngFor="let unit of data"
+                        [nzLabel]="unit.Code"
+                        [nzValue]="unit.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="House">Trạng thái</nz-form-label>
+                <nz-select class="width-100" nzAllowClear formControlName="House"
+                    name="House" id="House" nzPlaceHolder="" [nzShowSearch]="true">
+                    <nz-option 
+                        *ngFor="let unit of data"
+                        [nzLabel]="unit.Status"
+                        [nzValue]="unit.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item> 
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Apartment">Số nhà</nz-form-label>
+                <nz-select class="width-100" nzAllowClear formControlName="Apartment"
+                    name="Apartment" id="Apartment" nzPlaceHolder="" [nzShowSearch]="true">
+                    <nz-option 
+                        *ngFor="let unit of data"
+                        [nzLabel]="unit.HouseNb"
+                        [nzValue]="unit.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TypeRequest">Đường</nz-form-label>
+                <nz-select class="width-100" nzAllowClear formControlName="TypeRequest"
+                    name="TypeRequest" id="TypeRequest" nzPlaceHolder="" [nzShowSearch]="true">
+                    <nz-option 
+                        *ngFor="let unit of data"
+                        [nzLabel]="unit.Lane"
+                        [nzValue]="unit.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Content">Phường/Xã</nz-form-label>
+                <nz-select class="width-100" nzAllowClear formControlName="Content"
+                    name="Content" id="Content" nzPlaceHolder="" [nzShowSearch]="true">
+                    <nz-option 
+                        *ngFor="let unit of data"
+                        [nzLabel]="unit.Ward"
+                        [nzValue]="unit.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Requester">Quận/Huyện</nz-form-label>
+                <nz-select class="width-100" nzAllowClear formControlName="Requester"
+                    name="Requester" id="Requester" nzPlaceHolder="" [nzShowSearch]="true">
+                    <nz-option 
+                        *ngFor="let unit of data"
+                        [nzLabel]="unit.District"
+                        [nzValue]="unit.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Requester">Tên khách hàng</nz-form-label>
+                <nz-select class="width-100" nzAllowClear formControlName="Requester"
+                    name="Requester" id="Requester" nzPlaceHolder="" [nzShowSearch]="true">
+                    <nz-option 
+                        *ngFor="let unit of data"
+                        [nzLabel]="unit.Name"
+                        [nzValue]="unit.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Requester">CCCD</nz-form-label>
+                <nz-select class="width-100" nzAllowClear formControlName="Requester"
+                    name="Requester" id="Requester" nzPlaceHolder="" [nzShowSearch]="true">
+                    <nz-option 
+                        *ngFor="let unit of data"
+                        [nzLabel]="unit.CCCD"
+                        [nzValue]="unit.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="FromDate">Ngày ký</nz-form-label>
+                <input nz-input formControlName="FromDate" type="date" max="9999-12-31" />
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ToDate">Ngày đến hạn</nz-form-label>
+                <input nz-input formControlName="ToDate" type="date" max="9999-12-31" />
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="3">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Reciever">Số tiền</nz-form-label>
+                <nz-select class="width-100" nzAllowClear formControlName="Reciever"
+                    name="Reciever" id="Reciever" nzPlaceHolder="" [nzShowSearch]="true">
+                    <nz-option 
+                        *ngFor="let unit of data"
+                        [nzLabel]="unit.Cast"
+                        [nzValue]="unit.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+<div class="btn-right">
+    <button nz-button nzType="primary" nz-button >
+        <i nz-icon nzType="export" nzTheme="outline"></i>
+        Xuất File
+    </button>
+    <button nz-button nzType="primary" nz-button (click)="onViewData()">
+        Xem dữ liệu
+    </button>
+</div>
+<form style="padding-top: 60px;">
+    <div style=" overflow-x:auto; border: 1px solid #ddd;">
+        <table #groupingTable Data="dataTable" class="table-bct" *ngIf="loading">
+            <thead>
+                <tr>
+                    <th style="min-width: 50px;">STT</th>
+                    <th style="min-width: 200px;">Hợp đồng</th>
+                    <th style="min-width: 200px;">Trạng thái</th>
+                    <th style="min-width: 200px;">Số nhà</th>
+                    <th style="min-width: 200px;">Đường</th>
+                    <th style="min-width: 200px;">Phường/Xã</th>
+                    <th style="min-width: 200px;">Quận/Huyện</th>
+                    <th style="min-width: 200px;">Tên khách hàng</th>
+                    <th style="min-width: 200px;">CCCD</th>
+                    <th style="min-width: 200px;">Số tiền</th>
+                    <th style="min-width: 200px;">Ngày ký</th>
+                    <th style="min-width: 200px;">Ngày đến hạn<noscript></noscript></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of data; let idx = index">
+                    <td class="text-center">{{ idx + 1 }}</td>
+                    <td class="text-center">{{item.Code}}</td>
+                    <td class="text-center">{{item.Status}}</td>
+                    <td class="text-center">{{item.HouseNb}}</td>
+                    <td class="text-center">{{item.Lane}}</td>
+                    <td class="text-center">{{item.Ward}}</td>
+                    <td class="text-center">{{item.District}}</td>
+                    <td class="text-center">{{item.Name}}</td>
+                    <td class="text-center">{{item.CCCD}}</td>
+                    <td class="text-center">{{item.Cast}}</td>
+                    <td class="text-center">{{item.FromDate}}</td>
+                    <td class="text-center">{{item.ToDate}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>

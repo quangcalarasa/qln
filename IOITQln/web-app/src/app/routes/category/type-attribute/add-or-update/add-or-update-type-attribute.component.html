@@ -1,0 +1,91 @@
+<form nz-form [formGroup]="validateForm" style="padding-bottom: 30px">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="Code" nzRequired>Mã loại hình</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập mã loại hình!">
+      <input nz-input formControlName="Code" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="Name" nzRequired>Tên loại hình</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập tên loại hình!">
+      <input nz-input formControlName="Name" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Ghi chú</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <textarea formControlName="Note" nz-input rows="2"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+  <div nz-row>
+    <div nz-span>
+      <!-- <button nz-button [nzType]="'primary'" ty>
+                <i nz-icon nzType="add" nzTheme="outline" (click)="openAddTypeAttributeItem()"></i>
+                Thêm mới thuộc tính
+            </button> -->
+      <a nz-button nzType="link" (click)="addRow()">
+        <span nz-icon nzType="plus-circle"></span>
+        Thêm thuộc tính
+      </a>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-span>
+      <div class="card-body">
+        <st #tableItemRef [data]="validateForm.value.typeAttributeItems" (change)="tableItemRefChange($event)"
+          [columns]="columnsItem" [size]="'small'" [loading]="loading" [widthMode]="{ type: 'strict' }"
+          [page]="{ front: false }">
+          <ng-template st-row="codeTitle" type="title"><span class="danger-star">*</span>&nbsp;Mã thuộc tính
+          </ng-template>
+          <ng-template st-row="nameTitle" type="title"><span class="danger-star">*</span>&nbsp;Tên thuộc tính
+          </ng-template>
+          <ng-template st-row="codeTpl" let-item let-index="index">
+            <input *ngIf="item.edit" nz-input
+              [ngClass]="item.submit && (!item.Code || item.Code == '') ? 'danger-st-row' : ''" [ngModel]="item.Code"
+              (ngModelChange)="tableItemRef.setRow(index, { Code: $event })" [ngModelOptions]="{ standalone: true }" />
+            <ng-container *ngIf="!item.edit">{{ item.Code }}</ng-container>
+          </ng-template>
+          <ng-template st-row="nameTpl" let-item let-index="index">
+            <input *ngIf="item.edit" [ngClass]="item.submit && (!item.Name || item.Name == '') ? 'danger-st-row' : ''"
+              nz-input [ngModel]="item.Name" (ngModelChange)="tableItemRef.setRow(index, { Name: $event })"
+              [ngModelOptions]="{ standalone: true }" />
+            <ng-container *ngIf="!item.edit">{{ item.Name }}</ng-container>
+          </ng-template>
+          <ng-template st-row="locationTpl" let-item let-index="index">
+            <input *ngIf="item.edit" type="text" currencyMask [options]="{ precision: 0, min: 1 }" nz-input
+              [ngModel]="item.Location" (ngModelChange)="tableItemRef.setRow(index, { Location: $event })"
+              [ngModelOptions]="{ standalone: true }" />
+            <ng-container *ngIf="!item.edit">{{ item.Location | number:'0.0-2':'de-DE' }}</ng-container>
+          </ng-template>
+          <ng-template st-row="activeTpl" let-item let-index="index">
+            <nz-switch *ngIf="item.edit" [ngModel]="item.IsActive"
+              (ngModelChange)="tableItemRef.setRow(index, { IsActive: $event })"
+              [ngModelOptions]="{ standalone: true }"></nz-switch>
+            <ng-container *ngIf="!item.edit">
+              <span *ngIf="item.IsActive" nz-icon nzType="check" nzTheme="outline"></span>
+              <span *ngIf="!item.IsActive" nz-icon nzType="check" nzTheme="outline"></span>
+            </ng-container>
+          </ng-template>
+          <ng-template st-row="noteTpl" let-item let-index="index">
+            <textarea *ngIf="item.edit" nz-input rows="2" [ngModel]="item.Note"
+              (ngModelChange)="tableItemRef.setRow(index, { Note: $event })"
+              [ngModelOptions]="{ standalone: true }"></textarea>
+            <ng-container *ngIf="!item.edit">{{ item.Note }}</ng-container>
+          </ng-template>
+        </st>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || invalidTypeAttributeItem || loading"
+    (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>

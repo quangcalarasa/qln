@@ -1,0 +1,122 @@
+<div style="max-height: 500px; overflow-y: scroll;">
+    <nz-descriptions [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Loại biên bản áp dụng">{{ data.LoaiBienBan }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Số tt (căn)">{{ data.SoTtCan }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Số tt (hộ)">{{ data.SoTtHo }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Mã định danh">{{ data.MaDinhDanh }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Số nhà">{{ data.SoNha }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Địa chỉ">{{ data.Duong }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Phường">{{ data.Phuong }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Quận">{{ data.Quan }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Loại nhà">{{ data.LoaiNha }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Cấp nhà/Hạng nhà">{{ data.CapNha }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Diện tích đất (m2)" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Diện tích xây dựng">{{ data.DienTichXayDung | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Khuôn viên (Tổng diện tích đất)">{{ data.KhuonVien | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="DTĐ riêng">{{ data.DienTichDatRieng | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="DTĐ chung">{{ data.DienTichDatChung | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="DTĐ chung phân bổ">{{ data.DienTichDatChungPhanBo | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Diện tích SD (m2)" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Diện tích SD riêng">{{ data.DienTichSuDungRieng | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Diện tích SD chung">{{ data.DienTichSuDungChung | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Diện tích SD chung phân bổ">{{ data.DienTichSuDungChungPhanBo | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Tổng diện tích SD chung">{{ data.TongDienTichSuDungChung | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Tổng diện tích SD">{{ data.TongDienTichSuDung | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Thuế phi nông nghiệp" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Vị trí (V1;V2...)">{{ data.ViTri }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Hệ số hẻm (Độ rộng hẻm)">{{ data.HeSoHem }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Hệ số phân bổ">{{ data.HeSoPhanBo }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Đơn giá đất/1m2">{{ data.DonGiaDat }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Thuế suất(0,03%;0,05%...)">{{ data.ThueSuat | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Tiền thuế phải nộp từng năm">{{ data.TienThuePhaiNopTungNam | number:'0.0-0':'de-DE' }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Thông tin chủ hộ" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Người đại diện ký hợp đồng">{{ data.NguoiDaiDien }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="CMND/CCCD/Thẻ quân nhân/Hộ chiếu">{{ data.CanCuoc }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày cấp">{{ data.NgayCap | date:'dd/MM/yyyy' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Nơi cấp">{{ data.NoiCap }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Địa chỉ thường trú">{{ data.DiaChiThuongTru }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="SĐT">{{ data.SoDienThoai }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Thành viên sử dụng nhà">{{ data.ThanhVien }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Thời điểm giao nhận nhà ở">{{ data.ThoiDiemGiaoNhanNha }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Thời điểm nhà ở được bố trí sử dụng">{{ data.ThoiDiemBoTriSuDung }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Xác lập SHNN" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Số quyết định">{{ data.SoQuyetDinh }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày ký quyết định">{{ data.NgayKyQuyetDinh | date:'dd/MM/yyyy' }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Bản vẽ cho thuê" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Tên bản vẽ">{{ data.TenBanVe }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày lập bản vẽ">{{ data.NgayLapBanVe | date:'dd/MM/yyyy' }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Tình trạng nhà">{{ data.TinhTrangNha }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ghi chú">{{ data.GhiChu }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Kiểm định nhà" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Cấp nhà"></nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Số kiểm định"></nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày kiểm định"></nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Đơn vị thực hiện"></nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Trạng thái hợp đồng">{{ data.TrangThaiHopDong }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Thông tin tài chính" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Số giấy xác nhận tiền thuê nhà">{{ data.SoGiayXacNhan }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Nợ cũ(Công ích có VAT)">{{ data.NoCuCoVat | number:'0.0-0':'de-DE' }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Số hợp đồng">{{ data.SoHopDong }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày ký hợp đồng">{{ data.NgayKyHopDong | date:'dd/MM/yyyy' }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Giá thuê nhà/tháng có VAT" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Theo xác nhận Công ích">{{ data.GiaThueNhaTheoCongIch | number:'0.0-0':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Hợp đồng tạm">{{ data.GiaThueNhaHopDongTam | number:'0.0-0':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Chính thức">{{ data.GiaThueNhaChinhThuc | number:'0.0-0':'de-DE' }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Thông tin bán nhà, đất có VAT" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Giá bán nhà/m2">{{ data.GiaBanNha | number:'0.0-0':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Diện tích nhà">{{ data.DienTichNha | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Giá bán đất/m2">{{ data.GiaBanDat | number:'0.0-0':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Diện tích đất">{{ data.DienTichDat | number:'0.0-2':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Số tiền miễn giảm(nhà)">{{ data.SoTienMienGiamNha | number:'0.0-0':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Số tiền miễn giảm(đất)">{{ data.SoTienMienGiamDat | number:'0.0-0':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Thành tiền">{{ data.ThanhTien | number:'0.0-0':'de-DE' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Trạng thái">{{ data.TrangThai }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Số quyết định bán nhà">{{ data.SoQuyetDinhBanNha }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày quyết định">{{ data.NgayQuyetDinhBanNha | date:'dd/MM/yyyy' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Số biên bản thanh lý hợp đồng">{{ data.SoBienBanThanhLyHopDong }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày thanh lý hợp đồng">{{ data.NgayThanhLyHopDong | date:'dd/MM/yyyy' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ghi chú">{{ data.GhiChuThongTinBan }}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-descriptions nzTitle="Thông tin sửa nhà" [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Số lẫn sửa chữa"></nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày hoàn thành"></nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Số tiền quyết toán"></nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Đơn vị thực hiện"></nz-descriptions-item>
+    </nz-descriptions>
+</div>
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="close()">Hủy</button>
+</div>

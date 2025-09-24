@@ -1,0 +1,75 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px; position: relative;">
+  <div *ngIf="isViewRecord" class="disabled-form-info"></div>
+  <!-- Thông tin chung ban đầu -->
+
+  <app-pricing-apartment-common-info [validateForm]="validateForm" [block]="block" [typehouse_data]="typehouse_data"
+    (eventEmitter)="[getByDecreeAndDate(), changeConstructionPricies()]"></app-pricing-apartment-common-info>
+  <!-- Cán bộ tính giá -->
+  <app-pricing-pricing-officer #pricingOfficerComponent [data]="validateForm.value.pricingOfficers"
+    (eventEmitter)="invalidTblPricingOfficer = $event"></app-pricing-pricing-officer>
+  <!-- Thông tin chung về căn nhà, căn hộ -->
+  <ng-container *ngIf="block">
+    <app-pricing-block-apartment-info [validateForm]="validateForm" [block]="block" [apartment]="apartment"
+      [customer_data]="customer_data"></app-pricing-block-apartment-info>
+  </ng-container>
+  <!-- Thông tin về nhà ở và tính giá nhà -->
+  <app-pricing-house-price [validateForm]="validateForm" [block]="block" [apartment]="apartment"
+    [typehouse_data]="typehouse_data" [vat_data]="vat_data" [customer_data]="customer_data"
+    [salary_default]="salary_default" [deduction_coefficient_data]="deduction_coefficient_data"
+    [constructionPricies_data]="constructionPricies_data" [price_list_item_data]="price_list_item_data"
+    (eventEmitter)="calcTotalPrice()"></app-pricing-house-price>
+  <!-- Thông tin về đất ở và tính giá đất -->
+  <app-pricing-land-price *ngIf="block" [validateForm]="validateForm" [block]="block" [apartment]="apartment"
+    [landprice_data]="landprice_data" (eventEmitter)="calcTotalPrice()"></app-pricing-land-price>
+  <!-- Tổng giá bán của căn hộ -->
+  <ng-container *ngIf="validateForm.value">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24" class="d-block font-weight-bold">
+        <span class="d-block block-last-price mt-lg">
+          {{ validateForm.value.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE ? 'Giá đất ở của căn
+          hộ' : 'Tiền sử dụng đất' }} =
+          <span
+            *ngFor="let pricingApartmentLandDetail of validateForm.value.pricingApartmentLandDetails; let index = index; let last = last">{{
+            pricingApartmentLandDetail.LandPrice | number: '0.0-2':'de-DE'}}<span *ngIf="!last"> + </span></span>
+          = {{
+          validateForm.value.LandPrice | number: '0.0-2':'de-DE'}} đồng
+        </span>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24"
+      *ngIf="validateForm.value.ApartmentPriceRemaining!=undefined && validateForm.value.LandPrice!=undefined">
+      <div nz-col [nzSpan]="24" class="d-block font-weight-bold">
+        <span class="d-block block-last-price">
+          Tổng giá bán của căn hộ = Giá nhà ở của căn hộ + Giá đất của căn hộ = {{
+          validateForm.value.ApartmentPriceRemaining | number: '0.0-2':'de-DE'}} + {{ validateForm.value.LandPrice |
+          number: '0.0-2':'de-DE'}} = {{
+          validateForm.value.TotalPrice | number: '0.0-2':'de-DE'}} đồng
+        </span>
+      </div>
+    </div>
+  </ng-container>
+  <div nz-row class="row-title mt-md" *ngIf="validateForm.value.Id" >
+    <div nz-col [nzMd]="3">
+        <span class="title">Thông tin người thực hiện</span>
+    </div>
+  </div>
+  <nz-descriptions [nzColumn]="2" *ngIf="validateForm.value.Id">
+    <nz-descriptions-item nzTitle="Người tạo">{{ validateForm.value.CreatedBy }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Ngày tạo">{{ validateForm.value.CreatedAt | date: 'dd/MM/yyyy HH:mm' }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Người sửa">{{ validateForm.value.UpdatedBy }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Ngày sửa"><span *ngIf="validateForm.value.UpdatedBy">{{ validateForm.value.UpdatedAt | date: 'dd/MM/yyyy HH:mm' }}</span></nz-descriptions-item>
+</nz-descriptions>
+</form>
+
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button *ngIf="!isViewRecord" nz-button [nzType]="'primary'"
+    [disabled]="!validateForm.valid || invalidTblPricingOfficer || invalidTblReducedPerson || loading"
+    (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>

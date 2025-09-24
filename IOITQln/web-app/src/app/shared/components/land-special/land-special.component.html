@@ -1,0 +1,146 @@
+<ng-container [formGroup]="validateForm">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <span class="note-drawer d-inline-block">Khu đất, thửa đất có hình thể đặc biệt</span>
+            <nz-form-control [nzSpan]="3" class="d-inline-block">
+                <label nz-checkbox formControlName="LandSpecial" [nzDisabled]="validateForm.value.Disabled">
+                    <span></span>
+                </label>
+            </nz-form-control>
+        </div>
+        <div *ngIf="validateForm.value.LandSpecial" nz-col [nzSpan]="24">
+            <nz-form-control [nzSpan]="24">
+                <label nz-checkbox formControlName="LandAreaSpecial">
+                    <span> Có phần diện tích không mặt tiền đường (hẻm) từ 15m2 trở lên </span>
+                </label>
+            </nz-form-control>
+        </div>
+    </div>
+    <div *ngIf="validateForm.value.LandSpecial" nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandAreaSpecialS1">S1</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="LandAreaSpecialS1" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandAreaSpecialS2">S2</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="LandAreaSpecialS2" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandAreaSpecialS3">S3</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="LandAreaSpecialS3" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div *ngIf="validateForm.value.LandSpecial" nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-control [nzSpan]="24">
+                <label nz-checkbox formControlName="WidthSpecial">
+                    <span> Phần diện tích có chiều dài lớn gấp nhiều lần so với chiều rộng </span>
+                </label>
+            </nz-form-control>
+        </div>
+    </div>
+    <div *ngIf="validateForm.value.LandSpecial" nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="WidthSpecialS1">S1 (có A = 5R)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="WidthSpecialS1" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="WidthSpecialS2">S2 (có 5R < B <=8R)</nz-form-label>
+                        <nz-form-control [nzSpan]="24">
+                            <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                                formControlName="WidthSpecialS2" />
+                        </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="WidthSpecialS3">S3 (có C > 8R)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="WidthSpecialS3" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div *ngIf="validateForm.value.LandSpecial" nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="16">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandPositionSpecial">Vị trí đặc biệt của khu đất</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear formControlName="LandPositionSpecial" name="LandPositionSpecial"
+                        id="LandPositionSpecial" nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of landpositionspeical_data | keyvalue; let idx = index"
+                            [nzLabel]="i.value" [nzValue]="i.key">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">Giá đất được tính bằng ... giá đất của đường đó</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" nz-input value="0.7" disabled="true" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <!-- <div *ngIf="validateForm.value.LandSpecial" nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24" class="bg-magenta-light">
+            <span class="d-block">Ghi chú: công thức tính căn cứ vào danh mục Hệ số khu đất. thửa đất có hình thể đặc
+                biệt để
+                lấy ra các hệ số tương ứng</span>
+            <span class="d-block">
+                * Trường hợp Phần DT có chiều dài lớn gấp nhiều lần so với chiều rộng = True AND Vị trị đặc biệt của khu
+                đất #
+                Null
+            </span>
+            <span class="d-block">
+                - Tổng DT xây dựng sử dụng chung đặc biệt = &#123;[S1 (có A = 5R) + S2 (có 5R < B <=8R) * 0.8 + S3 (có
+                    C> 8R) *
+                    0.7]
+                    + S2 * 0.8 + S3 * 0.8&#125; * 0.7
+            </span>
+            <span class="d-block">
+                * Trường hợp Phần DT có chiều dài lớn gấp nhiều lần so với chiều rộng = False AND Vị trị đặc biệt của
+                khu đất #
+                Null
+            </span>
+            <span class="d-block">
+                - Tổng DT xây dựng sử dụng chung đặc biệt = [S1 + S2 * 0.8 + S3 * 0.8] * 0.7
+            </span>
+            <span class="d-block">
+                * Trường hợp Có phần DT không mặt tiền đường (hẻm) từ 15m2 trở lên = False AND Phần DT có chiều dài lớn
+                gấp
+                nhiều lần so với chiều rộng = False AND Vị trị đặc biệt của khu đất # Null
+            </span>
+            <span class="d-block">
+                - Tổng DT xây dựng sử dụng chung đặc biệt = Tổng DT xây dựng sử dụng chung * 0.7
+            </span>
+            <span class="d-block">
+                * Trường hợp tất cả bằng False: Tổng DT xây dựng sử dụng chung đặc biệt = Tổng DT xây dựng sử dụng chung
+            </span>
+        </div>
+    </div> -->
+</ng-container>

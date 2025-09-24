@@ -1,0 +1,6 @@
+
+/IOITQln/bin/
+/IOITQln/obj/
+/IOITQln/bin/Debug/netcoreapp3.1/log/
+*.log
+*.txt

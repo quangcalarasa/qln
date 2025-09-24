@@ -1,0 +1,356 @@
+<ng-container [formGroup]="validateForm">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24" *ngIf="!validateForm.value.Disabled">
+            <span class="note-drawer">Thông tin vị trí đất</span>
+        </div>
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TextBasedInfo">Căn cứ văn bản số (của UBND phường/xã về
+                    việc
+                    thông tin vị trí kết cấu hẻm)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <textarea formControlName="TextBasedInfo"
+                        placeholder="Ví dụ: Căn cứ văn bản số 559/UBND ngày 19/11/2019 của Ủy ban nhân dân phường Đa kao về việc thông tin vị trí kết cấu hẻm số 30 Mạc Đỉnh Chi với độ rộng hẻm là 2,1m."
+                        nz-input rows="3"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Width">Chiều rộng hẻm (m)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" nz-input formControlName="Width" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Deep">Độ sâu hẻm vị trí (m)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <!-- <input type="text" [options]="{ precision: 2 }" nz-input formControlName="Deep"
+                        (ngModelChange)="changeDeepValue()" /> -->
+                    <input type="text" nz-input formControlName="Deep" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ExceedingLimitDeep"></nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <label nz-checkbox formControlName="ExceedingLimitDeep" (ngModelChange)="changeDeepValue($event)" >
+                      <span> Độ sâu hẻm > 100m </span>
+                    </label>
+                  </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <ng-container *ngIf="checkDecree(DecreeEnum.ND_99)" [ngTemplateOutlet]="landscapePositionTpl"
+        [ngTemplateOutletContext]="{ decree: DecreeEnum.ND_99, form: validateForm}">
+    </ng-container>
+    <ng-container *ngIf="checkDecree(DecreeEnum.ND_34)" [ngTemplateOutlet]="landscapePositionTpl"
+        [ngTemplateOutletContext]="{ decree: DecreeEnum.ND_34, form: validateForm}">
+    </ng-container>
+
+    <ng-container *ngIf="checkDecree(DecreeEnum.ND_34)">
+        <div nz-col [nzSpan]="24" class="mt-lg">
+            <span class="bg-blue-light pr-lg pl-xs">
+                <span>Nghị định 34/2013/NĐ-CP (Khoản 1. Điều 4 Quyết định số 60/2013/QĐ-UBND)</span>
+            </span>
+            <nz-radio-group class="ml-xxl" [(ngModel)]="validateForm.value.CaseApply_34"
+                [ngModelOptions]="{standalone: true}" [nzDisabled]="validateForm.value.Disabled">
+                <label nz-radio nzValue="1">Áp dụng</label>
+            </nz-radio-group>
+        </div>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="LevelAlley_34">Hẻm cấp</nz-form-label>
+                    <nz-form-control [nzSpan]="24">
+                        <nz-select nzAllowClear formControlName="LevelAlley_34" name="LevelAlley_34" id="LevelAlley_34"
+                            nzPlaceHolder="" [nzShowSearch]="true"
+                            (ngModelChange)="changePositionCoefficientId(DecreeEnum.SPECIAL)">
+                            <nz-option *ngFor="let i of levelalley_data | keyvalue; let idx = index" [nzLabel]="i.value"
+                                [nzValue]="i.key"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="LandscapeLocationInAlley_34">Vị trí hẻm</nz-form-label>
+                    <nz-form-control [nzSpan]="24">
+                        <nz-select nzAllowClear formControlName="LandscapeLocationInAlley_34"
+                            name="LandscapeLocationInAlley_34" id="LandscapeLocationInAlley_34" nzPlaceHolder=""
+                            [nzShowSearch]="true" (ngModelChange)="changeLandscapeLocation($event, DecreeEnum.SPECIAL)">
+                            <nz-option *ngFor="let i of landscapelocation_data | keyvalue; let idx = index"
+                                [nzLabel]="i.value" [nzValue]="i.key">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8">
+                <nz-form-label [nzSpan]="24" nzFor="IsAlley_34"></nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <label nz-checkbox formControlName="IsAlley_34"
+                        (ngModelChange)="changePositionCoefficientId(DecreeEnum.SPECIAL)">
+                        <span> Hẻm trải đất </span>
+                    </label>
+                </nz-form-control>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="AlleyPositionCoefficientId_34">Hệ số vị trí</nz-form-label>
+                    <nz-form-control [nzSpan]="24">
+                        <input type="text" nz-input [value]="validateForm.value.AlleyPositionCoefficientStr_34"
+                            disabled="true" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="16">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="AlleyLandScapePrice_34">Đơn giá đất ở
+                        <span class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                            [nzPopoverContent]="contentPpvTpl3" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    </nz-form-label>
+                    <nz-form-control [nzSpan]="24" class="form-control-disabled">
+                        <ng-container *ngIf="validateForm.value.AlleyLandScapePrice_34!=undefined">{{
+                            validateForm.value.LandPriceItemValue_34 |
+                            number:'0.0-2':'de-DE' }}
+                            đ/m² x {{ validateForm.value.AlleyPositionCoefficientStr_34 }}
+                            <!-- <span
+                                *ngIf="(validateForm.value.LandPriceRefinement_34 && validateForm.value.Deep > 100) || (validateFormRawValue.LandPriceRefinement_34 && validateFormRawValue.Deep > 100)">x
+                                ((100% - {{
+                                validateForm.value.LandPriceRefinement_34 }}%) / 100)</span> -->
+                            = {{
+                            validateForm.value.AlleyLandScapePrice_34 | number: '0.0-2':'de-DE'}} đ/m²</ng-container>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- <ng-container *ngIf="checkDecree(DecreeEnum.ND_61)" [ngTemplateOutlet]="landscapePositionTpl"
+        [ngTemplateOutletContext]="{ decree: DecreeEnum.ND_61, form: validateForm}">
+    </ng-container> -->
+    <ng-container *ngIf="checkDecree(DecreeEnum.ND_61)">
+        <div nz-row [nzGutter]="24" class="mt-lg">
+            <div nz-col [nzSpan]="24">
+                <span class="bg-blue-light pr-lg pl-xs">
+                    <span>Nghị định 61/CP (Điều 2 Quyết định số 05/QĐ-UB-QLĐT)</span>
+                </span>
+            </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8">
+                <nz-form-label [nzSpan]="24" nzFor="IsFrontOfLine_61"></nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <label nz-checkbox formControlName="IsFrontOfLine_61"
+                        (ngModelChange)="changePositionCoefficientId(DecreeEnum.ND_61)">
+                        <span> Mặt tiền đường </span>
+                    </label>
+                </nz-form-control>
+            </div>
+            <div nz-col [nzSpan]="8"
+                *ngIf="(!validateForm.value.IsFrontOfLine_61 && !validateForm.value.Disabled) || (validateForm.value.Disabled && !validateFormRawValue.IsFrontOfLine_61_Clone?.value)">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="TypeAlley_61">Loại hẻm</nz-form-label>
+                    <nz-form-control [nzSpan]="24">
+                        <nz-select nzAllowClear formControlName="TypeAlley_61" name="TypeAlley_61" id="TypeAlley_61"
+                            nzPlaceHolder="" [nzShowSearch]="true"
+                            (ngModelChange)="changePositionCoefficientId(DecreeEnum.ND_61)">
+                            <nz-option *ngFor="let i of typeAlley_data | keyvalue; let idx = index" [nzLabel]="i.value"
+                                [nzValue]="i.key"> </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8"
+                *ngIf="(!validateForm.value.IsFrontOfLine_61 && !validateForm.value.Disabled) || (validateForm.value.Disabled && !validateFormRawValue.IsFrontOfLine_61_Clone?.value)">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="LandscapeLocationInAlley_61">Vị trí hẻm</nz-form-label>
+                    <nz-form-control [nzSpan]="24">
+                        <nz-select nzAllowClear formControlName="LandscapeLocationInAlley_61"
+                            name="LandscapeLocationInAlley_61" id="LandscapeLocationInAlley_61" nzPlaceHolder=""
+                            [nzShowSearch]="true">
+                            <nz-option *ngFor="let i of landscapelocation_data | keyvalue; let idx = index"
+                                [nzLabel]="i.value" [nzValue]="i.key">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8"
+                *ngIf="(!validateForm.value.IsFrontOfLine_61 && !validateForm.value.Disabled) || (validateForm.value.Disabled && !validateFormRawValue.IsFrontOfLine_61_Clone?.value)">
+                <nz-form-label [nzSpan]="24" nzFor="IsAlley_61"></nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <label nz-checkbox formControlName="IsAlley_61"
+                        (ngModelChange)="changePositionCoefficientId(DecreeEnum.ND_61)">
+                        <span> Hẻm trải đất </span>
+                    </label>
+                </nz-form-control>
+            </div>
+            <div nz-col [nzSpan]="16">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="24" nzFor="LandScapePrice_61">Đơn giá đất ở
+                        <span class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                            [nzPopoverContent]="contentPpvTpl4" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                    </nz-form-label>
+                    <nz-form-control [nzSpan]="24" class="form-control-disabled">
+                        <ng-container *ngIf="validateForm.value.LandScapePrice_61">
+                            <span
+                                *ngIf="validateForm.value.IsAlley_61 && ((!validateForm.value.IsFrontOfLine_61 && !validateForm.value.Disabled ) || (validateForm.value.Disabled && !validateFormRawValue.IsFrontOfLine_61_Clone.value))">{{
+                                validateForm.value.No2LandScapePrice_61 |
+                                number:'0.0-2':'de-DE' }} đ/m2 * {{ isAlley_61_Coefficient }} = {{
+                                validateForm.value.LandScapePrice_61 | number: '0.0-2':'de-DE'}} đ/m2</span>
+                            <span
+                                *ngIf="!validateForm.value.IsAlley_61 || ((validateForm.value.IsFrontOfLine_61 && !validateForm.value.Disabled) || (validateForm.value.Disabled && validateFormRawValue.IsFrontOfLine_61_Clone.value))">{{
+                                validateForm.value.LandScapePrice_61 |
+                                number:'0.0-2':'de-DE' }} đ/m2</span>
+                        </ng-container>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+
+<!-- landscapePositionTpl -->
+<ng-template #landscapePositionTpl let-decree='decree' let-form='form'>
+    <div nz-row [nzGutter]="24" [formGroup]="form" class="mt-lg">
+        <div nz-col [nzSpan]="24">
+            <span class="bg-blue-light pr-lg pl-xs">
+                <span *ngIf="decree==DecreeEnum.ND_99">Nghị định 99/2015/NĐ-CP (Khoản 2. Điều 4 Quyết định số
+                    02/2020/QĐ-UBND)</span>
+                <span *ngIf="decree==DecreeEnum.ND_34">Nghị định 34/2013/NĐ-CP (Khoản 2. Điều 4 Quyết định số
+                    51/2014/QĐ-UBND)</span>
+                <span *ngIf="decree==DecreeEnum.ND_61">Nghị định 61/CP</span>
+            </span>
+            <nz-radio-group *ngIf="decree==DecreeEnum.ND_34" class="ml-xxl"
+                [(ngModel)]="validateForm.value.CaseApply_34" [ngModelOptions]="{standalone: true}"
+                [nzDisabled]="validateForm.value.Disabled">
+                <label nz-radio nzValue="2">Áp dụng</label>
+            </nz-radio-group>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandscapeLocation_{{decree}}">Vị trí đất
+                    ở</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear [formControlName]="'LandscapeLocation_' + decree" nzPlaceHolder=""
+                        [nzShowSearch]="true" (ngModelChange)="changeLandscapeLocation($event, decree)">
+                        <nz-option *ngFor="let i of landscapelocation_data | keyvalue; let idx = index"
+                            [nzLabel]="i.value" [nzValue]="i.key">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandPriceRefinement_{{decree}}">Giá đất tinh giảm (%) (Vị trí >
+                    100m)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" nz-input [formControlName]="'LandPriceRefinement_' + decree"
+                        (ngModelChange)="changePositionCoefficientId(decree)" currencyMask />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8"
+            *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_RIENG_LE && decree==DecreeEnum.ND_99 && validateForm.value.LandscapeLocation_99==1">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">Hệ số K điểu chỉnh giá đất</nz-form-label>
+                <nz-form-control [nzSpan]="24" class="form-control-disabled">
+                    <span class="pl-sm">{{ validateForm.value.Width < 3 ? 1 : 1.2 }}</span>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="PositionCoefficientId_{{decree}}">Hệ số vị trí</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input *ngIf="decree==DecreeEnum.ND_99" type="text" nz-input
+                        [value]="validateForm.value.PositionCoefficientStr_99" disabled="true" />
+                    <input *ngIf="decree==DecreeEnum.ND_34" type="text" nz-input
+                        [value]="validateForm.value.PositionCoefficientStr_34" disabled="true" />
+                    <input *ngIf="decree==DecreeEnum.ND_61" type="text" nz-input
+                        [value]="validateForm.value.PositionCoefficientStr_61" disabled="true" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandScapePrice_{{decree}}">Đơn giá đất ở
+                    <span class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="(validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_RIENG_LE && decree==DecreeEnum.ND_99) ? contentPpvTpl10: contentPpvTpl3"
+                        [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24" class="form-control-disabled">
+                    <ng-container *ngIf="validateForm.value.LandScapePrice_99!=undefined && decree==DecreeEnum.ND_99">{{
+                        validateForm.value.LandPriceItemValue_99 |
+                        number:'0.0-2':'de-DE' }}
+                        đ/m² x {{ validateForm.value.PositionCoefficientStr_99 }}
+                        <span
+                            *ngIf="(validateForm.value.LandPriceRefinement_99 && validateForm.value.ExceedingLimitDeep) || (validateFormRawValue.LandPriceRefinement_99 && validateFormRawValue.ExceedingLimitDeep)">x
+                            ((100% - {{
+                            validateForm.value.LandPriceRefinement_99 ? (validateForm.value.LandPriceRefinement_99 |
+                            number:'0.0-2':'de-DE') : (validateFormRawValue.LandPriceRefinement_99 |
+                            number:'0.0-2':'de-DE')
+                            }}%) / 100)</span>
+                        <span
+                            *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_RIENG_LE && decree==DecreeEnum.ND_99 && validateForm.value.LandscapeLocation_99==1">
+                            x <span>{{ validateForm.value.Width < 3 ? 1 : 1.2 }}</span></span>
+
+                            = {{
+                            validateForm.value.LandScapePrice_99 | number: '0.0-2':'de-DE'}} đ/m²</ng-container>
+
+                    <ng-container *ngIf="validateForm.value.LandScapePrice_34!=undefined && decree==DecreeEnum.ND_34">{{
+                        validateForm.value.LandPriceItemValue_34 |
+                        number:'0.0-2':'de-DE' }}
+                        đ/m² x {{ validateForm.value.PositionCoefficientStr_34 }}
+                        <span
+                            *ngIf="(validateForm.value.LandPriceRefinement_34 && validateForm.value.ExceedingLimitDeep) || (validateFormRawValue.LandPriceRefinement_34 && validateFormRawValue.ExceedingLimitDeep)">x
+                            ((100% - {{
+                            validateForm.value.LandPriceRefinement_34 ? (validateForm.value.LandPriceRefinement_34 |
+                            number:'0.0-2':'de-DE') : (validateFormRawValue.LandPriceRefinement_34 |
+                            number:'0.0-2':'de-DE')
+                            }}%) / 100)</span>
+                        = {{
+                        validateForm.value.LandScapePrice_34 | number: '0.0-2':'de-DE'}} đ/m²</ng-container>
+
+                    <ng-container *ngIf="validateForm.value.LandScapePrice_61!=undefined && decree==DecreeEnum.ND_61">{{
+                        validateForm.value.LandPriceItemValue_61 |
+                        number:'0.0-2':'de-DE' }}
+                        đ/m² x {{ validateForm.value.PositionCoefficientStr_61 }}
+                        <span
+                            *ngIf="(validateForm.value.LandPriceRefinement_61 && validateForm.value.ExceedingLimitDeep) || (validateFormRawValue.LandPriceRefinement_61 && validateFormRawValue.ExceedingLimitDeep)">x
+                            ((100% - {{
+                            validateForm.value.LandPriceRefinement_61 ? (validateForm.value.LandPriceRefinement_61 |
+                            number:'0.0-2':'de-DE') : (validateFormRawValue.LandPriceRefinement_61 |
+                            number:'0.0-2':'de-DE')
+                            }}%) / 100)</span>
+                        = {{
+                        validateForm.value.LandScapePrice_61 | number: '0.0-2':'de-DE'}} đ/m²</ng-container>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>
+<ng-template #contentPpvTpl3>
+    <app-shared-popover [cs]="3">
+    </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl4>
+    <app-shared-popover [cs]="4">
+    </app-shared-popover>
+</ng-template>
+<ng-template #contentPpvTpl10>
+    <app-shared-popover [cs]="10">
+    </app-shared-popover>
+</ng-template>

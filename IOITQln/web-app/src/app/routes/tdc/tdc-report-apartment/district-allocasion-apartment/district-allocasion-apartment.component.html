@@ -1,0 +1,42 @@
+<div nz-row>
+    <div nz-span>
+        <a nz-button nzType="link" (click)="addRow()">
+            <span nz-icon nzType="plus-circle"></span>
+            Thêm mới
+        </a>
+    </div>
+</div>
+<div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+        <div class="card-body">
+            <st #tableItemRef [data]="districtAllocasionApartment" (change)="tableItemRefChange($event)"
+                [columns]="columnsItem" [size]="'small'" [loading]="loading" [widthMode]="{ type: 'strict' }"
+                [page]="{ front: false }">
+                <ng-template st-row="DistrictHeader" type="title"><span class="danger-star">*</span>&nbsp;Quận/huyện
+                </ng-template>
+                <ng-template st-row="ActualNumberHeader" type="title">Số lượng thực tế quan lý<span class="danger-star">*</span>
+                </ng-template>
+                <ng-template st-row="DistrictId" let-item let-index="index" nzWidth="500px">
+                    <nz-select *ngIf="item.edit" nzAllowClear name="DistrictName" id="DistrictName" nzPlaceHolder=""
+                        class="width-40" [ngModel]="item.DistrictId" [nzShowSearch]="true" [nzDropdownMatchSelectWidth]=false
+                        (ngModelChange)="onSelect(index,$event)" [ngModelOptions]="{ standalone: true }"
+                        [ngClass]="item.submit && !item.DistrictId ? 'danger-st-row' : ''">
+                        <nz-option *ngFor="let i of district_allocasion_apartment_data; let idx = index" [nzLabel]="i.Name"
+                            [nzValue]="i.Id" [nzDisabled]="i.disabled">
+                        </nz-option>
+                    </nz-select>
+                    <ng-container *ngIf="!item.edit">{{ item.DistrictName }}</ng-container>
+                </ng-template>
+                <ng-template st-row="ActualNumber" let-item let-index="index">
+                    <input
+                        nz-input
+                        *ngIf="item.edit" [ngModel]="item.ActualNumber"
+                        [ngClass]="item.submit && !item.ActualNumber ? 'danger-st-row' : ''"
+                        (ngModelChange)="tableItemRef.setRow(index, { ActualNumber: $event })"
+                        [ngModelOptions]="{ standalone: true }"/>
+                    <ng-container *ngIf="!item.edit">{{ item.ActualNumber }}</ng-container>
+                </ng-template>
+            </st>
+        </div>
+    </div>
+</div>

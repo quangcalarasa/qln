@@ -1,0 +1,58 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Title" nzRequired>Tên hướng dẫn sử dụng</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Tên biểu mẫu!">
+            <input nz-input formControlName="Title" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Type" nzRequired>Loại hướng dẫn sử dụng</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <nz-select formControlName="Type" name="Type" id="Type" [nzPlaceHolder]="'Chọn nhóm biểu mẫu'"
+                [nzShowSearch]="true">
+                <nz-option *ngFor="let i of dataModuleSystem | keyvalue; let idx = index" [nzLabel]="i.value"
+                    [nzValue]="i.key">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6">Ghi chú</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <textarea formControlName="Note" nz-input rows="2"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Attactment" nzRequired>File đính kèm</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <nz-upload nzName="Attactment" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload">
+                <button nz-button type="button">
+                    <span nz-icon nzType="upload"></span>
+                    Click to Upload
+                </button>
+            </nz-upload>
+            <div class="ant-upload-list-item-info box-file-upload" *ngIf="validateForm.value.Attactment">
+                <div class="ant-upload-span">
+                    <span class="ant-upload-list-item-name">
+                        <i nz-icon nzType="paper-clip" nzTheme="outline"></i>
+                        <a href="javascript:void(0)" (click)="downloadFile(validateForm.value.Attactment)">{{
+                            validateForm.value.Attactment }}</a>
+                    </span>
+                    <span class="ant-upload-list-item-card-actions" (click)="removeAttactment()">
+                        <i nz-icon nzType="delete" nzTheme="outline"></i>
+                    </span>
+                </div>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

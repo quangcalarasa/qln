@@ -1,0 +1,45 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Code" nzRequired>Mã phường/xã</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Mã phường/xã!">
+            <input nz-input formControlName="Code" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Name" nzRequired>Tên phường/xã</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Tên phường/xã!">
+            <input nz-input formControlName="Name" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="ProvinceId" nzRequired>Tỉnh/thành phố</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa chọn Tỉnh/thành phố!">
+            <nz-select formControlName="ProvinceId" name="ProvinceId" id="ProvinceId"
+                [nzPlaceHolder]="'Chọn tỉnh/thành phố'" [nzShowSearch]="true"
+                (ngModelChange)="[districtByProvinceId()]">
+                <nz-option *ngFor="let i of data_province; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="DistrictId" nzRequired>Quận/huyện</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa chọn Quận/huyện!">
+            <nz-select formControlName="DistrictId" name="DistrictId" id="DistrictId"
+                [nzPlaceHolder]="'Chọn quận/huyện'" [nzShowSearch]="true">
+                <nz-option *ngFor="let i of data_district_filter; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

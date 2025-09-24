@@ -1,0 +1,41 @@
+<form (ngSubmit)="onSubmit()" #myForm="ngForm" style="margin: 10px">
+  <input type="file" (change)="onFileChange($event)" name="file" accept=".xlsx, .xls" />
+  <button nz-button nzType="primary" type="submit">Thêm dữ liệu</button>
+</form>
+<div class="table-bct">
+  <table #groupingTable Data="data">
+    <thead>
+      <th>Từ tháng</th>
+      <th>Đến tháng</th>
+      <th>Số tiền</th>
+      <th>Đã nộp</th>
+      <th>Người thực hiện</th>
+      <th>Ngày thực hiện</th>
+      <th>Hoạt động gần nhất</th>
+      <th>Số tiền còn nợ</th>
+      <th>Số tiền trước thuế</th>
+      <th>Tiền VAT</th>
+      <th>Đã nộp về sở</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data">
+        <td class="text-center">{{ item.DateStart | date: 'dd/MM/yyyy' }}</td>
+        <td class="text-center">{{ item.DateEnd | date: 'dd/MM/yyyy' }}</td>
+        <td  style="text-align: right">{{ item.Price | number: '0.0-2':'de-DE' }}</td>
+
+        <td class="text-center">
+          <input type="checkbox" [checked]="item.Check" />
+        </td>
+        <td class="text-center">{{ item.Executor }}</td>
+        <td class="text-center">{{ item.Date | date: 'dd/MM/yyyy' }}</td>
+        <td class="text-center">{{ item.NearestActivities }}</td>
+        <td  style="text-align: right">{{ item.PriceDiff | number: '0.0-2':'de-DE' }}</td>
+        <td  style="text-align: right">{{ item.AmountExclude | number: '0.0-2':'de-DE' }}</td>
+        <td  style="text-align: right">{{ item.VATPrice | number: '0.0-2':'de-DE' }}</td>
+        <td class="text-center">
+          <input type="checkbox" [checked]="item.CheckPayDepartment" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,69 @@
+<form nz-form [formGroup]="validateForm" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Header">Tiêu đề email</nz-form-label>
+                <input nz-input formControlName="Header" type="text"  />
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="From">Ngày gửi email từ</nz-form-label>
+                <input nz-input formControlName="From" type="date" max="9999-12-31" />
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="To">Ngày gửi email đến</nz-form-label>
+                <input nz-input formControlName="To" type="date" max="9999-12-31" />
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+<div class="card-custom">
+    <div class="card-header">
+        <ng-container [ngTemplateOutlet]="nzExtra"></ng-container>
+    </div>
+
+    <div class="card-body">
+        <st #tableRef [data]="data" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'"
+            [loading]="loading" [ps]="paging.page_size" [total]="paging.item_count"
+            [widthMode]="{ type: 'strict',strictBehavior:'truncate' }" [page]="{front:false}">
+        </st>
+    </div>
+</div>
+
+<ng-template #nzExtra>
+    <div nz-row>
+        <div nz-col [nzSm]="24" [nzMd]="6">
+            <h3 class="title-table">
+                <i nz-icon nzType="arrow-left" nzTheme="outline" (click)="onBack()"></i>
+                Email đã gửi
+            </h3>
+        </div>
+
+        <div nz-col [nzSm]="24" [nzMd]="24" style="text-align: right;">
+            <form class="hidden-mobile table-form" nz-form [nzLayout]="'inline'">
+                <nz-form-item>
+                    <nz-form-control>
+                        <ng-template #inputClearTpl>
+                            <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
+                                (click)="search()"></i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button type="submit" (click)="searchData()">
+                            <i nz-icon nzType="search" nzTheme="outline"></i>
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+
+            <button nz-button nzType="text" nzTooltipTitle="Làm mới" nz-tooltip (click)="reset()">
+                <i nz-icon nzType="reload" nzTheme="outline"></i>
+            </button>
+        </div>
+    </div>
+</ng-template>

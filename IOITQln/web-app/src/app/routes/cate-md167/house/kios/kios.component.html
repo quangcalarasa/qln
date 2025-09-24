@@ -1,0 +1,47 @@
+<div nz-row>
+    <div nz-span>
+        <a nz-button nzType="link" (click)="addOrUpdate()">
+            <span nz-icon nzType="plus-circle"></span>
+            Thêm thông tin Kios
+        </a>
+    </div>
+</div>
+<div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+        <div class="card-body">
+            <st #tableItemRef [data]="data" [columns]="columnsItem" [size]="'small'" [loading]="loading"
+                [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+                <ng-template st-row="HouseNumberHeader" type="title"><span class="danger-star">*</span>&nbsp;Tên Kios
+                </ng-template>
+                <ng-template st-row="UseFloorPbHeader" type="title"><span class="danger-star">*</span>&nbsp;Diện tích sử
+                    dụng sàn chung
+                    <span class="danger-star">*</span>
+                </ng-template>
+                <ng-template st-row="UseFloorPrHeader" type="title"><span class="danger-star">*</span>&nbsp;Diện tích sử
+                    dụng sàn riêng
+                </ng-template>
+                <ng-template st-row="KiosStatusNameHeader" type="title"><span class="danger-star">*</span>&nbsp;Trạng
+                    thái<span class="danger-star">*</span>
+                </ng-template>
+                <ng-template st-row="NoteHeader" type="title"><span class="danger-star">*</span>&nbsp;Ghi chú<span
+                        class="danger-star">*</span>
+                </ng-template>
+                <ng-template st-row="HouseNumber" let-item let-index="index">
+                    <ng-container>{{ item.HouseNumber }}</ng-container>
+                </ng-template>
+                <ng-template st-row="UseFloorPb" let-item let-index="index">
+                    <ng-container>{{ item.UseFloorPb }}</ng-container>
+                </ng-template>
+                <ng-template st-row="UseFloorPr" let-item let-index="index">
+                    <ng-container>{{ item.UseFloorPr }}</ng-container>
+                </ng-template>
+                <ng-template st-row="KiosStatusName" let-item let-index="index">
+                    <ng-container>{{ item.KiosStatusName }}</ng-container>
+                </ng-template>
+                <ng-template st-row="Note" let-item let-index="index">
+                    <ng-container>{{ item.Note }}</ng-container>
+                </ng-template>
+            </st>
+        </div>
+    </div>
+</div>

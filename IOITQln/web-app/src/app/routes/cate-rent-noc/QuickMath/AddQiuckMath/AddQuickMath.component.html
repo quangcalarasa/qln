@@ -1,0 +1,91 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px">
+  <div >
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzRequired>
+        <span>Loại hệ số</span>
+      </nz-form-label>
+    <nz-radio-group formControlName="Type"> 
+      <label nz-radio nzValue="1">Hệ số VAT</label>
+      <label nz-radio nzValue="2">Hệ số lương cơ bản</label>
+      <label nz-radio nzValue="3">Giá chuẩn</label>
+      <label nz-radio nzValue="4">Hệ số thời điểm bố trí</label>
+    </nz-radio-group>
+  </nz-form-item>
+</div>
+  <div nz-row [nzGutter]="16">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired nzFor="DoApply">Ngày áp dụng</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input type="date" max="9999-12-31" formControlName="DoApply" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Value" nzRequired>
+          <span>Giá trị</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input type="text" nz-input formControlName="Value" currencyMask [options]="{ precision: 2 }" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+</div>
+<div style="margin: 15px;">
+  <button nz-button type="button" [nzType]="'primary'" (click)="getView()">Xem trước</button>
+</div>
+<div *ngIf="ViewData" >
+  <table #groupingTable  class="table-bct" style="width: 100% !important;">
+    <thead>
+      <th>STT</th>
+      <th>Số hợp đồng</th>
+      <th>Tên tầng</th>
+      <th>Hệ số cũ</th>
+      <th>Giá cũ</th>
+      <th>Hệ số mới</th>
+      <th>Giá mới</th>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of ViewData ; let i = index ">
+        <tr *ngFor="let item of data.data ; let firstChild = first">
+          <td *ngIf="firstChild" class="text-center" [attr.rowspan]="data.data.length">{{ i + 1 }}</td>
+          <td *ngIf="firstChild" class="text-center" [attr.rowspan]="data.data.length">{{data.Key}}</td>
+          <td class="text-center" >{{item.AreaName}}</td>
+          <td class="text-center" [attr.rowspan]="data.data.length"  *ngIf="validateForm.value.Type == 2 && firstChild">{{item.Ktlcb | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center" [attr.rowspan]="data.data.length"  *ngIf="validateForm.value.Type == 1 && firstChild">{{item.VAT | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center" [attr.rowspan]="data.data.length"  *ngIf="validateForm.value.Type == 3 && firstChild">{{item.StandardPrice | number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center" [attr.rowspan]="data.data.length"  *ngIf="validateForm.value.Type == 4 && firstChild">{{item.Ktdbt | number: '0.0-2':'de-DE'}}</td>
+          <td>{{item.PriceAfterDiscount | number: '0.0-2':'de-DE' }}</td>
+          <td *ngIf="firstChild" class="text-center" [attr.rowspan]="data.data.length">{{validateForm.value.Value | number: '0.0-2':'de-DE' }}</td>
+          <td class="text-center" *ngIf="validateForm.value.Type == 2">{{genValue(item.PriceAfterDiscount,item.Ktlcb )| number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center" *ngIf="validateForm.value.Type == 1">{{genValue(item.PriceAfterDiscount, item.VAT)| number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center" *ngIf="validateForm.value.Type == 3">{{genValue(item.PriceAfterDiscount,item.StandardPrice )| number: '0.0-2':'de-DE'}}</td>
+          <td class="text-center" *ngIf="validateForm.value.Type == 4">{{genValue(item.PriceAfterDiscount, item.Ktdbt)| number: '0.0-2':'de-DE'}}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+</form>
+
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button nz-button nzType="primary"  [disabled]="!validateForm.valid || loading" (click)="showModal()">
+    <span>Thực hiện tính toán nhanh</span>
+  </button>
+</div>
+
+<nz-modal
+[(nzVisible)]="isVisible"
+nzTitle="Cảnh báo"
+(nzOnCancel)="handleCancel()"
+(nzOnOk)="handleOk()"
+[nzOkLoading]="isOkLoading"
+>
+<p *nzModalContent>Bạn chắc chăn sử dụng công cụ tính nhanh với hệ số này!!</p>
+</nz-modal>

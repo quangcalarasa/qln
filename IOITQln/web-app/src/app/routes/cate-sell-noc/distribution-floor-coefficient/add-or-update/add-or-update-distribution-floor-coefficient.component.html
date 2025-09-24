@@ -1,0 +1,125 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DecreeType1Id" nzRequired>Nghị định áp dụng cho biên
+                    bản</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Nghị định áp dụng cho biên bản!">
+                    <nz-select nzAllowClear formControlName="DecreeType1Id" name="DecreeType1Id" id="DecreeType1Id"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of decree_type1_data | keyvalue; let idx = index" [nzLabel]="i.value"
+                            [nzValue]="i.key">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DecreeType2Id">Văn bản pháp luật liên
+                    quan</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear formControlName="DecreeType2Id" name="DecreeType2Id" id="DecreeType2Id"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of decree_type2_data; let idx = index" [nzLabel]="i.Code"
+                            [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="MezzanineCoefficient">Hệ số tầng lửng</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="MezzanineCoefficient" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="FlatCoefficient">Hệ số nhà chung cư</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="FlatCoefficient" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- <div nz-col [nzSpan]="12">
+            <nz-form-label [nzSpan]="24" nzFor="ApplyMezzanineCoefficient"></nz-form-label>
+            <nz-form-control [nzSpan]="24">
+                <label nz-checkbox formControlName="ApplyMezzanineCoefficient">
+                    <span>
+                        Áp dụng hệ số tầng lửng
+                    </span>
+                </label>
+            </nz-form-control>
+        </div> -->
+    </div>
+    <div nz-row class="row-title">
+        <div nz-col [nzMd]="6">
+            <span class="title">Bảng phân bổ các tầng</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <div class="card-body">
+                <st #tableItemRef [data]="validateForm.value.distributionFloorCoefficientDetails"
+                    (change)="tableItemRefChange($event)" [columns]="columnsItem" [size]="'small'" [loading]="loading"
+                    [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+                    <ng-template st-row="floorTpl" let-item let-index="index">
+                        <nz-select nzAllowClear [nzShowSearch]="true" class="width-sm" [ngModel]="item.NumberFloor"
+                            [ngModelOptions]="{ standalone: true }" [disabled]="true">
+                            <nz-option *ngFor="let i of number_floor_data | keyvalue; let idx = index"
+                                [nzLabel]="i.value" [nzValue]="i.key">
+                            </nz-option>
+                        </nz-select>
+                    </ng-template>
+                    <ng-template st-row="value1Tpl" let-item let-index="index">
+                        <input nz-input [ngModel]="item.Value1" class="text-center"
+                            (ngModelChange)="tableItemRef.setRow(index, { Value1: $event })"
+                            [ngModelOptions]="{ standalone: true }" type="text" currencyMask [options]="{ precision: 2, min: 0 }" />
+                    </ng-template>
+                    <ng-template st-row="value2Tpl" let-item let-index="index">
+                        <input nz-input [ngModel]="item.Value2" class="text-center"
+                            (ngModelChange)="tableItemRef.setRow(index, { Value2: $event })"
+                            [ngModelOptions]="{ standalone: true }" type="text" currencyMask [options]="{ precision: 2, min: 0 }" />
+                    </ng-template>
+                    <ng-template st-row="value3Tpl" let-item let-index="index">
+                        <input nz-input [ngModel]="item.Value3" class="text-center"
+                            (ngModelChange)="tableItemRef.setRow(index, { Value3: $event })"
+                            [ngModelOptions]="{ standalone: true }" type="text" currencyMask [options]="{ precision: 2, min: 0 }" />
+                    </ng-template>
+                    <ng-template st-row="value4Tpl" let-item let-index="index">
+                        <input nz-input [ngModel]="item.Value4" class="text-center"
+                            (ngModelChange)="tableItemRef.setRow(index, { Value4: $event })"
+                            [ngModelOptions]="{ standalone: true }" type="text" currencyMask [options]="{ precision: 2, min: 0 }" />
+                    </ng-template>
+                    <ng-template st-row="value5Tpl" let-item let-index="index">
+                        <input nz-input [ngModel]="item.Value5" class="text-center"
+                            (ngModelChange)="tableItemRef.setRow(index, { Value5: $event })"
+                            [ngModelOptions]="{ standalone: true }" type="text" currencyMask [options]="{ precision: 2, min: 0 }" />
+                    </ng-template>
+                    <ng-template st-row="value6Tpl" let-item let-index="index">
+                        <input nz-input [ngModel]="item.Value6" class="text-center"
+                            (ngModelChange)="tableItemRef.setRow(index, { Value6: $event })"
+                            [ngModelOptions]="{ standalone: true }" type="text" currencyMask [options]="{ precision: 2, min: 0 }" />
+                    </ng-template>
+                </st>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

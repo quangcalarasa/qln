@@ -1,0 +1,93 @@
+<div style="margin-left: 20px;" >
+  <form nz-form [formGroup]="validateForm"  (ngSubmit)="submitForm()"  style="padding-bottom: 30px;">
+    <p style="font-size: 25px; font-weight: bold;">Hệ thống giao tiếp và trao đổi dữ liệu với công dân</p>
+    <nz-form-label [nzSpan]="6" nzFor="FullName" nzRequired>Họ tên</nz-form-label>
+    <nz-form-item>
+      <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="fullNameErrorTpl">
+        <input nz-input formControlName="FullName" />
+        <ng-template #fullNameErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">Chưa nhập Họ tên!</ng-container>
+          <ng-container *ngIf="control.hasError('minlength')">Họ tên từ 6 ký tự trở lên!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-label [nzSpan]="6" nzFor="Phone" nzRequired>Số điện thoại</nz-form-label>
+    <nz-form-item>
+      <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="phoneNameErrorTpl">
+        <input nz-input formControlName="Phone" />
+        <ng-template #phoneNameErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">Chưa nhập Số điện thoại!</ng-container>
+          <ng-container *ngIf="control.hasError('pattern')">Số điện thoại không hợp lệ!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-label [nzSpan]="6" nzFor="Code" nzRequired>Mã căn cước công dân</nz-form-label>
+    <nz-form-item>
+      <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="codeErrorTpl">
+        <input nz-input formControlName="Code" />
+        <ng-template #codeErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">Chưa nhập Mã định danh!</ng-container>
+          <ng-container *ngIf="control?.hasError('minlength')">Mã định danh từ 9 ký tự trở lên!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-label [nzSpan]="6" nzFor="Email">Email</nz-form-label>
+    <nz-form-item>
+      <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="emailNameErrorTpl">
+        <input nz-input formControlName="Email" />
+        <ng-template #emailNameErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('email')">Email không hợp lệ!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="">Loại hỗ trợ</nz-form-label>
+    <nz-form-item>
+      <nz-radio-group formControlName="SupportType"> 
+        <label nz-radio nzValue="1">Nộp hồ sơ thuê nhà</label>
+        <label nz-radio nzValue="2">Nộp hồ sơ mua nhà</label>
+        <label nz-radio nzValue="3">Đơn kiến nghị</label>
+        <label nz-radio nzValue="4">Nội dung yêu cầu khác</label>
+      </nz-radio-group>
+    </nz-form-item>
+  
+    <nz-form-label [nzSpan]="6" nzFor="Content" nzRequired>Nội dung</nz-form-label>
+      <nz-form-item>
+        <nz-form-control [nzSpan]="14">
+          <textarea formControlName="Content" nz-input rows="2"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-label [nzSpan]="6" nzFor="File" nzRequired>File đính kèm</nz-form-label>
+    <nz-form-item>
+      <nz-form-control [nzSpan]="14">
+          <nz-upload nzName="File" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload">
+              <button nz-button type="button">
+                  <span nz-icon nzType="upload"></span>
+                  Tải file đính kèm
+              </button>
+          </nz-upload>
+          <div class="ant-upload-list-item-info box-file-upload" *ngIf="validateForm.value.File">
+              <div class="ant-upload-span">
+                  <span class="ant-upload-list-item-name">
+                      <i nz-icon nzType="paper-clip" nzTheme="outline"></i>
+                      <a href="javascript:void(0)">{{
+                          validateForm.value.File }}</a>
+                  </span>
+                  <span class="ant-upload-list-item-card-actions" (click)="removeAttactment()">
+                      <i nz-icon nzType="delete" nzTheme="outline"></i>
+                  </span>
+              </div>
+          </div>
+      </nz-form-control>
+  </nz-form-item>
+
+
+  <div class="drawer-footer">
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Gửi yêu cầu
+    </button>
+</div>

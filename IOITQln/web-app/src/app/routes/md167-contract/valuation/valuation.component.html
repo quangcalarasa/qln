@@ -1,0 +1,65 @@
+<div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="24">Danh sách thẩm định giá</nz-form-label>
+        </nz-form-item>
+    </div>
+</div>
+<div nz-row>
+    <div nz-span>
+        <a nz-button nzType="link" (click)="addRow()">
+            <span nz-icon nzType="plus-circle"></span>
+            Thêm mới
+        </a>
+    </div>
+</div>
+<div nz-row>
+    <div nz-span>
+        <div class="card-body">
+            <st #tableItemRef [data]="valuations" (change)="tableItemRefChange($event)" [columns]="columnsItem"
+                [size]="'small'" [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+                <ng-template st-row="unitValuationTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Đơn vị thẩm
+                    định giá
+                </ng-template>
+                <ng-template st-row="attactmentTitle" type="title"><span class="danger-star"></span>&nbsp;Chứng thư thẩm
+                    định giá
+                </ng-template>
+                <ng-template st-row="dateEffectTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Ngày có hiệu
+                    lực của chứng thư
+                </ng-template>
+
+                <ng-template st-row="unitValuationTpl" let-item let-index="index">
+                    <input *ngIf="item.edit" nz-input [ngModel]="item.UnitValuation"
+                        (ngModelChange)="tableItemRef.setRow(index, { UnitValuation: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.UnitValuation }}</ng-container>
+                </ng-template>
+                <ng-template st-row="attactmentTpl" let-item let-index="index">
+                    <nz-upload *ngIf="item.edit" nzName="Attactment" [nzShowUploadList]="false"
+                        [nzBeforeUpload]="beforeUpload" (click)="idxRow=index">
+                        <button nz-button type="button">
+                            <span nz-icon nzType="upload"></span>
+                            Tải file chứng thư
+                        </button>
+                    </nz-upload>
+                    <ng-container>&nbsp;&nbsp;&nbsp;
+                        <span class="text-truncate width-md d-inline-block" style="vertical-align: middle;">
+                            <a *ngIf="item.Attactment" href="javascript:void(0)" (click)="downloadFile(item.Attactment)">{{
+                                item.Attactment }}</a>
+                        </span>
+                    </ng-container>
+                </ng-template>
+                <ng-template st-row="dateEffectTpl" let-item let-index="index">
+                    <input *ngIf="item.edit"
+                        [ngClass]="item.submit && (item.DateEffect == undefined || item.DateEffect=='') ? 'danger-st-row' : ''"
+                        nz-input type="date" max="9999-12-31" [ngModel]="item.DateEffect"
+                        (ngModelChange)="tableItemRef.setRow(index, { DateEffect: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.DateEffect | date: 'dd/MM/yyyy' }}</ng-container>
+                </ng-template>
+            </st>
+        </div>
+    </div>
+</div>

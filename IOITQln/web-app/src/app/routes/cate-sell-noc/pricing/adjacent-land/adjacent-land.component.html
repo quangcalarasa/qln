@@ -1,0 +1,50 @@
+<div nz-span>
+    <a nz-button nzType="link" (click)="addRow()">
+        <span nz-icon nzType="plus-circle"></span>
+        Thêm bản ghi
+    </a>
+</div>
+<div class="card-body">
+    <st #tableItemRef [data]="data" (change)="tableItemRefChange($event)" [columns]="columnsItem" [size]="'small'"
+        [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+        <ng-template st-row="decreeHeader" type="title"><span
+                class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Nghị định
+        </ng-template>
+        <ng-template st-row="termApplyHeader" type="title"><span
+                class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Điều
+        </ng-template>
+        <ng-template st-row="areaHeader" type="title"><span
+                class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;DT đất liền kề
+        </ng-template>
+        <ng-template st-row="functionHeader" type="title"><span
+                class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Chức năng
+        </ng-template>
+
+        <ng-template st-row="decreeTpl" let-item let-index="index">
+            <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                [ngClass]="item.submit && !item.DecreeType1Id ? 'danger-st-row' : ''" [ngModel]="item.DecreeType1Id"
+                (ngModelChange)="[tableItemRef.setRow(index, { DecreeType1Id: $event }), item.TermApply=undefined]"
+                [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                <nz-option *ngFor="let i of decreeMaps; let idx = index" [nzLabel]="i.DecreeType1Name"
+                    [nzValue]="i.DecreeType1Id"> </nz-option>
+            </nz-select>
+        </ng-template>
+        <ng-template st-row="termApplyTpl" let-item let-index="index">
+            <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                [ngClass]="item.submit && !item.TermApply ? 'danger-st-row' : ''" [ngModel]="item.TermApply"
+                (ngModelChange)="tableItemRef.setRow(index, { TermApply: $event })"
+                [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                <nz-option
+                    *ngFor="let i of termApply_data | keyvalue | filterTermApplyByDecree: item.DecreeType1Id : TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE; let idx = index"
+                    [nzLabel]="i.value" [nzValue]="i.key"> </nz-option>
+            </nz-select>
+        </ng-template>
+        <ng-template st-row="areaTpl" let-item let-index="index">
+            <input *ngIf="item.edit" type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                [ngClass]="item.submit && !item.PrivateArea ? 'danger-st-row' : ''" [ngModel]="item.PrivateArea"
+                (ngModelChange)="tableItemRef.setRow(index, { PrivateArea: $event })"
+                [ngModelOptions]="{ standalone: true }" />
+            <ng-container *ngIf="!item.edit">{{ item.PrivateArea }}</ng-container>
+        </ng-template>
+    </st>
+</div>

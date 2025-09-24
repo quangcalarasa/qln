@@ -1,0 +1,475 @@
+<nz-form nz-form [formGroup]="validateForm" (ngSubmit)="getDataBCT22ByCode()" style="padding-bottom: 30px">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="CodeHd">Mã hợp đồng</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input formControlName="CodeHd" class="width-60" Disabled="true" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Code">Mã định danh</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input formControlName="Code" class="width-60" Disabled="true" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="CustomerName">Tên khách hàng</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input formControlName="CustomerName" class="width-60" Disabled="true" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-col [nzSpan]="12">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="24" nzFor="DiscountCoefficientId" nzRequired>Hệ số giảm giá</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Chưa chọn hệ số giảm giá!">
+        <nz-select
+          nzAllowClear
+          formControlName="DiscountCoefficientId"
+          name="DiscountCoefficientId"
+          id="DiscountCoefficientId"
+          nzPlaceHolder=""
+          [nzShowSearch]="true"
+        >
+          <nz-option *ngFor="let i of dataDiscountCoefficient; let idx = index" [nzLabel]="i.Value" [nzValue]="i.Id"> </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-row [nzGutter]="40">
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="UserCreate">Người tạo</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input formControlName="UserCreate" class="width-60" Disabled="true" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DateCreate">Ngày tạo</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input formControlName="DateCreate" class="width-60" Disabled="true" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DateUpdate">Người cập nhập</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input formControlName="DateUpdate" class="width-60" Disabled="true" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="UserUpdate">Ngày cập nhập</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input formControlName="UserUpdate" class="width-60" Disabled="true" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-form>
+
+<div>
+  <button nz-button [nzType]="'primary'" (click)="HDSD()">Hướng dẫn sử dụng</button>
+  <div
+    *ngIf="
+      data_GetWorkSheet1753.length > 0 && date1753_Start <= dataRentFile[0].DateHD && dataRentFile[0].DateHD < date1753_End && use == true
+    "
+  >
+    <img src="Img_BCT/QD_1753.png" alt="Quyết định 1753" width="70%" height="400" />
+  </div>
+  <div
+    *ngIf="data_GetWorkSheet09.length > 0 && date09_Start <= dataRentFile[0].DateHD && dataRentFile[0].DateHD < date09_End && use == true"
+  >
+    <img src="Img_BCT/QD_09.png" alt="Quyết định 09" width="70%" height="400" />
+  </div>
+  <div *ngIf="data_GetWorkSheet22.length > 0 && dataRentFile[0].DateHD >= date22_Start && use == true">
+    <img src="Img_BCT/QD_22.png" alt="Quyết định 22" width="70%" height="400" />
+  </div>
+</div>
+
+<div nz-row [nzGutter]="24">
+  <ng-container *ngFor="let item of dataDefaultGroup; let z = index">
+    <div nz-col [nzSpan]="12">
+      <label style="font-weight: bold; margin-top: 150px"> {{ getTypeCoefficientName(item.CoefficientId) }} :</label>
+      <div nz-row>
+        <div nz-span>
+          <a nz-button nzType="link" (click)="addRow(z)">
+            <span nz-icon nzType="plus-circle"></span>
+            Thêm mới {{ getTypeCoefficientName(item.CoefficientId) }}
+          </a>
+        </div>
+      </div>
+      <table #groupingTable class="table-bct">
+        <thead>
+          <th>Ngày áp dụng</th>
+          <th>Nội dung</th>
+          <th>Giá trị</th>
+          <th>Đơn vị tính</th>
+          <th colspan="2">Chức năng</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of item.childDefaultCoefficients; let i = index">
+            <td>
+              <input *ngIf="row.edit" nz-input type="date" max="9999-12-31" [(ngModel)]="row.DoApply" />
+              <ng-container *ngIf="!row.edit">{{ row.DoApply | date: 'dd/MM/yyyy' }}</ng-container>
+            </td>
+            <td>
+              <nz-select
+                *ngIf="row.edit"
+                [nzShowSearch]="true"
+                [(ngModel)]="row.defaultCoefficientsId"
+                (ngModelChange)="genValue($event, row)"
+                style="width: 150px"
+              >
+                <nz-option *ngFor="let i of item.defaultCoefficients; let idx = index" [nzLabel]="i.Content" [nzValue]="i.Id"></nz-option>
+              </nz-select>
+              <nz-select
+                *ngIf="!row.edit"
+                [nzShowSearch]="true"
+                [(ngModel)]="row.defaultCoefficientsId"
+                style="width: 150px"
+                disabled="true"
+              >
+                <nz-option *ngFor="let i of item.defaultCoefficients; let idx = index" [nzLabel]="i.Content" [nzValue]="i.Id"></nz-option>
+              </nz-select>
+            </td>
+            <td>
+              <input
+                *ngIf="row.edit"
+                nz-input
+                style="width: 50px"
+                type="text"
+                [(ngModel)]="row.Value"
+                currencyMask
+                [options]="{ precision: 2 }"
+              />
+              <ng-container *ngIf="!row.edit">{{ row.Value | number: '0.0-2':'de-DE' }}</ng-container>
+            </td>
+            <td>
+              <nz-select *ngIf="row.edit" [nzPlaceHolder]="'Chọn đơn vị tính'" [nzShowSearch]="true" [(ngModel)]="row.UnitPriceId">
+                <nz-option *ngFor="let i of unit_price_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"></nz-option>
+              </nz-select>
+              <nz-select
+                *ngIf="!row.edit"
+                [nzPlaceHolder]="'Chọn đơn vị tính'"
+                [nzShowSearch]="true"
+                [(ngModel)]="row.UnitPriceId"
+                disabled="true"
+              >
+                <nz-option *ngFor="let i of unit_price_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"></nz-option>
+              </nz-select>
+            </td>
+            <td>
+              <button *ngIf="row.edit" nzType="primary" nz-button (click)="saveRow(z, i)">Lưu</button>
+              <button *ngIf="!row.edit" nz-button (click)="edit(z, i)">
+                <span nz-icon nzType="edit" nzTheme="outline"></span>
+              </button>
+            </td>
+            <td>
+              <button *ngIf="!row.edit" nz-button (click)="delete(z, i)">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+              </button>
+              <button *ngIf="row.edit" nz-button (click)="cancle(z, i)"> Hủy </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button *ngIf="flag" nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="getDataBCT22ByCode()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>
+<div style="margin: 15px;">
+  <button nz-button [nzType]="'primary'" (click)="button()"> Phát hành bảng chiết tính</button>
+  <button nz-button [nzType]="'primary'" *ngIf="Check"  (click)="CaculatorBCT()"> Tính toán lại bảng chiết tính</button>
+</div>
+
+
+
+<div *ngIf="data_GetWorkSheet1753.length > 0 && date1753_Start <= dataRentFile[0].DateHD && dataRentFile[0].DateHD < date1753_End">
+  <label style="background-color: rgb(128, 158, 214); font-weight: bold"> Theo quyết định 1753</label>
+  <table #groupingTable Data="data" class="table-bct">
+    <thead>
+      <tr>
+        <th rowspan="2">STT</th>
+        <th rowspan="2">Tầng</th>
+        <th rowspan="1" colspan="2">Loại nhà</th>
+        <th rowspan="1" colspan="2">Cấp nhà</th>
+        <th rowspan="2">Diện tích sử dụng(m2)</th>
+        <th rowspan="2">Thời điểm bố trí</th>
+        <th rowspan="2">Giá chuẩn</th>
+        <ng-container *ngFor="let item of dataDefaultGroup">
+          <th rowspan="1" *ngIf="item.childDefaultCoefficients.length > 0">{{ getTypeCoefficientName(item.CoefficientId) }} </th>
+        </ng-container>
+        <th rowspan="2">Tổng K</th>
+        <th rowspan="2">Giá thuê (1m2/tháng) chưa bao gồm thuế VAT</th>
+        <th rowspan="2">Giá thuê /tháng</th>
+        <th rowspan="2">Số tiền giảm giá</th>
+        <th rowspan="2">Giá thuê /tháng sau khi giảm</th>
+        <th rowspan="2">Đơn vị</th>
+        <th rowspan="2">Ghi chú</th>
+        <th rowspan="2">Chức năng</th>
+      </tr>
+      <tr>
+        <th rowspan="1">Phố</th>
+        <th rowspan="1">BT</th>
+        <th rowspan="1">Cấp nhà</th>
+        <th rowspan="1">Hạng nhà</th>
+        <ng-container *ngFor="let item of dataDefaultGroup">
+          <th rowspan="1" *ngIf="item.childDefaultCoefficients.length > 0">{{ getConversionCode1753(item.CoefficientId) }}</th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data_GetWorkSheet1753; let idx = index; let firstChild = first">
+        <td class="text-center"> {{ idx + 1 }}</td>
+        <td class="text-center">{{ item.AreaName }}</td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center">{{ item.Level }}</td>
+        <td class="text-center"></td>
+        <td class="text-center">{{ item.PrivateArea | number: '0.0-2':'de-DE' }}</td>
+        <td class="text-center"> {{ item.DateCoefficient | date: 'dd/MM/yyyy' }}</td>
+        <td class="text-center">{{ item.StandardPrice | number: '0.0-2':'de-DE' }}</td>
+        <ng-container *ngFor="let itemChild of item.chilDfs">
+          <td class="text-center">{{ itemChild.Value | number: '0.0-2':'de-DE' }}</td>
+        </ng-container>
+        <td class="text-center">{{ item.TotalK | number: '0.0-2':'de-DE' }}</td>
+        <td style="text-align: right">{{ item.PriceRent1m2 | number: '0.0-2':'de-DE' }}</td>
+        <td  style="text-align: right">{{ item.PriceRent | number: '0.0-2':'de-DE' }}</td>
+        <td class="text-center">{{ item.PolicyReduction | number: '0.0-2':'de-DE' }}</td>
+        <td  style="text-align: right">{{ item.PriceAfterDiscount | number: '0.0-2':'de-DE' }}</td>
+        <td class="text-center">{{ item.Unit }}</td>
+        <td class="text-center">{{ item.Note }}</td>
+        <td class="text-center" *ngIf="firstChild" [attr.rowspan]="data_GetWorkSheet1753.length">
+          <button *ngIf="check == true" nz-button [nzType]="'primary'" (click)="dowload(data_GetWorkSheet1753)"> Xuất biểu mẫu </button>
+          <button *ngIf="check == false" disabled nz-button [nzType]="'primary'" (click)="dowload(data_GetWorkSheet1753)">
+            Xuất biểu mẫu
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="data_GetWorkSheet09.length > 0 && date09_Start <= dataRentFile[0].DateHD && dataRentFile[0].DateHD < date09_End">
+  <label style="background-color: rgb(128, 158, 214); font-weight: bold"> Theo quyết định 09</label>
+  <table #groupingTable Data="data" class="table-bct">
+    <thead>
+      <tr>
+        <th rowspan="2">STT</th>
+        <th rowspan="2">Tầng</th>
+        <th rowspan="1" colspan="2">Loại nhà</th>
+        <th rowspan="1" colspan="2">Cấp nhà</th>
+        <th rowspan="2">Diện tích sử dụng(m2)</th>
+        <th rowspan="2">Thời điểm bố trí</th>
+        <th rowspan="2">Giá chuẩn</th>
+        <ng-container *ngFor="let item of dataDefaultGroup">
+          <th rowspan="1" *ngIf="item.childDefaultCoefficients.length > 0" rowspan="1">{{ getTypeCoefficientName(item.CoefficientId) }}</th>
+        </ng-container>
+        <th rowspan="2">Tổng K</th>
+        <th rowspan="2">Giá thuê (1m2/tháng) chưa bao gồm thuế VAT</th>
+        <th rowspan="2">Giá thuê /tháng</th>
+
+        <th rowspan="2">Số tiền giảm giá</th>
+        <th rowspan="2">Giá thuê /tháng sau khi giảm</th>
+        <th rowspan="2">Đơn vị</th>
+        <th rowspan="2">Ghi chú</th>
+        <th rowspan="2">Chức năng</th>
+      </tr>
+      <tr>
+        <th rowspan="1">Phố</th>
+        <th rowspan="1">BT</th>
+        <th rowspan="1">Cấp nhà</th>
+        <th rowspan="1">Hạng nhà</th>
+        <ng-container *ngFor="let item of dataDefaultGroup">
+          <th rowspan="1" *ngIf="item.childDefaultCoefficients.length > 0" rowspan="1">{{ getConversionCode09(item.CoefficientId) }}</th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data_GetWorkSheet09; let idx = index; let firstChild = first">
+        <td class="text-center"> {{ idx + 1 }}</td>
+        <td class="text-center">{{ item.AreaName }}</td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
+        <td class="text-center">{{ item.Level }}</td>
+        <td class="text-center"></td>
+        <td class="text-center">{{ item.PrivateArea | number: '0.0-2':'de-DE' }}</td>
+        <td class="text-center"> {{ item.DateCoefficient | date: 'dd/MM/yyyy' }}</td>
+        <td class="text-center">{{ item.StandardPrice | number: '0.0-2':'de-DE' }}</td>
+        <ng-container *ngFor="let itemChild of item.chilDfs">
+          <td class="text-center">{{ itemChild.Value | number: '0.0-2':'de-DE' }}</td>
+        </ng-container>
+        <td class="text-center">{{ item.TotalK | number: '0.0-2':'de-DE' }}</td>
+        <td style="text-align: right">{{ item.PriceRent1m2 | number: '0.0-2':'de-DE' }}</td>
+        <td  style="text-align: right">{{ item.PriceRent | number: '0.0-2':'de-DE' }}</td>
+        <td class="text-center">{{ item.PolicyReduction | number: '0.0-2':'de-DE' }}</td>
+        <td  style="text-align: right">{{ item.PriceAfterDiscount | number: '0.0-2':'de-DE' }}</td>
+        <td class="text-center">{{ item.Unit }}</td>
+        <td class="text-center">{{ item.Note }}</td>
+        <td class="text-center" *ngIf="firstChild" [attr.rowspan]="data_GetWorkSheet09.length">
+          <button *ngIf="check == true" nz-button [nzType]="'primary'" (click)="dowload(data_GetWorkSheet09)"> Xuất biểu mẫu </button>
+          <button *ngIf="check == false" disabled nz-button [nzType]="'primary'" (click)="dowload(data_GetWorkSheet09)">
+            Xuất biểu mẫu
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="data22.length > 0 && dataRentFile[0].DateHD >= date22_Start && flagAdd == false" style="overflow-x: auto">
+  <label style="background-color: rgb(128, 158, 214); font-weight: bold"> Theo quyết định 22 (Giống QĐ 1753, thêm Khoảng thời gian) </label>
+  <table #groupingTable Data="data" class="table-bct">
+    <thead>
+      <tr>
+        <th rowspan="2">STT</th>
+        <th rowspan="2">Tầng</th>
+        <th rowspan="2">Loại nhà</th>
+        <th rowspan="2" >Cấp nhà</th>
+        <th rowspan="2">Diện tích sử dụng(m2)</th>
+        <th rowspan="2">Thời điểm bố trí</th>
+        <th rowspan="2">Giá chuẩn</th>
+        <th rowspan="2">Lương cơ bản</th>
+        <th rowspan="1">Thời điểm bố trí sử dụng </th>
+        <ng-container *ngFor="let item of chilDfs[0]">
+          <th rowspan="1"  rowspan="1">{{ getTypeCoefficientName(item.CoefficientId) }}</th>
+        </ng-container>
+        <th rowspan="2">Tổng K</th>
+        <th rowspan="2">Giá thuê (1m2/tháng)</th>
+        <th rowspan="2">Giá thuê /tháng</th>
+        <th rowspan="2">Số tiền giảm giá</th>
+        <th rowspan="2">Giá thuê /tháng sau khi giảm</th>
+        <th rowspan="2">Đơn vị</th>
+        <th rowspan="2">Chức năng</th>
+      </tr>
+      <tr>
+        <th rowspan="1">K.TDBT</th>
+        <ng-container *ngFor="let item of chilDfs[0]">
+          <th rowspan="1"  rowspan="1">{{ getConversionCode(item.CoefficientId) }}</th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let itemData of data22; let idx = index">
+        <tr *ngFor="let item of itemData.Bcts; let firstChild = first; let lastChild = last">
+          <td *ngIf="firstChild" class="text-center" [attr.rowspan]="itemData.Bcts.length">{{ idx + 1 }}</td>
+          <td class="text-center">{{ item.AreaName }}</td>
+          <td *ngIf="firstChild" class="text-center" [attr.rowspan]="itemData.Bcts.length">{{itemData.TypeBlockName}}</td>
+          <td class="text-center">{{ item.Level }}</td>
+          <td class="text-center">{{ item.PrivateArea | number: '0.0-2':'de-DE' }}</td>
+          <td class="text-center"> {{ item.DateCoefficient | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ item.StandardPrice | number: '0.0-2':'de-DE' }}</td>
+          <td class="text-center">{{ item.Ktlcb | number: '0.0-2':'de-DE' }}</td>
+          <td class="text-center">{{ item.Ktdbt | number: '0.0-2':'de-DE' }}</td>
+          <ng-container *ngFor="let itemChild of item.chilDfs">
+            <td class="text-center">{{ itemChild.Value | number: '0.0-2':'de-DE' }}</td>
+          </ng-container>
+          <td class="text-center">{{ item.TotalK | number: '0.0-2':'de-DE' }}</td>
+          <td style="text-align: right">{{ item.PriceRent1m2 | number: '0.0-2':'de-DE' }}</td>
+          <td  style="text-align: right">{{ item.PriceRent | number: '0.0-2':'de-DE' }}</td>
+          <td class="text-center">{{ item.PolicyReduction | number: '0.0-2':'de-DE' }}</td>
+          <td  style="text-align: right">{{ item.PriceAfterDiscount | number: '0.0-2':'de-DE' }}</td>
+          <td *ngIf="firstChild" class="text-center" [attr.rowspan]="itemData.Bcts.length">{{ item.Unit }}</td>
+
+          <td *ngIf="firstChild" class="text-center" [attr.rowspan]="itemData.Bcts.length">
+            <button *ngIf="check == true" nz-button [nzType]="'primary'" (click)="dowload22(idx)"> Xuất biểu mẫu </button>
+            <button *ngIf="check == false" disabled nz-button [nzType]="'primary'" (click)="dowload22(idx)"> Xuất biểu mẫu </button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+
+<div *ngIf="data_GetWorkSheet22.length > 0 && dataRentFile[0].DateHD >= date22_Start && flagAdd == true" style="overflow-x: auto"> 
+  <label style="background-color: rgb(128, 158, 214); font-weight: bold"> Theo quyết định 22 (Giống QĐ 1753, thêm Khoảng thời gian)</label>
+  <table #groupingTable Data="data" class="table-bct">
+    <thead>
+      <tr>
+        <th rowspan="2">STT</th>
+        <th rowspan="2">Tầng</th>
+        <th rowspan="2" >Loại nhà</th>
+        <th rowspan="2">Cấp nhà</th>
+        <th rowspan="2">Diện tích sử dụng(m2)</th>
+        <th rowspan="2">Thời điểm bố trí</th>
+        <th rowspan="2">Giá chuẩn</th>
+        <th rowspan="2">Lương cơ bản</th>
+        <th rowspan="1">Thời điểm bố trí sử dụng </th>
+        <ng-container *ngFor="let item of dataDefaultGroup">
+          <th rowspan="1" *ngIf="item.childDefaultCoefficients.length > 0" rowspan="1">{{ getTypeCoefficientName(item.CoefficientId) }}</th>
+        </ng-container>
+        <th rowspan="2">Tổng K</th>
+        <th rowspan="2">Giá thuê (1m2/tháng) chưa bao gồm thuế VAT</th>
+        <th rowspan="2">Giá thuê /tháng</th>
+        <th rowspan="2">Số tiền giảm giá</th>
+        <th rowspan="2">Giá thuê /tháng sau khi giảm</th>
+        <th rowspan="2">Đơn vị</th>
+        <th rowspan="2">Chức năng</th>
+      </tr>
+      <tr>
+        <th rowspan="1">Phố</th>
+        <th rowspan="1">BT</th>
+        <th rowspan="1">Cấp nhà</th>
+        <th rowspan="1">Hạng nhà</th>
+        <th rowspan="1">K.TDBT</th>
+        <ng-container *ngFor="let item of dataDefaultGroup">
+          <th rowspan="1" *ngIf="item.childDefaultCoefficients.length > 0" rowspan="1">{{ getConversionCode(item.CoefficientId) }}</th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let itemData of data_GetWorkSheet22; let idx = index">
+        <tr *ngFor="let item of itemData.bCTs; let firstChild = first; let lastChild = last">
+          <td *ngIf="firstChild" class="text-center" [attr.rowspan]="itemData.bCTs.length">{{ idx + 1 }}</td>
+          <td class="text-center">{{ item.AreaName }}</td>
+          <td class="text-center"></td>
+          <td class="text-center">{{ item.Level }}</td>
+          <td class="text-center">{{ item.PrivateArea | number: '0.0-2':'de-DE' }}</td>
+          <td class="text-center"> {{ item.DateCoefficient | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ item.StandardPrice | number: '0.0-2':'de-DE' }}</td>
+          <td class="text-center">{{ item.Ktlcb | number: '0.0-2':'de-DE' }}</td>
+          <td class="text-center">{{ item.Ktdbt | number: '0.0-2':'de-DE' }}</td>
+          <ng-container *ngFor="let itemChild of item.chilDfs">
+            <td class="text-center">{{ itemChild.Value | number: '0.0-2':'de-DE' }}</td>
+          </ng-container>
+          <td class="text-center">{{ item.TotalK | number: '0.0-2':'de-DE' }}</td>
+          <td style="text-align: right">{{ item.PriceRent1m2 | number: '0.0-2':'de-DE' }}</td>
+          <td  style="text-align: right">{{ item.PriceRent | number: '0.0-2':'de-DE' }}</td>
+          <td class="text-center">{{ item.PolicyReduction | number: '0.0-2':'de-DE' }}</td>
+          <td  style="text-align: right">{{ item.PriceAfterDiscount | number: '0.0-2':'de-DE' }}</td>
+          <td *ngIf="firstChild" class="text-center" [attr.rowspan]="itemData.bCTs.length">{{ item.Unit }}</td>
+
+          <td *ngIf="firstChild" class="text-center" [attr.rowspan]="itemData.bCTs.length">
+            <button *ngIf="check == true" nz-button [nzType]="'primary'" (click)="dowload22(idx)"> Xuất biểu mẫu </button>
+            <button *ngIf="check == false" disabled nz-button [nzType]="'primary'" (click)="dowload22(idx)"> Xuất biểu mẫu </button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div> 
+
+

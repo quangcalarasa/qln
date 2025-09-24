@@ -1,0 +1,17 @@
+<div class="card-custom">
+  <div class="card-body">
+    <st
+      #tableRef
+      [data]="data"
+      (change)="tableRefChange($event)"
+      [columns]="columns"
+      [size]="'small'"
+      [loading]="loading"
+      [ps]="paging.page_size"
+      [total]="paging.item_count"
+      [widthMode]="{ type: 'strict', strictBehavior: 'truncate' }"
+      [page]="{ front: false }"
+    >
+    </st>
+  </div>
+</div>

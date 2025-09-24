@@ -1,0 +1,85 @@
+<nz-form nz-form [formGroup]="validateForm" style="padding-bottom: 30px">
+  <div nz-row class="row-title">
+    <div nz-col [nzMd]="5">
+      <span class="title">Bộ lọc</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DateStart">
+          <span>Từ ngày</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input type="date" max="9999-12-31" formControlName="StartDate" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DateStart">
+          <span>Đến ngày</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input type="date" max="9999-12-31" formControlName="EndDate" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="CustomerName">Khách hàng</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input formControlName="CustomerName" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Phone">Số điện thoại</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input formControlName="Phone" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="IdentityCode">CCCD/CMND</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input formControlName="IdentityCode" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="4">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Sex">Giới tính</nz-form-label>
+        <nz-select nzAllowClear formControlName="Sex" name="Sex" id="Sex" nzPlaceHolder=""
+          [nzShowSearch]="true">
+          <nz-option *ngFor="let i of typeSexData | keyvalue ; let idx = index" [nzLabel]="i.value" [nzValue]="i.key"> </nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-form>
+
+<div class="m-md">
+  <button nz-button nzType="primary" (click)="getDataReport()" *ngIf="!loading">
+    <span nz-icon nzType="search"></span>
+    Lập báo cáo
+  </button>
+  <button nz-button nzType="primary" *ngIf="loading" style="cursor: not-allowed;">
+    <span nz-icon nzType="loading"></span>
+    Lập báo cáo
+  </button>
+  <button nz-button nzType="primary" (click)="dowloadReport()">
+    <span nz-icon nzType="download"></span>
+    Xuất báo cáo</button>
+    <div class="d-inline-block" style="float: right; height: 32px;">
+      <span style="line-height: 45px;">Tổng số bản ghi: {{ rowData$.length }}</span>
+    </div>
+</div>
+
+<div class="mt-md mb-xxl" style="height: 500px;">
+  <ag-grid-angular style="width: 100%; height: 100%" class="ag-theme-alpine" [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef" [loadingOverlayComponent]="loadingOverlayComponent" [rowData]="rowData$" [sideBar]="sideBar"
+    [autoGroupColumnDef]="autoGroupColumnDef" [animateRows]="false" (gridReady)="onGridReady($event)"></ag-grid-angular>
+</div>

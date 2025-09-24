@@ -1,0 +1,85 @@
+<div class="card-custom">
+  <div class="card-header">
+    <ng-container [ngTemplateOutlet]="nzExtra"></ng-container>
+  </div>
+
+  <div class="card-body">
+    <st #tableRef [data]="data" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'"
+      [loading]="loading" [ps]="paging.page_size" [total]="paging.item_count"
+      [widthMode]="{ type: 'strict', strictBehavior: 'truncate' }" [page]="{ front: false }">
+      <ng-template st-row="typeblock-column" let-item let-index="index">
+        <span>{{ genTypeBlock(item.TypeBlockId) }}</span>
+      </ng-template>
+      <ng-template st-row="priceClmn" let-item let-index="index"> <span>{{ item.Price | number:'0.0-2':'de-DE' }}</span>
+      </ng-template>
+    </st>
+  </div>
+</div>
+
+<ng-template #nzExtra>
+  <div nz-row>
+    <div nz-col [nzSm]="24" [nzMd]="6">
+      <h3 class="title-table">
+        <i nz-icon nzType="arrow-left" nzTheme="outline" (click)="onBack()"></i>
+        Danh sách Cấu hình giá thuê
+      </h3>
+    </div>
+
+    <div nz-col [nzSm]="24" [nzMd]="18" style="text-align: right">
+      <form class="hidden-mobile table-form" nz-form [nzLayout]="'inline'">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzSuffix]="inputClearTpl">
+              <input nz-input [maxlength]="30" [width]="160" [(ngModel)]="query.txtSearch" name="no"
+                placeholder="Nhập từ khoá" id="no" />
+            </nz-input-group>
+            <ng-template #inputClearTpl>
+              <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle" *ngIf="query.txtSearch"
+                (click)="[(query.txtSearch = undefined)]"></i>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control>
+            <nz-select nzAllowClear [nzDropdownMatchSelectWidth]="false" [(ngModel)]="query.type" name="type" id="type"
+              [nzPlaceHolder]="'Loại căn'" [nzShowSearch]="true">
+              <nz-option *ngFor="let i of typehouse_data; let idx = index" [nzLabel]="i.Name"
+                [nzValue]="i.Id"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button type="submit" (click)="searchData()">
+              <i nz-icon nzType="search" nzTheme="outline"></i>
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+
+      <nz-select (ngModelChange)="paingSize($event)" [(ngModel)]="paging.page_size" style="width: 60px; margin: 10px">
+        <nz-option nzValue="5" nzLabel="5"></nz-option>
+        <nz-option nzValue="10" nzLabel="10"></nz-option>
+        <nz-option nzValue="20" nzLabel="20"></nz-option>
+        <nz-option nzValue="50" nzLabel="50"></nz-option>
+      </nz-select>
+
+      <button nz-button nzType="text" nzTooltipTitle="Làm mới" nz-tooltip (click)="reset()">
+        <i nz-icon nzType="reload" nzTheme="outline"></i>
+      </button>
+      <button nz-button nzType="primary" nz-button (click)="import()">
+        <i nz-icon nzType="import" nzTheme="outline"></i>
+        Import Bảng giá thuê
+      </button>
+      <button nz-button nzType="primary" nz-button (click)="csvExport()">
+        <i nz-icon nzType="export" nzTheme="outline"></i>
+        Export Bảng giá thuê
+      </button>
+      <button nz-button *ngIf="role.Create" nzType="primary" nz-button (click)="addOrUpdate()">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        Thêm mới
+      </button>
+    </div>
+  </div>
+</ng-template>

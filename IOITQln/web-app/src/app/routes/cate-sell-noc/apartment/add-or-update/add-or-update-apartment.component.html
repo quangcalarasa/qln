@@ -1,0 +1,267 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px; position: relative;">
+  <div *ngIf="isViewRecord" class="disabled-form-info"></div>
+  <app-cate-apartment-range [validateForm]="validateForm" [block]="block"
+    (eventEmitter)="block=$event"></app-cate-apartment-range>
+
+  <app-cate-apartment-info [validateForm]="validateForm"></app-cate-apartment-info>
+
+  <ng-container *ngIf="block">
+    <app-apartment-apartment-detail #apartmentDetailComponent [data]="validateForm.value.apartmentDetails"
+      [typeApartmentDetail]="typeApartmentDetailEnum.APARTMENT" [decreeMaps]="block.decreeMaps"
+      [typeReportApply]="block.TypeReportApply" [floorApplyPriceChange]="block.FloorApplyPriceChange"
+      [specialCase]="block.SpecialCase" [parentTypeReportApply]="block.ParentTypeReportApply"
+      [levelBlockMaps]="block.levelBlockMaps"
+      (eventEmitter)="changeLevelBlockMaps($event)"></app-apartment-apartment-detail>
+  </ng-container>
+
+  <div nz-row [nzGutter]="24"
+    [ngStyle]="{ display: levelblocks.length > 0 || validateForm.value.blockMaintextureRaties.length > 0 ? 'flex' : 'none' }">
+    <div nz-col [nzSpan]="24">
+      <app-block-maintexture-rate-tbl #mainTextureRateTblComponent [levelblocks]="levelblocks"
+        [typeReportApply]="validateForm.value.TypeReportApply"
+        [parentTypeReportApply]="validateForm.value.ParentTypeReportApply"
+        [blockMaintextureRaties]="validateForm.value.blockMaintextureRaties"></app-block-maintexture-rate-tbl>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <div nz-col [nzMd]="6" class="d-inline-block">
+        <span class="note-drawer">{{ validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU ||
+          validateForm.value.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU ? 'Thông tin
+          diện tích đất ở của chung cư' : 'Diện tích đất ở' }}</span>
+      </div>
+      <div nz-col [nzMd]="18" class="d-inline-block"
+        *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU || validateForm.value.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+        <nz-form-control [nzSpan]="24" class="d-inline-block">
+          <label class="pl-lg" nz-checkbox formControlName="ApprovedForConstructionOnTheApartmentYardLandscape">
+            <span>Trường hợp được công nhận phần xây dựng riêng trên sân chung của chung cư</span>
+          </label>
+        </nz-form-control>
+      </div>
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="LandscapeAreaValue1">
+          {{ validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU ||
+          validateForm.value.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU ? 'Tổng diện tích đất ở sử dụng
+          chung (Nhà nhiều hộ)' : (validateForm.value.TypeReportApply !=
+          TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG ? 'Diện tích đất sử dụng chung' : 'Tổng DT đất ở xây dựng
+          (Đã bán)') }}
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" *ngIf="validateForm.value.TypeReportApply != TypeReportApplyEnum.NHA_HO_CHUNG">
+          <input type="text" currencyMask [options]="{ precision: 2 }" nz-input formControlName="LandscapeAreaValue1"
+            (ngModelChange)="calcLandscapeAreaValue()" />
+        </nz-form-control>
+        <nz-form-control [nzSpan]="24" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG"
+          class="form-control-disabled pl-sm">
+          <span>{{ validateForm.value.LandscapeAreaValue1 | number:'0.0-2':'de-DE' }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="LandscapeAreaValue2">
+          {{ validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU ||
+          validateForm.value.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU ? 'Tổng diện tích đất sử dụng
+          riêng
+          (Nhà riêng lẻ)' : (validateForm.value.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG
+          ? 'Diện tích đất sử dụng riêng' : 'Tổng DT đất ở xây dựng (Bán bổ sung)') }}
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU || validateForm.value.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+          <div *ngIf="validateForm.value.TypeReportApply != TypeReportApplyEnum.NHA_HO_CHUNG && validateForm.value.TypeReportApply != TypeReportApplyEnum.NHA_CHUNG_CU" class="disabled-form-control-info"></div>
+          <input type="text" currencyMask [options]="{ precision: 2 }" nz-input formControlName="LandscapeAreaValue2"
+            (ngModelChange)="calcLandscapeAreaValue()" />
+        </nz-form-control>
+        <nz-form-control [nzSpan]="24" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG"
+          class="form-control-disabled pl-sm">
+          <span>{{ validateForm.value.LandscapeAreaValue2 | number:'0.0-2':'de-DE' }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="8" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="LandscapeAreaValue3">Diện tích đất chung (sân chung phân bổ)</nz-form-label>
+        <nz-form-control [nzSpan]="24" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG"
+          class="form-control-disabled pl-sm">
+          <span>{{ validateForm.value.LandscapeAreaValue3 | number:'0.0-2':'de-DE' }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="LandscapeAreaValue" nzRequired>
+          {{ validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU ||
+          (validateForm.value.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG &&
+          validateForm.value.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU) ? 'Tổng diện tích đất của chung
+          cư'
+          : 'Diện tích đất ở' }}
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Diện tích đất ở!"
+          *ngIf="validateForm.value.TypeReportApply != TypeReportApplyEnum.NHA_HO_CHUNG">
+          <input type="text" currencyMask [options]="{ precision: 2 }" nz-input formControlName="LandscapeAreaValue" />
+        </nz-form-control>
+        <nz-form-control [nzSpan]="24" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG"
+          class="form-control-disabled pl-sm">
+          <span>{{ validateForm.value.LandscapeAreaValue | number:'0.0-2':'de-DE' }}</span>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!-- <div nz-col [nzSpan]="8">
+      <nz-form-label [nzSpan]="24" nzFor="InLimit40Percent"></nz-form-label>
+      <nz-form-control [nzSpan]="24">
+        <label nz-checkbox formControlName="InLimit40Percent">
+          <span> Trong hạn mức (40%) </span>
+        </label>
+      </nz-form-control>
+    </div> -->
+    <!-- <div nz-col [nzSpan]="8">
+      <nz-form-label [nzSpan]="24" nzFor="OutLimit100Percent"></nz-form-label>
+      <nz-form-control [nzSpan]="24">
+        <label nz-checkbox formControlName="OutLimit100Percent">
+          <span> Ngoài hạn mức (100%) </span>
+        </label>
+      </nz-form-control>
+    </div> -->
+  </div>
+  <ng-container *ngIf="block">
+    <app-apartment-apartment-land-detail #apartmentLandDetailComponent [data]="validateForm.value.apartmentLandDetails"
+      [typeApartmentLandDetail]="typeApartmentLandDetailEnum.APARTMENT"
+      [typeReportApply]="validateForm.value.TypeReportApply" [parentTypeReportApply]="block.ParentTypeReportApply"
+      (eventEmitter)="changeApartmentLandDetail($event)"></app-apartment-apartment-land-detail>
+  </ng-container>
+
+  <!-- Thông tin diện tích đất liền kề với nhà ở cũ -->
+  <ng-container
+    *ngIf="validateForm.value.Id && validateForm.value.TypeReportApply==TypeReportApplyEnum.NHA_HO_CHUNG && (validateForm.value.SellLandArea || validateForm.value.pricingApartmentLandDetails)">
+    <app-shared-adjacent-land [validateForm]="validateForm"></app-shared-adjacent-land>
+  </ng-container>
+
+  <ng-container
+    *ngIf="block && validateForm.value.TypeReportApply != TypeReportApplyEnum.NHA_CHUNG_CU && validateForm.value.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <span class="note-drawer" style="display: inline-block">Khu đất, thửa đất có hình thể đặc biệt</span>
+        <nz-form-control [nzSpan]="3" style="display: inline-block">
+          <label nz-checkbox [(ngModel)]="block.LandSpecial" [ngModelOptions]="{ standalone: true }" disabled>
+            <span></span>
+          </label>
+        </nz-form-control>
+      </div>
+      <div *ngIf="block.LandSpecial" nz-col [nzSpan]="24">
+        <nz-form-control [nzSpan]="24">
+          <label nz-checkbox [(ngModel)]="block.LandAreaSpecial" [ngModelOptions]="{ standalone: true }" disabled>
+            <span> Có phần diện tích không mặt tiền đường (hẻm) từ 15m2 trở lên </span>
+          </label>
+        </nz-form-control>
+      </div>
+    </div>
+    <div *ngIf="block?.LandSpecial" nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="24" nzFor="LandAreaSpecialS1">S1</nz-form-label>
+          <nz-form-control [nzSpan]="24">
+            <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+              [(ngModel)]="block.LandAreaSpecialS1" [ngModelOptions]="{ standalone: true }" disabled />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="24" nzFor="LandAreaSpecialS2">S2</nz-form-label>
+          <nz-form-control [nzSpan]="24">
+            <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+              [(ngModel)]="block.LandAreaSpecialS2" [ngModelOptions]="{ standalone: true }" disabled />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="24" nzFor="LandAreaSpecialS3">S3</nz-form-label>
+          <nz-form-control [nzSpan]="24">
+            <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+              [(ngModel)]="block.LandAreaSpecialS3" [ngModelOptions]="{ standalone: true }" disabled />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div *ngIf="block?.LandSpecial" nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-control [nzSpan]="24">
+          <label nz-checkbox [(ngModel)]="block.WidthSpecial" [ngModelOptions]="{ standalone: true }" disabled>
+            <span> Phần diện tích có chiều dài lớn gấp nhiều lần so với chiều rộng </span>
+          </label>
+        </nz-form-control>
+      </div>
+    </div>
+    <div *ngIf="block?.LandSpecial" nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="24" nzFor="WidthSpecialS1">S1 (có A = 5R)</nz-form-label>
+          <nz-form-control [nzSpan]="24">
+            <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+              [(ngModel)]="block.WidthSpecialS1" [ngModelOptions]="{ standalone: true }" disabled />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="24" nzFor="WidthSpecialS2">S2 (có 5R < B <=8R)</nz-form-label>
+              <nz-form-control [nzSpan]="24">
+                <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                  [(ngModel)]="block.WidthSpecialS2" [ngModelOptions]="{ standalone: true }" disabled />
+              </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="24" nzFor="WidthSpecialS3">S3 (có C > 8R)</nz-form-label>
+          <nz-form-control [nzSpan]="24">
+            <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+              [(ngModel)]="block.WidthSpecialS3" [ngModelOptions]="{ standalone: true }" disabled />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div *ngIf="block?.LandSpecial" nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="16">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="24" nzFor="LandPositionSpecial">Vị trí đặc biệt của khu đất</nz-form-label>
+          <nz-form-control [nzSpan]="24">
+            <nz-select nzAllowClear [(ngModel)]="block.LandPositionSpecial" [ngModelOptions]="{ standalone: true }"
+              disabled name="LandPositionSpecial" id="LandPositionSpecial" nzPlaceHolder="" [nzShowSearch]="true">
+              <nz-option *ngFor="let i of landpositionspeical_data | keyvalue; let idx = index" [nzLabel]="i.value"
+                [nzValue]="i.key">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="24">Giá đất được tính bằng ... giá đất của đường đó</nz-form-label>
+          <nz-form-control [nzSpan]="24">
+            <input type="text" nz-input value="0.7" disabled="true" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </ng-container>
+</form>
+
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button *ngIf="!isViewRecord" nz-button [nzType]="'primary'"
+    [disabled]="!validateForm.valid || invalidApartmentDetail || invalidApartmentLandDetail || loading"
+    (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>

@@ -1,0 +1,50 @@
+<div style="position: absolute; top: 50%; left: 50%; margin: 0; transform: translate(-50%, -50%)">
+  <!--<div
+    style="position: absolute; display: block; width: 100%; height: 100%; text-align: center; z-index: 1; cursor: not-allowed;">
+    <nz-spin nzTip="Đang xác thực tài khoản..." style="position: relative; top: 45%;" nzSimple
+      [nzSize]="'large'"></nz-spin>
+  </div>-->
+  <form nz-form [formGroup]="validateForm" class="login-form item-form-mgb8" (ngSubmit)="submitForm()"
+    style="margin: auto; padding: 30px; background-color: white; border-radius: 4px">
+    <div style="margin-bottom: 14px; color: #145ecc; font-weight: bold; font-size: 26px; text-align: center">
+      Đăng nhập hệ thống
+    </div>
+    <nz-form-item>
+      <nz-form-control>
+        <nz-form-label nzNoColon="true">Tên đăng nhập</nz-form-label>
+        <nz-input-group nzPrefixIcon="user">
+          <input auto-focus type="text" nz-input formControlName="username" [maxLength]="30"
+            placeholder="Nhập tên đăng nhập" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <nz-form-label nzNoColon="true">Mật khẩu</nz-form-label>
+        <nz-input-group nzPrefixIcon="lock">
+          <input type="password" [minLength]="3" [maxLength]="50" nz-input formControlName="password"
+            placeholder="Mật khẩu" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- <div style="color: #145ecc; text-align: right">
+      <a>Quên mật khẩu</a>
+    </div> -->
+
+    <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">
+      <i *ngIf="!processing; else loading" nz-icon nzType="login" nzTheme="outline"></i>
+      Đăng nhập
+    </button>
+    <!-- <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">
+      <i nz-icon nzType="login" nzTheme="outline"></i>
+      Đăng nhập bằng SSO
+    </button> -->
+
+    <!-- <a href="javascript:void(0)" (click)="loginViaSso()"> Đăng nhập bằng SSO </a> -->
+  </form>
+</div>
+
+<ng-template #loading>
+  <i nz-icon nzType="loading" nzTheme="outline"></i>
+</ng-template>

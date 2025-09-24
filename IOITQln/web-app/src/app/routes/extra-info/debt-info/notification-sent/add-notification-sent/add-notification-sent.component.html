@@ -1,0 +1,46 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="NotificationTitle" nzRequired>Tiêu đề thông báo</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Tiêu đề thông báo!">
+            <input nz-input formControlName="NotificationTitle" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="ContentNotification" nzRequired>Nội dung thông báo</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Nội dung thông báo!">
+            <input nz-input formControlName="ContentNotification" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="TypeNotification" nzRequired>Loại thông báo</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Loại thông báo!">
+            <input nz-input formControlName="TypeNotification" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="SendNotiBy" nzRequired>Loại thông báo</nz-form-label>
+        <nz-radio-group formControlName="SendNotiBy">
+          <label nz-radio nzValue="1">Email</label>
+          <label nz-radio nzValue="2">SMS</label>
+        </nz-radio-group>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzMd]="6" nzFor="DateSend" nzRequired>Ngày gửi thông báo</nz-form-label>
+        <nz-form-control [nzMd]="14" nzHasFeedback [nzErrorTip]="timeReqErrorTpl">
+            <input nz-input type="date" max="9999-12-31" formControlName="DateSend" />
+            <ng-template #timeReqErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Chưa nhập Ngày gửi thông báo!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

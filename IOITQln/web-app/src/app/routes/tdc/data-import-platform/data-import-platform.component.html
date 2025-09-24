@@ -1,0 +1,134 @@
+<nz-tabset [nzSize]="'large'">
+    <nz-tab [nzTitle]="'Thực hiện import'">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-control [nzSpan]="24">
+              <nz-upload [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" [nzDisabled]="loading" *ngIf="!loading">
+                <button nz-button type="button">
+                  <span nz-icon nzType="upload"></span>
+                  Import file
+                </button>
+              </nz-upload>
+              <button nz-button type="button" *ngIf="loading">
+                <span nz-icon nzType="loading"></span>
+                Import file
+              </button>
+              <a nz-button nzType="link" (click)="downloadTemplate()">Tải file mẫu</a>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div class="mb-xxl">
+        <ng-container [ngTemplateOutlet]="tplData"
+          [ngTemplateOutletContext]="{ data: data}">
+        </ng-container>
+      </div>
+    </nz-tab>
+    <nz-tab [nzTitle]="'Lịch sử import'">
+      <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="3">
+            <span class="title">Danh sách import</span>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24" class="p-md">
+        <div nz-col [nzSpan]="16">
+          <st #tableRef [data]="dataImport" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'"
+          [loading]="loading" [ps]="paging.page_size" [total]="paging.item_count"
+          [widthMode]="{ type: 'strict',strictBehavior:'truncate' }" [page]="{front:false}">
+          <ng-template st-row="no-column" let-item let-index="index">
+              <span>{{ ((paging.page - 1) * paging.page_size) + index + 1 }}</span>
+          </ng-template>
+        </st>
+        </div>
+      </div>
+      <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="6">
+            <span class="title">Chi tiết các bản ghi được import</span>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="24">
+        <ng-container [ngTemplateOutlet]="tplData"
+          [ngTemplateOutletContext]="{ data: dataImportDetail}">
+        </ng-container>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+
+  <ng-template #tplData let-data="data">
+    <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzSimple]="true" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: '500vh' }"
+    [nzSimple]="true">
+    <thead>
+      <tr>
+        <th rowspan="2" class="text-center">STT</th>
+        <th rowspan="2" class="text-center">Quận/huyện của dự án</th>
+        <th rowspan="2" class="text-center">Tên dự án/khu dự án</th>
+        <th colspan="3" class="text-center">Địa chỉ nền đất</th>
+        <th rowspan="2" class="text-center">Diện tích</th>
+        <th colspan="2" class="text-center">Kích thước</th>
+        <th rowspan="2" class="text-center">Pháp lý tiếp nhận</th>
+        <th colspan="5" class="text-center">Thời gian</th>
+        <th colspan="3" class="text-center">Phân bổ</th>
+        <th rowspan="2" class="text-center">Thời gian bàn giao nền</th>
+        <th rowspan="2" class="text-center">DVCI bàn giao</th>
+        <th rowspan="2" class="text-center">Trung tâm giao</th>
+        <th rowspan="2" class="text-center">Ghi chú nền đất</th>
+        <th rowspan="2" class="text-center">Trạng thái</th>
+        <th rowspan="2" class="text-center">Ghi chú</th>
+      </tr>
+      <tr>
+        <th rowspan="1" class="text-center">Mã nền</th>
+        <th rowspan="1" class="text-center">Số lô</th>
+        <th rowspan="1" class="text-center">Số nền</th>
+        <th rowspan="1" class="text-center">Dài</th>
+        <th rowspan="1" class="text-center">Rộng</th>
+        <th rowspan="1" class="text-center">Ngày tiếp nhận</th>
+        <th rowspan="1" class="text-center">Tiếp nhận</th>
+        <th rowspan="1" class="text-center">Lý do chưa tiếp nhận</th>
+        <th rowspan="1" class="text-center">Đã nhắc</th>
+        <th rowspan="1" class="text-center">Lý do không tiếp nhận</th>
+        <th rowspan="1" class="text-center">Quyết định</th>
+        <th rowspan="1" class="text-center">Quận/huyện</th>
+        <th rowspan="1" class="text-center">Số lượng</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data;">
+        <td class="text-center">{{ item.Index }}</td>
+        <td class="text-center">{{ item.DistrictProjectName }}</td>
+        <td class="text-center">{{ item.TdcProjectName }}</td>
+        <td class="text-center">{{ item.PlatformTdcName }}</td>
+        <td class="text-center">{{ item.TdcLandName }}</td>
+        <td class="text-center">{{ item.PlatCount }}</td>
+        <td class="text-center">{{ item.TdcPlatformArea | number: '0.0-2': 'de-DE'}}</td>
+        <td class="text-center">{{ item.TdcLength | number: '0.0-2': 'de-DE'}}</td>
+        <td class="text-center">{{ item.TdcWidth | number: '0.0-2': 'de-DE'}}</td>
+        <td class="text-center">{{ item.TypeLegalName }}</td>
+        <td class="text-center">{{ item.ReceptionDate | date: 'dd/MM/yyyy'}}</td>
+        <!-- Qfix -->
+        <!-- <td class="text-center">{{ TypeReceptionName(item.TypeReception) }}</td> -->
+        <td class="text-center">{{ TypeReceptionName(item.ReceptionTime) }}</td>
+
+        <td class="text-center">{{ item.ReasonReceivedYet }}</td>
+        <td class="text-center">{{ item.Reminded }}</td>
+        <td class="text-center">{{ item.ReasonNotReceived }}</td>
+        <td class="text-center">{{ item.TypeDecisionName }}</td>
+        <td class="text-center">{{ item.DistrictName }}</td>
+        <td class="text-center">{{ item.ActualNumber }}</td>
+        <td class="text-center">{{ item.HandOverYear }}</td>
+        <td class="text-center">
+          <span *ngIf="item.HandoverPublic" nz-icon nzType="check" nzTheme="outline"></span>
+        </td>
+        <td class="text-center">
+            <span *ngIf="item.HandoverCenter" nz-icon nzType="check" nzTheme="outline"></span>
+        </td>
+        <td class="text-center">{{ item.Note }}</td>
+        <td>
+          <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+          <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+        </td>
+        <td>{{ item.ErrMsg }}</td>
+      </tr>
+    </tbody>
+    </nz-table>
+  </ng-template>

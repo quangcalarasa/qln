@@ -1,0 +1,97 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    
+    <div nz-row [nzGutter]="24">
+        <div  nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DebtRemindNumber" nzRequired>Số nhắc nợ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <input type="number" nz-input formControlName="DebtRemindNumber" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div  nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Date" nzRequired>Ngày nhắc nợ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <input type="date" nz-input formControlName="Date" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div  nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Code" nzRequired>Mã định danh</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <input type="text" nz-input formControlName="Code" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div  nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="House" nzRequired>Căn nhà</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <input type="text" nz-input formControlName="House" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div  nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Apartment" nzRequired>Căn hộ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <input type="text" nz-input formControlName="Apartment" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div  nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Address" nzRequired>Địa chỉ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <input type="text" nz-input formControlName="Address" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div  nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Owner" nzRequired>Chủ hộ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <input type="text" nz-input formControlName="Owner" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div  nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="SDT" nzRequired>Số điện thoại</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <input type="text" nz-input formControlName="SDT" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        
+        <div  nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Times" nzRequired> Lần nhắc thứ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <input type="number" nz-input formControlName="Times" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div  nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Content" nzRequired>Nội dung nhắc nợ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback>
+                    <textarea formControlName="Content" nz-input rows="2"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

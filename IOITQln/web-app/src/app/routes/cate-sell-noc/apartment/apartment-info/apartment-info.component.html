@@ -1,0 +1,184 @@
+<ng-container [formGroup]="validateForm">
+    <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="6">
+            <span class="title">Thông tin căn hộ</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Code" nzRequired>Mã định danh (Mã căn hộ)</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Mã định danh (Mã căn hộ)!">
+                    <input nz-input formControlName="Code" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Address" nzRequired>Địa chỉ căn hộ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Địa chỉ căn hộ!">
+                    <input nz-input formControlName="Address" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <div nz-row [nzGutter]="24"
+        *ngIf="validateForm.value.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG || (validateForm.value.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG && validateForm.value.ParentTypeReportApply != TypeReportApplyEnum.NHA_HO_CHUNG)">
+        <div nz-col [nzSpan]="24" class="pl0">
+            <div nz-col [nzMd]="6" class="d-inline-block">
+                <span class="note-drawer">Tổng diện tích xây dựng của căn hộ</span>
+            </div>
+            <div nz-col [nzMd]="18" class="d-inline-block"
+                *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU || (validateForm.value.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG && validateForm.value.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU)">
+                <nz-form-control [nzSpan]="24" class="d-inline-block">
+                    <label class="pl-lg" nz-checkbox formControlName="ApprovedForConstructionOnTheApartmentYard">
+                        <span>Trường hợp được công nhận phần xây dựng riêng trên sân chung của chung cư</span>
+                    </label>
+                </nz-form-control>
+            </div>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ConstructionAreaValue1">Tổng diện tích xây dựng sử dụng chung (Nhà
+                    nhiều
+                    hộ)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        formControlName="ConstructionAreaValue1" (ngModelChange)="calcConstructionAreaValue()" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ConstructionAreaValue2">Tổng diện tích xây dựng sử dụng riêng (Nhà
+                    riêng
+                    lẻ)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        formControlName="ConstructionAreaValue2" (ngModelChange)="calcConstructionAreaValue()" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ConstructionAreaValue3">Tổng diện tích xây dựng sân chung được phân
+                    bổ</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        formControlName="ConstructionAreaValue3" (ngModelChange)="calcConstructionAreaValue()" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24"
+        *ngIf="validateForm.value.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG || (validateForm.value.TypeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG && validateForm.value.ParentTypeReportApply != TypeReportApplyEnum.NHA_HO_CHUNG)">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item *ngIf="validateForm.value.TypeReportApply != TypeReportApplyEnum.NHA_HO_CHUNG">
+                <nz-form-label [nzSpan]="24" nzFor="ConstructionAreaValue" nzRequired>Tổng diện tích xây dựng của căn
+                    hộ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Tổng diện tích xây dựng của căn hộ!">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        formControlName="ConstructionAreaValue" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">
+                <nz-form-label [nzSpan]="24" nzFor="ConstructionAreaValue">Tổng diện tích xây dựng của căn
+                    hộ</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        formControlName="ConstructionAreaValue" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16"
+            *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU || validateForm.value.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ConstructionAreaNote">Ghi chú tổng diện tích xây
+                    dựng</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input formControlName="ConstructionAreaNote"
+                        placeholder="Ví dụ: (Đã trừ DT lần THĐD là 16.5 m2)" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <span class="note-drawer">Tổng diện tích sử dụng của căn hộ</span>
+        </div>
+        <div nz-col [nzSpan]="8" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="UseAreaValue1">Tổng diện tích sử dụng chung (Nhà nhiều
+                    hộ)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        formControlName="UseAreaValue1" (ngModelChange)="calcUseAreaValue()" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8" *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="UseAreaValue2">Tổng diện tích sử dụng riêng (Nhà riêng
+                    lẻ)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        formControlName="UseAreaValue2" (ngModelChange)="calcUseAreaValue()" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <div nz-row [nzGutter]="24" *ngIf="validateForm.value.ParentTypeReportApply != TypeReportApplyEnum.NHA_HO_CHUNG">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item *ngIf="validateForm.value.TypeReportApply != TypeReportApplyEnum.NHA_HO_CHUNG">
+                <nz-form-label [nzSpan]="24" nzFor="UseAreaValue" nzRequired>Tổng diện tích sử dụng của căn
+                    hộ</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Tổng diện tích sử dụng của căn hộ!">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        formControlName="UseAreaValue" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">
+                <nz-form-label [nzSpan]="24" nzFor="UseAreaValue">Tổng diện tích sử dụng của căn
+                    hộ</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        formControlName="UseAreaValue" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16"
+            *ngIf="validateForm.value.TypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU || validateForm.value.ParentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="UseAreaNote">Ghi chú tổng diện tích sử dụng</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input formControlName="UseAreaNote"
+                        placeholder="Ví dụ: (Đã trừ DT lần THĐD là 16.5 m2)" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24" *ngIf="validateForm.value.ParentTypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="UseAreaValue">Tổng diện tích sử dụng của căn
+                    hộ (Bán bổ sung)</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input type="text" currencyMask [options]="{ precision: 2 }" nz-input
+                        formControlName="UseAreaValue" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="16">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="UseAreaNote">Ghi chú tổng diện tích sử dụng</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input formControlName="UseAreaNote"
+                        placeholder="Ví dụ: (Đã trừ DT lần THĐD là 16.5 m2)" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-container>

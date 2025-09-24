@@ -1,0 +1,97 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="TypeQD" nzRequired>Thông tư,văn bản,quyết định</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa chọn thông tư">
+      <nz-select
+        formControlName="TypeQD"
+        name="TypeQD"
+        id="TypeQD"
+        [nzPlaceHolder]="'Chưa chọn thông tư'"
+        [nzShowSearch]="true"
+        [nzAllowClear]="true"
+      >
+        <nz-option *ngFor="let i of TypeQD | keyvalue; let idx = index" [nzLabel]="i.value" [nzValue]="i.key"> </nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzMd]="6" nzFor="EffectiveDate" nzRequired>Ngày áp dụng</nz-form-label>
+    <nz-form-control [nzMd]="14" nzHasFeedback [nzErrorTip]="EffectiveDateErrorTpl">
+      <input nz-input type="date" max="9999-12-31" formControlName="EffectiveDate" />
+      <ng-template #EffectiveDateErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Ngày áp dụng</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="TypeBlockId" nzRequired>Loại nhà</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa chọn Loại nhà!">
+      <nz-select
+        formControlName="TypeBlockId"
+        name="TypeBlockId"
+        id="TypeBlockId"
+        [nzPlaceHolder]="'Chọn loại nhà'"
+        [nzShowSearch]="true"
+        [nzAllowClear]="true"
+      >
+        <nz-option *ngFor="let i of typehouse_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="LevelId" nzRequired>Cấp nhà</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa chọn Cấp nhà">
+      <nz-select [nzAllowClear]="true" nzPlaceHolder="" formControlName="LevelId" [nzShowSearch]="true">
+        <nz-option
+          *ngFor="let levelblockmap of levelblockmap_data | keyvalue"
+          [nzValue]="levelblockmap.key"
+          [nzLabel]="levelblockmap.value"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="Price" nzRequired>Giá thuê</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Giá thuê!">
+      <input type="text" nz-input currencyMask formControlName="Price" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="ApartmentType" nzRequired>Đơn vị tính</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa chọn Đơn vị tính!">
+      <nz-select
+        formControlName="UnitPriceId"
+        name="UnitPriceId"
+        id="UnitPriceId"
+        [nzPlaceHolder]="'Chưa chọn Đơn vị tính!'"
+        [nzShowSearch]="true"
+        [nzAllowClear]="true"
+      >
+        <nz-option *ngFor="let i of unit_price_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Ghi chú</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <textarea formControlName="Note" nz-input rows="2"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>

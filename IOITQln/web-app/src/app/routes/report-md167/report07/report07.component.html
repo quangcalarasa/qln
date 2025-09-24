@@ -1,0 +1,174 @@
+<div nz-row>
+    <div nz-col [nzSm]="24" [nzMd]="6">
+        <h3 class="title-table mb-lg">
+            <i nz-icon nzType="arrow-left" nzTheme="outline" (click)="onBack()"></i>
+            Thống kê danh sách thu tiền thuê nhà
+        </h3>
+    </div>
+</div>
+
+<form nz-form [formGroup]="validateForm" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="4">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="FromDate">Từ ngày</nz-form-label>
+                <!-- <nz-date-picker 
+                    style="width: 291.984px"
+                    [nzFormat]="nzFormat"
+                    formControlName="FromDate">
+                </nz-date-picker> -->
+                <input nz-input formControlName="FromDate" type="date" max="9999-12-31" />
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="4">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="ToDate">Đến ngày</nz-form-label>
+                <!-- <nz-date-picker 
+                    style="width: 291.984px"
+                    [nzFormat]="nzFormat"
+                    formControlName="ToDate">
+                </nz-date-picker> -->
+                <input nz-input formControlName="ToDate" type="date" max="9999-12-31" />
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="CustomertID">Tổ chức cá nhân thuê</nz-form-label>
+                <nz-select nzAllowClear formControlName="CustomertID" name="CustomertID" id="CustomertID"
+                    nzPlaceHolder="" [nzShowSearch]="true">
+                    <nz-option *ngFor="let i of lstDelegate; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <!-- <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="HouseCode">Mã nhà</nz-form-label>
+                <input nz-input formControlName="HouseCode" type="text" />
+            </nz-form-item> -->
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="HouseId">Mã căn nhà/Kios</nz-form-label>
+                <nz-form-control class="width-lg text-left">
+                    <nz-select nzAllowClear [nzDropdownMatchSelectWidth]="false" formControlName="HouseId" name="type"
+                        id="type" [nzPlaceHolder]="''" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of house_data; let idx = index" [nzLabel]="i.Address" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DistrictId">Quận/Huyện</nz-form-label>
+                <nz-select nzAllowClear formControlName="DistrictId" name="DistrictId" id="DistrictId" nzPlaceHolder=""
+                    [nzShowSearch]="true" (ngModelChange)="changeDistrict()">
+                    <nz-option *ngFor="let i of lstDistrict; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="WardId">Phường/Xã</nz-form-label>
+                <nz-select nzAllowClear formControlName="WardId" name="WardId" id="WardId" nzPlaceHolder=""
+                    [nzShowSearch]="true" (ngModelChange)="changeWard()">
+                    <nz-option *ngFor="let i of lstWard; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LaneId">Đường</nz-form-label>
+                <nz-select nzAllowClear formControlName="LaneId" name="LaneId" id="LaneId" nzPlaceHolder=""
+                    [nzShowSearch]="true">
+                    <nz-option *ngFor="let i of lstLane; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                    </nz-option>
+                </nz-select>
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+<div class="btn-right">
+    <button nz-button nzType="primary" nz-button (click)="export()">
+        <i nz-icon nzType="export" nzTheme="outline"></i>
+        Xuất File
+    </button>
+    <button nz-button nzType="primary" nz-button (click)="view()">
+        <i *ngIf="!loading" nz-icon nzType="eye" nzTheme="outline"></i>
+        <span *ngIf="loading" nz-icon nzType="loading" nzTheme="outline"></span>
+        Xem dữ liệu
+    </button>
+</div>
+<form style="padding-top: 60px; ">
+    <div style=" overflow-x:auto; border: 1px solid #ddd;">
+        <table #groupingTable Data="dataTable" class="table-bct">
+            <thead>
+                <tr>
+                    <th style="min-width: 50px;" rowspan="2">STT</th>
+                    <th style="min-width: 230px;" rowspan="2">Thông tin người thuê</th>
+                    <th colspan="4">Thông tin nhà, đất</th>
+                    <th colspan="3">Hợp đồng</th>
+                    <th colspan="3">Thông tin nộp tiền</th>
+                    <th style="min-width: 200px;" rowspan="2">Giá thuê theo HĐ</th>
+                    <th style="min-width: 200px;" rowspan="2">Số phải thu</th>
+                    <th style="min-width: 200px;" rowspan="2">Số đã thu</th>
+                    <th style="min-width: 200px;" rowspan="2">Số còn phải thu</th>
+                    <th style="min-width: 200px;" rowspan="2"> Ghi chú</th>
+                </tr>
+                <tr>
+                    <th style="min-width: 200px;" rowspan="1">Số nhà</th>
+                    <th style="min-width: 200px;" rowspan="1">Đường</th>
+                    <th style="min-width: 200px;" rowspan="1">Phường</th>
+                    <th style="min-width: 200px;" rowspan="1">Quận </th>
+                    <th style="min-width: 200px;" rowspan="1">Số</th>
+                    <th style="min-width: 200px;" rowspan="1">Ngày kí HĐ</th>
+                    <th style="min-width: 200px;" rowspan="1">Ngày hiệu lực HĐ</th>
+                    <th style="min-width: 200px;" rowspan="1">Ngày nộp</th>
+                    <th style="min-width: 200px;" rowspan="1">Số hóa đơn</th>
+                    <th style="min-width: 200px;" rowspan="1">Ngày hóa đơn</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr *ngFor="let item of tableData; let idx = index;let firstChild = first; let lastChild = last">
+                    <td class="text-center">{{ idx+1 }}</td>
+                    <td class="text-center">{{ item.CustomerName }}</td>
+                    <td class="text-center">{{ item.HouseNumber }}</td>
+                    <td class="text-center">{{ item.LaneName }}</td>
+                    <td class="text-center">{{ item.WardName }}</td>
+                    <td class="text-center">{{ item.DistrictName }}</td>
+                    <td class="text-center">{{ item.Code }}</td>
+                    <td class="text-center">{{ item.DateSign }}</td>
+                    <td class="text-center">{{ item.DateGroundHandover }}</td>
+                    <td class="text-center">{{ item.DatePayment }}</td>
+                    <td class="text-center">{{ item.BillCode }}</td>
+                    <td class="text-center">{{ item.BillDate }}</td>
+                    <td class="text-right">{{ item.RentCostContract | number: '1.0-0' }}</td>
+                    <td class="text-right">{{ item.Pay | number: '1.0-0' }}</td>
+                    <td class="text-right">{{ item.Paid | number: '1.0-0' }}</td>
+                    <td class="text-right">{{ item.PriceDiff | number: '1.0-0' }}</td>
+                    <td class="text-center">{{ item.Note }}</td>
+                </tr>
+                <tr *ngIf="totalRow">
+                    <td colspan="2" class="text-center">TỔNG</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-right">{{ totalRow.RentCostContract | number: '1.0-0' }}</td>
+                    <td class="text-right">{{ totalRow.Pay | number: '1.0-0' }}</td>
+                    <td class="text-right">{{ totalRow.Paid | number: '1.0-0' }}</td>
+                    <td class="text-right">{{ totalRow.PriceDiff | number: '1.0-0' }}</td>
+                    <td class="text-center"></td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&nbsp;</p>
+    </div>
+</form>

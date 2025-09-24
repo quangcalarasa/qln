@@ -1,0 +1,52 @@
+<div class="mb-xl">
+    <div nz-row>
+        <div nz-span>
+            <a nz-button nzType="link" (click)="addOrUpdate()">
+                <span nz-icon nzType="plus-circle"></span>
+                Thêm mới
+            </a>
+        </div>
+    </div>
+    <div nz-row>
+        <div nz-span>
+            <div class="card-body">
+                <nz-table #nzTable [nzData]="data" nzTableLayout="fixed" [nzScroll]="{ x: '100%' }" nzShowPagination="false">
+                    <thead>
+                        <tr>
+                            <th nzWidth="50px" class="text-center">Stt</th>
+                            <th>Mã hóa đơn</th>
+                            <th class="text-center">Ngày nộp tiền</th>
+                            <th class="text-center">Ngày xuất hóa đơn</th>
+                            <th class="text-right">Số tiền thanh toán</th>
+                            <th>Thanh toán tiền thế chân</th>
+                            <th nzWidth="120px" class="text-center">Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of nzTable.data; let index = index; let first = first;">
+                            <td class="text-center">{{ index + 1 }}</td>
+                            <td><strong>{{ item.ReceiptCode }}</strong></td>
+                            <td class="text-center">{{ item.DateOfPayment | date: 'dd/MM/yyyy' }}</td>
+                            <td class="text-center">{{ item.DateOfReceipt | date: 'dd/MM/yyyy' }}</td>
+                            <td class="text-right">{{ item.Amount | number: '0.0-2':'de-DE' }}</td>
+                            <td>
+                                <span *ngIf="item.PaidDeposit" nz-icon nzType="check-circle" nzTheme="outline"></span>
+                            </td>
+                            <td class="text-center">
+                                <span *ngIf="first" class="point" nz-icon nzType="edit" nzTheme="twotone"
+                                    (click)="addOrUpdate(item)"></span>
+                                <nz-divider *ngIf="first" nzType="vertical"></nz-divider>
+                                <span *ngIf="first" class="point" nz-icon nzType="delete" nzTheme="twotone"
+                                    (click)="confirmDetele(item)"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="close()">Đóng</button>
+</div>

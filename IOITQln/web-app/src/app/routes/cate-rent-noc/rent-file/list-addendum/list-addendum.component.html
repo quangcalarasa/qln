@@ -1,0 +1,16 @@
+<div class="card-body">
+  <st #tableRef [data]="data" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'" [loading]="loading"
+    [ps]="paging.page_size" [total]="paging.item_count" [widthMode]="{ type: 'strict', strictBehavior: 'truncate' }"
+    [page]="{ front: false }">
+    <ng-template st-row="useAreaValueHeader" type="title">
+      <div class="st-title-render-right">
+        <span>Tổng diện tích sử dụng(m2)</span>
+      </div>
+    </ng-template>
+    <ng-template st-row="typeblock-column" let-item let-index="index">
+      <span>{{ genTypeBlock(item.TypeBlockId) }}</span>
+    </ng-template>
+    <ng-template st-row="uavClmn" let-item let-index="index"> <span>{{ item.UseAreaValueCN | number:'0.0-2':'de-DE'
+        }}</span> </ng-template>
+  </st>
+</div>

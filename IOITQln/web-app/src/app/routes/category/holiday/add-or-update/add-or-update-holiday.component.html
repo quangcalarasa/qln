@@ -1,0 +1,42 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Name" nzRequired>Tên kỳ nghỉ lễ</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Tên kỳ nghỉ lễ!">
+            <input nz-input formControlName="Name" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzMd]="6" nzFor="StartDate" nzRequired>Từ ngày</nz-form-label>
+        <nz-form-control [nzMd]="14" nzHasFeedback [nzErrorTip]="StartDateErrorTpl">
+            <input nz-input type="date" max="9999-12-31" formControlName="StartDate" />
+            <ng-template #StartDateErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Chưa nhập Từ ngày!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzMd]="6" nzFor="EndDate" nzRequired>Đến ngày</nz-form-label>
+        <nz-form-control [nzMd]="14" nzHasFeedback [nzErrorTip]="EndDateErrorTpl">
+            <input nz-input type="date" max="9999-12-31" formControlName="EndDate" />
+            <ng-template #EndDateErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">Chưa nhập Đến ngày!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6">Ghi chú</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <textarea formControlName="Note" nz-input rows="2"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

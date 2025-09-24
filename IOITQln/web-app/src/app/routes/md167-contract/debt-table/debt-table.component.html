@@ -1,0 +1,102 @@
+<div class="mb-xxl">
+  <nz-table #groupingTable nzBordered [nzData]="data" [nzShowPagination]="false" [nzScroll]="{ y: '65vh', x: null }"
+    [nzSimple]="true">
+    <thead>
+      <tr>
+        <th rowspan="2">Lần trả </th>
+        <th rowspan="2">Ngày thanh toán theo quy định</th>
+        <th rowspan="2">Ngày thanh toán dự kiến</th>
+        <th rowspan="2">Ngày thanh toán thực tế</th>
+        <th rowspan="2">Thời gian tính lãi theo ngày</th>
+        <th rowspan="2">Lãi suất tính theo ngày</th>
+
+        <th colspan="3">Số tiền phải trả (VNĐ)</th>
+        <th colspan="3">Tình hình thanh toán (VNĐ)</th>
+        <th rowspan="2">Ghi Chú </th>
+      </tr>
+      <tr>
+        <th rowspan="1">Số tiền phải trả từng tháng </th>
+        <th rowspan="1"> Số tiền lãi phát sinh do chậm thanh toán </th>
+        <th rowspan="1">Số tiền đến kỳ phải thanh toán</th>
+        <!--  -->
+        <th rowspan="1">Số tiền phải thanh toán </th>
+        <th rowspan="1">Số tiền đã thanh toán </th>
+        <th rowspan="1">Chênh lệch</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <ng-container *ngFor="let dataItem of data; let first = first; let last = last">
+        <tr *ngFor="let item of dataItem.dataGroup; let firstChild = first; let lastChild = last">
+          <td *ngIf="item.TypeRow == 1 || item.TypeRow == 2 || item.TypeRow == 5" class="text-center" colspan="2">
+            <strong>{{ item.Title
+              }}</strong>
+          </td>
+          <td *ngIf="item.TypeRow == 3 || item.TypeRow == 4" class="text-center">{{ item.Index }}</td>
+          <td *ngIf="item.TypeRow == 3 || item.TypeRow == 4" class="text-center">
+            <span *ngIf="item.TypeRow == 3">{{ item.Dop | date: 'dd/MM/yyyy' }}</span>
+            <span *ngIf="item.TypeRow == 4">{{ item.Title }}</span>
+          </td>
+          <td class="text-center">{{ item.DopExpected | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ item.DopActual | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ item.InterestCalcDate }}</td>
+          <td class="text-center">{{ item.Interest }}</td>
+          <td class="text-right">{{ item.AmountPaidPerMonth | number: '1.0-0' }}</td>
+          <td class="text-right">{{ item.AmountInterest | number: '1.0-0' }}</td>
+          <td class="text-right">{{ item.AmountPaidInPeriod | number: '1.0-0' }}</td>
+
+          <!-- <td class="text-right">{{ item.AmountToBePaid | number: '1.0-0' }}</td>
+          <td class="text-right">{{ item.AmountPaid | number: '1.0-0' }}</td>
+          <td class="text-right">{{ item.AmountDiff | number: '1.0-0' }}</td>
+          <td>{{ item.Note }}</td> -->
+
+          <td class="text-right" [attr.rowspan]="first ? 1 : dataItem.dataGroup.length" *ngIf="firstChild || first">
+            <ng-container *ngIf="item.TypeRow == 1">
+              <span *ngIf="item.AmountToBePaid">{{ item.AmountToBePaid | number: '1.0-0' }}</span>
+            </ng-container>
+            <ng-container *ngIf="item.TypeRow != 1">
+              <span *ngIf="first || last">{{ item.AmountToBePaid | number: '1.0-0' }}</span>
+              <span *ngIf="firstChild && !first">{{ dataItem.AmountToBePaid | number: '1.0-0' }}</span>
+            </ng-container>
+          </td>
+          <td class="text-right" [attr.rowspan]="first ? 1 : dataItem.dataGroup.length" *ngIf="firstChild || first">
+            <ng-container *ngIf="item.TypeRow == 1">
+              <span *ngIf="item.AmountToBePaid">{{ item.AmountPaid | number: '1.0-0' }}</span>
+            </ng-container>
+            <ng-container *ngIf="item.TypeRow != 1">
+              <span *ngIf="first || last">{{ item.AmountPaid | number: '1.0-0' }}</span>
+              <span *ngIf="firstChild && !first">{{ dataItem.AmountPaid | number: '1.0-0' }}</span>
+            </ng-container>
+          </td>
+          <td class="text-right" [attr.rowspan]="first ? 1 : dataItem.dataGroup.length" *ngIf="firstChild || first">
+            <span *ngIf="first || last">{{ item.AmountDiff | number: '1.0-0' }}</span>
+            <span *ngIf="firstChild && !first">{{ dataItem.AmountDiff | number: '1.0-0' }}</span>
+          </td>
+          <td [attr.rowspan]="first ? 1 : dataItem.dataGroup.length" *ngIf="firstChild || first">
+            <span>{{ item.Note }}</span>
+            <!-- <span *ngIf="(first || last) && item.TypeRow != 1 && item.TypeRow != 2">{{ item.Note }}</span> -->
+            <!-- <span *ngIf="(firstChild && !first) && item.TypeRow != 1 && item.TypeRow != 2">{{ item.Note }}</span> -->
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</div>
+
+<div class="drawer-footer">
+  <label nz-checkbox [(ngModel)]="record.RefundPaidDeposit" style="float: left;" *ngIf="record.PaidDeposit" (change)="refundPaidDeposit()">
+    <span>Hoàn tiền thuế chân </span>
+  </label>
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button nz-button [nzType]="'primary'" (click)="payment()">
+    <i nz-icon nzType="dollar" nzTheme="outline"></i>
+    Thanh toán
+  </button>
+  <button nz-button [nzType]="'primary'" (click)="exportReport()">
+    <i nz-icon nzType="export" nzTheme="outline"></i>
+    Xuất excel
+  </button>
+</div>

@@ -1,0 +1,47 @@
+<h2>Lịch sử thay đổi</h2>
+
+<div>
+  <ng-container *ngFor="let item of data">
+    <label>Thay đổi vào ngày {{ item.UpdateTime | date: 'dd/MM/yyyy' }}</label>
+    <table style="width: 100%">
+      <thead>
+        <th>STT</th>
+        <th>Tên thành phần giá bán cấu thành</th>
+        <th>Diện tích</th>
+        <th>Đơn giá</th>
+        <th>Thành tiền</th>
+      </thead>
+      <ng-container *ngFor="let items of item.grData; let i = index">
+        <tbody>
+          <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ items.IngrePriceName }}</td>
+            <td>{{ items.Area | number: '0.0-2':'de-DE' }}</td>
+            <td>{{ items.Price | number: '0.0-2':'de-DE' }}</td>
+            <td>{{ items.Total | number: '0.0-2':'de-DE' }}</td>
+          </tr>
+        </tbody>
+      </ng-container>
+    </table>
+  </ng-container>
+</div>
+
+<style>
+  th {
+    border-style: none;
+    text-align: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04aa6d;
+    color: white;
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  td {
+    border-style: none;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+</style>

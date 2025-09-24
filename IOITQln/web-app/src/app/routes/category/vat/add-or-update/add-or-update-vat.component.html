@@ -1,0 +1,48 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="DoApply">Ngày áp dụng</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-date-picker 
+                        style="width: 621.188px"
+                        [nzFormat]="nzFormat"
+                        formControlName="DoApply">
+                    </nz-date-picker>
+                    <!-- <input nz-input type="date" max="9999-12-31" formControlName="DoApply" /> -->
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Value" nzRequired>Giá trị</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Giá trị!">
+                    <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                        formControlName="Value" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Note">Diễn giải</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <textarea formControlName="Note" nz-input rows="2"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

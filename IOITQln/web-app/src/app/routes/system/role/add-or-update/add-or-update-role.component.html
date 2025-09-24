@@ -1,0 +1,142 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="Code" nzRequired>Mã nhóm quyền</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Mã nhóm quyền!">
+            <input nz-input formControlName="Code" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4" nzFor="Name" nzRequired>Tên nhóm quyền</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Tên nhóm quyền!">
+            <input nz-input formControlName="Name" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="4" [nzXs]="24" nzFor="LevelRole">Cấp độ</nz-form-label>
+        <nz-form-control [nzSm]="14" nzHasFeedback [nzXs]="24" [nzErrorTip]="levelRoleErrorTpl">
+            <input nz-input type="number" formControlName="LevelRole" id="LevelRole" />
+            <ng-template #levelRoleErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('min')">Cấp độ phải lớn hơn 0!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="4">Ghi chú</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <textarea formControlName="Note" nz-input rows="2"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-table #dynamicTable class="mt-sm" [nzData]="listFunctionInput" [nzTableLayout]="'auto'" [nzBordered]="false"
+            [nzSimple]="false" [nzLoading]="false" [nzPaginationType]="'default'" [nzPaginationPosition]="'bottom'"
+            [nzShowSizeChanger]="false" [nzFrontPagination]="false" [nzShowPagination]="false" [nzSize]="'small'"
+            [nzScroll]="{ y: nzScrollYValue }" [nzNoResult]="noResultTpl">
+            <thead>
+                <tr>
+                    <th nzAlign="center" nzWidth="60px">Stt</th>
+                    <th nzAlign="center" nzWidth="60px" [(nzChecked)]="action.View"
+                        [nzIndeterminate]="indeterminate.View" (nzCheckedChange)="checkAll($event, 'View')">
+                        <span style="display: block;">View</span>
+                    </th>
+                    <th nzAlign="center" nzWidth="60px" [(nzChecked)]="action.Create"
+                        [nzIndeterminate]="indeterminate.Create" (nzCheckedChange)="checkAll($event, 'Create')">
+                        <span style="display: block;">Create</span>
+                    </th>
+                    <th nzAlign="center" nzWidth="60px" [(nzChecked)]="action.Update"
+                        [nzIndeterminate]="indeterminate.Update" (nzCheckedChange)="checkAll($event, 'Update')">
+                        <span style="display: block;">Update</span>
+                    </th>
+                    <th nzAlign="center" nzWidth="60px" [(nzChecked)]="action.Delete"
+                        [nzIndeterminate]="indeterminate.Delete" (nzCheckedChange)="checkAll($event, 'Delete')">
+                        <span style="display: block;">Delete</span>
+                    </th>
+                    <th nzAlign="center" nzWidth="60px" [(nzChecked)]="action.Import"
+                        [nzIndeterminate]="indeterminate.Import" (nzCheckedChange)="checkAll($event, 'Import')">
+                        <span style="display: block;">Import</span>
+                    </th>
+                    <th nzAlign="center" nzWidth="60px" [(nzChecked)]="action.Export"
+                        [nzIndeterminate]="indeterminate.Export" (nzCheckedChange)="checkAll($event, 'Export')">
+                        <span style="display: block;">Export</span>
+                    </th>
+                    <th nzAlign="center" nzWidth="60px" [(nzChecked)]="action.Print"
+                        [nzIndeterminate]="indeterminate.Print" (nzCheckedChange)="checkAll($event, 'Print')">
+                        <span style="display: block;">Print</span>
+                    </th>
+                    <th nzAlign="center" nzWidth="60px" [(nzChecked)]="action.Other"
+                        [nzIndeterminate]="indeterminate.Other" (nzCheckedChange)="checkAll($event, 'Other')">
+                        <span style="display: block;">Other</span>
+                    </th>
+                    <th nzAlign="center" nzWidth="60px" [(nzChecked)]="action.Menu"
+                        [nzIndeterminate]="indeterminate.Menu" (nzCheckedChange)="checkAll($event, 'Menu')">
+                        <span style="display: block;">Menu</span>
+                    </th>
+                    <th nzAlign="center" nzWidth="60px">
+                        All
+                    </th>
+                    <th>Tên chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let data of dynamicTable.data; let i = index">
+                    <tr *ngIf="!data.IsSpecialFunc">
+                        <td nzWidth="60px" [nzLeft]="true" nzAlign="center">{{ i + 1 }}</td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.View"
+                            (nzCheckedChange)="[refreshStatus('View'),checkCell(i)]"></td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.Create"
+                            (nzCheckedChange)="[refreshStatus('Create'),checkCell(i)]"></td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.Update"
+                            (nzCheckedChange)="[refreshStatus('Update'),checkCell(i)]"></td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.Delete"
+                            (nzCheckedChange)="[refreshStatus('Delete'),checkCell(i)]"></td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.Import"
+                            (nzCheckedChange)="[refreshStatus('Import'),checkCell(i)]"></td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.Export"
+                            (nzCheckedChange)="[refreshStatus('Export'),checkCell(i)]"></td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.Print"
+                            (nzCheckedChange)="[refreshStatus('Print'),checkCell(i)]"></td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.Other"
+                            (nzCheckedChange)="[refreshStatus('Other'),checkCell(i)]"></td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.Menu"
+                            (nzCheckedChange)="[refreshStatus('Menu'),checkCell(i)]"></td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.All"
+                            [nzIndeterminate]="data.indeterminateAll" (nzCheckedChange)="checkAllRow(i)">
+                        </td>
+                        <td [nzEllipsis]="true">
+                            <span [innerHTML]="data.Space"></span><span>{{data.Name}}</span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="data.IsSpecialFunc">
+                        <td nzWidth="60px" [nzLeft]="true" nzAlign="center">{{ i + 1 }}</td>
+                        <td nzWidth="60px" [nzLeft]="true" [(nzChecked)]="data.View"
+                            (nzCheckedChange)="[refreshStatus('View'),checkCell(i)]"></td>
+                        <td nzWidth="60px"></td>
+                        <td nzWidth="60px"></td>
+                        <td nzWidth="60px"></td>
+                        <td nzWidth="60px"></td>
+                        <td nzWidth="60px"></td>
+                        <td nzWidth="60px"></td>
+                        <td nzWidth="60px"></td>
+                        <td nzWidth="60px"></td>
+                        <td nzWidth="60px"></td>
+                        <td [nzEllipsis]="true">
+                            <span [innerHTML]="data.Space"></span><span>{{data.Name}}</span>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </nz-table>
+        <ng-template #noResultTpl>
+            <span nz-icon nzType="loading" nzTheme="outline"></span>
+        </ng-template>
+    </nz-form-item>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

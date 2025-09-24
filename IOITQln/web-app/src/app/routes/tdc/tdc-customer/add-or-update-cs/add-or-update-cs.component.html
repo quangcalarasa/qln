@@ -1,0 +1,316 @@
+<nz-form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px">
+  <div nz-row class="row-title">
+    <div nz-col [nzMd]="5">
+      <span class="title">Thông tin nhà</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="TdcProjectId" nzRequired>Dự án</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa Chọn Dự Án!">
+          <nz-select
+            formControlName="TdcProjectId"
+            name="TdcProjectId"
+            id="TdcProjectId"
+            [nzPlaceHolder]="'Chưa chọn dự án!'"
+            [nzShowSearch]="true"
+            (ngModelChange)="[TDCLandByProject($event)]"
+          >
+            <nz-option *ngFor="let i of tdcProject_data; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="LandId" nzRequired>Lô</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn lô!">
+          <nz-select
+            formControlName="LandId"
+            name="LandId"
+            id="LandId"
+            [nzPlaceHolder]="'Chưa Chọn Lô!'"
+            [nzShowSearch]="true"
+            (ngModelChange)="[TDCBlockHouseByLand($event)]"
+          >
+            <nz-option *ngFor="let i of data_landTDC_filter; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="BlockHouseId" nzRequired>Khối</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn khối">
+          <nz-select
+            formControlName="BlockHouseId"
+            name="BlockHouseId"
+            id="BlockHouseId"
+            [nzPlaceHolder]="'Chưa chọn khối!'"
+            [nzShowSearch]="true"
+            (ngModelChange)="[TDCFloorByBlockHouse($event)]"
+          >
+            <nz-option *ngFor="let i of data_BlockHouseTDC_filter; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="FloorTdcId" nzRequired>Tầng</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn tầng!">
+          <nz-select
+            formControlName="FloorTdcId"
+            name="FloorTdcId"
+            id="FloorTdcId"
+            [nzPlaceHolder]="'Chưa chọn tầng!'"
+            [nzShowSearch]="true"
+            (ngModelChange)="TDCApartmentrByFloor($event)"
+          >
+            <nz-option *ngFor="let i of data_FloorTDC_filter; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Floor1">Lầu</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <nz-input-number formControlName="Floor1" class="width-100" nzDisabled="true"> </nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="TdcApartmentId" nzRequired>Căn</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn căn">
+          <nz-select
+            formControlName="TdcApartmentId"
+            name="TdcApartmentId"
+            id="TdcApartmentId"
+            [nzPlaceHolder]="'Chưa chọn căn!'"
+            [nzShowSearch]="true"
+            (ngModelChange)="TdcCornerByApartment($event)"
+          >
+            <nz-option *ngFor="let i of data_ApartmentTDC_filter; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-control [nzSpan]="24">
+        <label nz-checkbox formControlName="Corner" name="Corner" id="Corner" nzDisabled="true" [(ngModel)]="check">
+          <span>Lô góc</span>
+        </label>
+      </nz-form-control>
+    </div>
+  </div>
+  <!-- KH Start -->
+  <div nz-row class="row-title">
+    <div nz-col [nzMd]="5">
+      <span class="title">Thông tin khách hàng</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8" *ngIf="add">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Code" nzRequired>
+          <span>Mã khách hàng</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <nz-input-number class="width-100" nz-input formControlName="Code" [nzDisabled]="true"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="FullName" nzRequired>Tên khách hàng</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa Nhập Tên Khách Hàng">
+          <input nz-input formControlName="FullName" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="CCCD" nzRequired>Số CCCD</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip=" Số CCCD chưa đủ">
+          <input nz-input formControlName="CCCD" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Dob" nzRequired>
+          <span>Ngày tháng năm sinh</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Ngày Tháng Năm Sinh">
+          <input nz-input type="date" max="9999-12-31" formControlName="Dob" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Phone" nzRequired>Số điện thoại</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Số Điện Thoại Không Đúng Định Dạng">
+          <input nz-input formControlName="Phone" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Email">Email</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập đúng Email">
+          <input nz-input formControlName="Email" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Note">Ghi chú</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Ghi Chú">
+          <input nz-input formControlName="Note" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row class="row-title mt-lg">
+    <div nz-col [nzMd]="3">
+      <span class="title">Địa chỉ tạm trú</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="AddressTT">Căn nhà số</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input formControlName="AddressTT" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="PdwTT">Tỉnh (Tp) /Quận (huyện) /Phường (xã) </nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <nz-cascader
+            [nzShowSearch]="true"
+            formControlName="PdwTT"
+            name="PdwTT"
+            id="PdwTT"
+            nzPlaceHolder=""
+            [nzOptions]="pdwTT_data"
+            (ngModelChange)="changePdwTT()"
+          >
+          </nz-cascader>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="LaneTT">Đường</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <nz-select nzAllowClear formControlName="LaneTT" name="LaneTT" id="LaneTT" nzPlaceHolder="" [nzShowSearch]="true">
+            <nz-option *ngFor="let i of lane_dataTT; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row class="row-title mt-lg">
+    <div nz-col [nzMd]="3">
+      <span class="title">Địa chỉ liên hệ</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="AddressLH" nzRequired>Căn nhà số</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập thông tin Số căn nhà!">
+          <input nz-input formControlName="AddressLH" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="PdwLH" nzRequired>Tỉnh (Tp) /Quận (huyện) /Phường (xã) </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Tỉnh (Tp) /Quận (huyện) /Phường (xã)!">
+          <nz-cascader
+            [nzShowSearch]="true"
+            formControlName="PdwLH"
+            name="PdwLH"
+            id="PdwLH"
+            nzPlaceHolder=""
+            [nzOptions]="pdwLH_data"
+            (ngModelChange)="changePdwLH()"
+          >
+          </nz-cascader>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="LaneLH" nzRequired>Đường</nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Đường!">
+          <nz-select nzAllowClear formControlName="LaneLH" name="LaneLH" id="LaneLH" nzPlaceHolder="" [nzShowSearch]="true">
+            <nz-option *ngFor="let i of lane_dataLH; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <!-- KH end  -->
+  <div nz-row class="row-title">
+    <div nz-col [nzMd]="6">
+      <span class="title"> Danh sách thành viên </span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <app-tdc-member
+        #TdcMemberComponent
+        [tdcMenberCustomerDatas]="validateForm.value.tdcMenberCustomerDatas"
+        [pdwTT_data]="pdwTT_data"
+        [pdwLH_data]="pdwLH_data"
+        [lane_dataTT]="lane_dataTT"
+        [lane_dataLH]="lane_dataLH"
+      >
+      </app-tdc-member>
+    </div>
+  </div>
+  <div nz-row class="row-title">
+    <div nz-col [nzMd]="6">
+      <span class="title">Thông tin người ủy quyền</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <app-tdc-auth-customer
+        #TdcAuthCustomerComponent
+        [tdcAuthCustomerDetailDatas]="validateForm.value.tdcAuthCustomerDetailDatas"
+        [pdwTT_data]="pdwTT_data"
+        [pdwLH_data]="pdwLH_data"
+        [lane_dataTT]="lane_dataTT"
+        [lane_dataLH]="lane_dataLH"
+      >
+      </app-tdc-auth-customer>
+    </div>
+  </div>
+  <div nz-row class="row-title">
+    <div nz-col [nzMd]="6">
+      <span class="title">Tài liệu liên quan</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <app-tdc-customer-file #TdcCustomerFileComponent [tdcCustomerFiles]="validateForm.value.tdcCustomerFiles"> </app-tdc-customer-file>
+    </div>
+  </div>
+</nz-form>
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button nz-button [nzType]="'primary'" (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>

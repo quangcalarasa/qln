@@ -1,0 +1,77 @@
+<div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="24">Danh sách Số tiền/tháng</nz-form-label>
+        </nz-form-item>
+    </div>
+</div>
+<div nz-row>
+    <div nz-span>
+        <a nz-button nzType="link" (click)="addRow()">
+            <span nz-icon nzType="plus-circle"></span>
+            Thêm mới
+        </a>
+    </div>
+</div>
+<div nz-row>
+    <div nz-span>
+        <div class="card-body">
+            <st #tableItemRef [data]="pricePerMonths" (change)="tableItemRefChange($event)" [columns]="columnsItem"
+                [size]="'small'" [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+                <ng-template st-row="totalPriceTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Tổng tiền
+                </ng-template>
+                <ng-template st-row="housePriceTitle" type="title"><span class="danger-star"></span>&nbsp;Tiền thuê nhà
+                </ng-template>
+                <ng-template st-row="landPriceTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Tiền thuê đất
+                </ng-template>
+                <ng-template st-row="vatPriceTitle" type="title"><span class="danger-star"></span>&nbsp;Tiền VAT
+                </ng-template>
+                <ng-template st-row="dateEffectTitle" type="title"><span
+                        class="danger-star danger-star-unleft">*</span>&nbsp;&nbsp;&nbsp;Ngày lấy Vat
+                </ng-template>
+
+                <ng-template st-row="totalPriceTpl" let-item let-index="index">
+                    <input *ngIf="item.edit" nz-input
+                        [ngClass]="item.submit && (!item.TotalPrice || item.TotalPrice == '') ? 'danger-st-row' : ''"
+                        [ngModel]="item.TotalPrice" (ngModelChange)="tableItemRef.setRow(index, { TotalPrice: $event })"
+                        [ngModelOptions]="{ standalone: true }" type="text" currencyMask />
+                    <ng-container *ngIf="!item.edit">{{ item.TotalPrice | number: '0.0-2':'de-DE'}}</ng-container>
+                </ng-template>
+                <ng-template st-row="housePriceTpl" let-item let-index="index">
+                    <ng-container>{{ item.HousePrice | number: '0.0-2':'de-DE'}}</ng-container>
+                </ng-template>
+                <ng-template st-row="landPriceTpl" let-item let-index="index">
+                    <input *ngIf="item.edit" nz-input
+                        [ngClass]="item.submit && (!item.LandPrice || item.LandPrice == '') ? 'danger-st-row' : ''"
+                        [ngModel]="item.LandPrice" (ngModelChange)="tableItemRef.setRow(index, { LandPrice: $event })"
+                        [ngModelOptions]="{ standalone: true }" type="text" currencyMask />
+                    <ng-container *ngIf="!item.edit">{{ item.LandPrice | number: '0.0-2':'de-DE'}}</ng-container>
+                </ng-template>
+                <ng-template st-row="vatPriceTpl" let-item let-index="index">
+                    <!-- <input *ngIf="item.edit" nz-input [ngModel]="item.VatPrice"
+                        (ngModelChange)="tableItemRef.setRow(index, { VatPrice: $event })"
+                        [ngModelOptions]="{ standalone: true }" type="text" currencyMask /> -->
+                    <ng-container>{{ item.VatPrice | number: '0.0-2':'de-DE'}}</ng-container>
+                </ng-template>
+                <ng-template st-row="dateEffectTpl" let-item let-index="index">
+                    <input *ngIf="item.edit"
+                        [ngClass]="item.submit && (item.DateEffect == undefined || item.DateEffect=='') ? 'danger-st-row' : ''"
+                        nz-input type="date" max="9999-12-31" [ngModel]="item.DateEffect"
+                        (ngModelChange)="tableItemRef.setRow(index, { DateEffect: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.DateEffect | date: 'dd/MM/yyyy' }}</ng-container>
+                </ng-template>
+                <!-- <ng-template st-row="timeTpl" let-item let-index="index">
+                    <input *ngIf="item.edit"
+                        [ngClass]="item.submit && (item.DisposeTime == undefined || item.DisposeTime=='') ? 'danger-st-row' : ''"
+                        nz-input type="date" max="9999-12-31" [ngModel]="item.DisposeTime"
+                        (ngModelChange)="tableItemRef.setRow(index, { DisposeTime: $event })"
+                        [ngModelOptions]="{ standalone: true }" />
+                    <ng-container *ngIf="!item.edit">{{ item.DisposeTime | date: 'dd/MM/yyyy' }}</ng-container>
+                </ng-template> -->
+            </st>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<nz-tabset [nzSize]="'large'">
+  <nz-tab [nzTitle]="'Thực hiện import'">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-control [nzSpan]="24">
+            <nz-upload [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" [nzDisabled]="loading" *ngIf="!loading">
+              <button nz-button type="button">
+                <span nz-icon nzType="upload"></span>
+                Import file
+              </button>
+            </nz-upload>
+            <button nz-button type="button" *ngIf="loading">
+              <span nz-icon nzType="loading"></span>
+              Import file
+            </button>
+            <a nz-button nzType="link" (click)="downloadTemplate()">Tải file mẫu</a>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div class="mb-xxl">
+      <ng-container [ngTemplateOutlet]="tplData"
+        [ngTemplateOutletContext]="{ data: data}">
+      </ng-container>
+    </div>
+  </nz-tab>
+  <nz-tab [nzTitle]="'Lịch sử import'">
+    <div nz-row class="row-title mt-lg">
+      <div nz-col [nzMd]="3">
+          <span class="title">Danh sách import</span>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24" class="p-md">
+      <div nz-col [nzSpan]="16">
+        <st #tableRef [data]="dataImport" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'"
+        [loading]="loading" [ps]="paging.page_size" [total]="paging.item_count"
+        [widthMode]="{ type: 'strict',strictBehavior:'truncate' }" [page]="{front:false}">
+        <ng-template st-row="no-column" let-item let-index="index">
+            <span>{{ ((paging.page - 1) * paging.page_size) + index + 1 }}</span>
+        </ng-template>
+      </st>
+      </div>
+    </div>
+    <div nz-row class="row-title mt-lg">
+      <div nz-col [nzMd]="6">
+          <span class="title">Chi tiết các bản ghi được import</span>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <ng-container [ngTemplateOutlet]="tplData"
+        [ngTemplateOutletContext]="{ data: dataImportDetail}">
+      </ng-container>
+    </div>
+  </nz-tab>
+</nz-tabset>
+
+<ng-template #tplData let-data="data">
+  <nz-table nzBordered [nzData]="data" [nzShowPagination]="false" [nzSimple]="true">
+        <thead>
+          <tr>
+            <!-- <th class="text-center" nzWidth="50px">Stt</th> -->
+            <th>Loại biên bản</th>
+            <th>Số tt (căn)</th>
+            <th>Số tt (hộ)</th>
+            <th>Mã định danh</th>
+            <th>Số nhà</th>
+            <th>Đường</th>
+            <th>Phường</th>
+            <th>Quận</th>
+            <th>Loại nhà</th>
+            <th>Cấp nhà</th>
+
+            <!-- <th class="text-center" nzWidth="150px">Ngày nộp tiền</th>
+            <th class="text-center" nzWidth="150px">Ngày xuất hóa đơn</th>
+            <th class="text-right" nzWidth="150px">Số tiền thanh toán</th>
+            <th>Mã hợp đồng/Phụ lục</th> -->
+            <th nzWidth="150px">Trạng thái</th>
+            <th>Ghi chú </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data;">
+            <td>{{ item.LoaiBienBan }}</td>
+            <td>{{ item.SoThuTuCan }}</td>
+            <td>{{ item.SoThuTuHo }}</td>
+            <td>{{ item.MaDinhDanh }}</td>
+            <td>{{ item.SoNha }}</td>
+            <td>{{ item.Duong }}</td>
+            <td>{{ item.Phuong }}</td>
+            <td>{{ item.Quan }}</td>
+            <td>{{ item.LoaiNha }}</td>
+            <td>{{ item.CapNha }}</td>
+
+            <!-- <td class="text-center">{{ item.DateOfPayment | date: 'dd/MM/yyyy' }}</td>
+            <td class="text-center">{{ item.DateOfReceipt | date: 'dd/MM/yyyy' }}</td>
+            <td class="text-right">{{ item.Amount | number: '0.0-2': 'de-DE' }}</td>
+            <td>{{ item.ContractCode }}</td> -->
+            <td>
+              <nz-tag *ngIf="item.Valid" nzColor="success">Hợp lệ</nz-tag>
+              <nz-tag *ngIf="!item.Valid" nzColor="error">Không hợp lệ</nz-tag>
+            </td>
+            <td>{{ item.ErrMsg }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+</ng-template>

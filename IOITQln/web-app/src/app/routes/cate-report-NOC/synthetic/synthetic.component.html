@@ -1,0 +1,92 @@
+<nz-form nz-form [formGroup]="validateForm" style="padding-bottom: 30px">
+  <div nz-row class="row-title">
+    <div nz-col [nzMd]="5">
+      <span class="title">Bộ lọc</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Code">Mã định danh</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input formControlName="Code" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="CustomerName">Người đại diện</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input formControlName="CustomerName" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="IdentityCode">CCCD/CMND/Thẻ quân nhân/Hộ chiếu</nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input formControlName="IdentityCode" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="HasInfo">Trạng thái thông tin thuê/bán</nz-form-label>
+        <nz-select nzAllowClear formControlName="HasInfo" name="HasInfo" id="HasInfo" nzPlaceHolder=""
+          [nzShowSearch]="true">
+          <nz-option nzLabel="Có thông tin bán" nzValue="1"></nz-option>
+          <nz-option nzLabel="Có thông tin thuê" nzValue="2"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DistrictId">Quận/Huyện</nz-form-label>
+        <nz-select nzAllowClear formControlName="DistrictId" name="DistrictId" id="DistrictId" nzPlaceHolder=""
+          [nzShowSearch]="true" (ngModelChange)="changeDistrict()">
+          <nz-option *ngFor="let i of districts; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"> </nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="WardId">Phường/Xã</nz-form-label>
+        <nz-select nzAllowClear formControlName="WardId" name="WardId" id="WardId" nzPlaceHolder=""
+          [nzShowSearch]="true" (ngModelChange)="changeWard()">
+          <nz-option *ngFor="let i of wards; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id" [nzHide]="i.DistrictId != validateForm.value.DistrictId"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="6">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="LaneId">Đường</nz-form-label>
+        <nz-select nzAllowClear formControlName="LaneId" name="LaneId" id="LaneId" nzPlaceHolder=""
+          [nzShowSearch]="true">
+          <nz-option *ngFor="let i of lanes; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id" [nzValue]="i.Id" [nzHide]="i.Ward != validateForm.value.WardId"> </nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-form>
+
+<div class="m-md">
+  <button nz-button nzType="primary" (click)="getDataReport()" *ngIf="!loading">
+    <span nz-icon nzType="search"></span>
+    Lập báo cáo
+  </button>
+  <button nz-button nzType="primary" *ngIf="loading" style="cursor: not-allowed;">
+    <span nz-icon nzType="loading"></span>
+    Lập báo cáo
+  </button>
+  <button nz-button nzType="primary" (click)="dowloadReport()">
+    <span nz-icon nzType="download"></span>
+    Xuất báo cáo</button>
+</div>
+
+<div class="mt-md mb-xxl" style="height: 500px;">
+  <ag-grid-angular style="width: 100%; height: 100%" class="ag-theme-alpine" [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef" [loadingOverlayComponent]="loadingOverlayComponent" [rowData]="rowData$" [sideBar]="sideBar"
+    [autoGroupColumnDef]="autoGroupColumnDef" [animateRows]="false" (gridReady)="onGridReady($event)"></ag-grid-angular>
+</div>

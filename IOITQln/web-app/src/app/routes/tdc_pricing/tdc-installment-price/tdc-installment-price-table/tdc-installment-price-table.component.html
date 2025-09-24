@@ -1,0 +1,167 @@
+<nz-form-label [nzSpan]="24" style="text-align:center ; font-weight: bold;">
+  PHỤ LỤC BẢNG CHIẾT TÍNH SỐ TIỀN CÒN LẠI BÊN MUA PHẢI THANH TOÁN</nz-form-label>
+<div nz-row [nzGutter]="24">
+  <div nz-col [nzSpan]="6">
+    <nz-form-label [nzSpan]="24">Chủ hộ : <b> {{record.CustomerName}}</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24">Căn số : <b> {{record.TdcApartmentName}}</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24">Khối : <b> {{record.TdcProjectName}}</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"> &nbsp; </nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24">Số tiền đã thanh toán lần đầu ngày :</nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24">Tổng số tiền phải trả trong :</nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24">Quyết định bố trí tái định cư ngày :</nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24">Quyết định điều chỉnh giá trị căn hộ ban hành ngày
+      :</nz-form-label>
+    <br>
+  </div>
+  <div nz-col [nzSpan]="3">
+    <nz-form-label [nzSpan]="24"> &nbsp; </nz-form-label>
+    <br>
+    <div *ngIf="record.TdcFloorName > 1">
+      <nz-form-label *ngIf="record.TdcFloorName > 1" [nzSpan]="24">Vị trí : <b> Lầu {{record.TdcFloorName-1}}( Tầng
+          {{record.TdcFloorName}})</b></nz-form-label>
+      <br>
+    </div>
+    <div *ngIf="record.TdcFloorName <= 1">
+      <nz-form-label [nzSpan]="24">Vị trí : <b> Tầng {{record.TdcFloorName}}</b>
+      </nz-form-label>
+      <br>
+    </div>
+    <nz-form-label [nzSpan]="24">Lô : <b> {{record.TdcLandName}}</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"> &nbsp; </nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"><b>{{record.FirstPayDate | date: 'dd/MM/yyyy'}}</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"><b> {{record.YearPay}} Năm</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"><b> {{record.TemporaryDecreeDate | date: 'dd/MM/yyyy'}}</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"><b> {{record.DecreeDate | date: 'dd/MM/yyyy'}}</b></nz-form-label>
+    <br>
+  </div>
+  <div nz-col [nzSpan]="3">
+    <nz-form-label [nzSpan]="24">HĐ số :</nz-form-label>
+    <br>
+
+    <nz-form-label [nzSpan]="24">Ngày HĐ :</nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24">Giá trị hợp đồng cũ :</nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24">Giá trị hợp đồng mới :</nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"> &nbsp; </nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"> &nbsp; </nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"> &nbsp; </nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24">Giá trị phát sinh :</nz-form-label>
+    <br>
+  </div>
+  <div nz-col [nzSpan]="3">
+    <nz-form-label [nzSpan]="24"><b>{{record.ContractNumber}}</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"><b>{{record.DateNumber | date: 'dd/MM/yyyy'}}</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"><b>{{record.OldContractValue | number: '0.0-2'  }} đồng</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"><b>{{record.NewContractValue | number: '0.0-2'  }} đồng</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"><b>{{record.FirstPay | number: '0.0-2'  }} đồng</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"><b>{{record.TotalPayValue | number: '0.0-2'  }} đồng</b></nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"> &nbsp; </nz-form-label>
+    <br>
+    <nz-form-label [nzSpan]="24"><b>{{record.DifferenceValue | number: '0.0-2'  }} đồng</b></nz-form-label>
+    <br>
+  </div>
+</div>
+<br>
+<br>
+<div>
+  <table #groupingTable Data="data" class="table-bct" style="width: 100%">
+    <thead>
+      <tr>
+        <th rowspan="2">Lần trả </th>
+        <!-- <th rowspan="2">pay time id </th> -->
+        <th rowspan="2">Ngày thanh toán theo quy định</th>
+        <th rowspan="2">Ngày thanh toán kì trước</th>
+        <th rowspan="2">Ngày thanh toán kì này dự kiến</th>
+        <th rowspan="2">Ngày thanh toán thực tế</th>
+        <th rowspan="2">Thời gian tính lãi theo tháng</th>
+        <th rowspan="2">Thời gian tính lãi theo ngày</th>
+        <th rowspan="2">Lãi suất tính theo tháng</th>
+        <th rowspan="2">Lãi suất tính theo ngày</th>
+        <th colspan="4">Số tiền thanh toán (VNĐ)</th>
+        <th colspan="3">Tình hình thanh toán (VNĐ)</th>
+        <th rowspan="2">Ghi Chú </th>
+        <th rowspan="2">Nộp công ích</th>
+
+      </tr>
+      <tr>
+        <th rowspan="1">Số tiền gốc tính lãi </th>
+        <th rowspan="1"> Số tiền gốc phải trả hàng năm </th>
+        <th rowspan="1">Lãi phát sinh theo tháng và ngày</th>
+        <th rowspan="1">Số tiền đến kỳ phải thanh toán </th>
+        <!--  -->
+        <th rowspan="1">Tổng số tiền phải thanh toán </th>
+        <th rowspan="1">Số tiền đã thanh toán </th>
+        <th rowspan="1">Chênh lệch</th>
+
+      </tr>
+    </thead>
+    <tbody id="tbody">
+      <ng-container *ngFor="let item of data; let i = index">
+        <tr *ngFor="let childItem of item.tdcInstallmentPriceTables; let firstChild = first; let lastChild = last"
+          [ngClass]="{ 'highlight-row': childItem.IsImport }">
+          <td class="text-center"> {{ childItem.PaymentTimes }}</td>
+          <!-- <td class="text-center">{{ childItem.PayTimeId }}</td> -->
+          <td class="text-center">{{
+            childItem.RowStatus == 2
+            ? 'Nợ Cũ'
+            : childItem.RowStatus == 3
+            ? 'Phạt trễ
+            hạn'
+            : childItem.RowStatus == 5
+            ? 'Tổng cộng'
+            : childItem.PayDateDefault | date: 'dd/MM/yyyy'
+            }}</td>
+          <td class="text-center">{{ childItem.PayDateBefore | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">{{ childItem.PayDateGuess | date: 'dd/MM/yyyy'}}</td>
+          <td class="text-center">{{ childItem.PayDateReal | date: 'dd/MM/yyyy'}}</td>
+          <td class="text-center">{{ childItem.MonthInterest }}</td>
+          <td class="text-center">{{ childItem.DailyInterest }}</td>
+          <td class="text-center">{{ childItem.MonthInterestRate  | number: '0.0-6':'de-DE'}}</td>
+          <td class="text-center">{{ childItem.DailyInterestRate  | number: '0.0-6':'de-DE'}}</td>
+          <td style="text-align: right;">{{ childItem.TotalPay | number: '0.0-2' :'de-DE'}}</td>
+          <td style="text-align: right;">{{ childItem.PayAnnual | number: '0.0-2' :'de-DE'}}</td>
+          <td style="text-align: right;">{{ childItem.TotalInterest | number: '0.0-2' :'de-DE'}}</td>
+          <td style="text-align: right;">{{ childItem.TotalPayAnnual | number: '0.0-2' :'de-DE'}}</td>
+          <!-- <td style="text-align: right;">{{ childItem.Pay | number: '0.0-2':'de-DE'}}</td>
+                    <td style="text-align: right;">{{ childItem.Paid | number: '0.0-2':'de-DE'}}</td>
+                    <td style="text-align: right;">{{ childItem.PriceDifference | number: '0.0-2':'de-DE'}}</td> -->
+          <td *ngIf="firstChild" [attr.rowspan]="item.tdcInstallmentPriceTables.length" style="text-align: right;">{{ item.Pay
+            | number: '0.0-2':'de-DE'}}</td>
+          <td *ngIf="firstChild" [attr.rowspan]="item.tdcInstallmentPriceTables.length" style="text-align: right;">{{ item.Paid
+            | number: '0.0-2':'de-DE'}}</td>
+          <td *ngIf="firstChild" [attr.rowspan]="item.tdcInstallmentPriceTables.length" style="text-align: right;">{{
+            item.PriceDifference | number: '0.0-2':'de-DE'}}
+          </td>
+          <td class="text-center">{{ childItem.Note }}</td>
+
+          <td *ngIf="firstChild" [attr.rowspan]="item.tdcInstallmentPriceTables.length">
+            <input type="checkbox" [checked]="item.publicPay" disabled />
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

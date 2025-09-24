@@ -1,0 +1,124 @@
+<!-- <div nz-row>
+    <div nz-span>
+        <a nz-button nzType="link" (click)="addRow()">
+            <span nz-icon nzType="plus-circle"></span>
+            Thêm thông tin diện tích đất ở
+        </a>
+    </div>
+</div> -->
+<div nz-row class="d-block" [ngClass]="typeReportApply != TypeReportApplyEnum.NHA_CHUNG_CU ? 'width-80' : 'width-100'">
+    <div nz-span>
+        <div class="card-body">
+            <!-- <st #tableItemRef [data]="apartmentLandDetails" (change)="tableItemRefChange($event)"
+                [columns]="columnsItem" [size]="'small'" [widthMode]="{ type: 'strict' }" [page]="{ front: false }">
+                <ng-template st-row="decreeTitle" type="title"><span class="danger-star">*</span>&nbsp;Nghị định
+                </ng-template>
+                <ng-template st-row="termApplyTitle" type="title"><span class="danger-star">*</span>&nbsp;Điều khoản
+                </ng-template>
+                <ng-template st-row="generalUseAreaTitle" type="title"><span class="danger-star">*</span>&nbsp;DT đất sử
+                    dụng chung
+                </ng-template>
+                <ng-template st-row="privateUseAreaTitle" type="title"><span class="danger-star">*</span>&nbsp;DT đất sử
+                    dụng riêng
+                </ng-template>
+
+                <ng-template st-row="decreeTpl" let-item let-index="index">
+                    <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                        [ngClass]="item.submit && !item.DecreeType1Id ? 'danger-st-row' : ''"
+                        [ngModel]="item.DecreeType1Id"
+                        (ngModelChange)="[tableItemRef.setRow(index, { DecreeType1Id: $event }), item.TermApply=undefined]"
+                        [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                        <nz-option *ngFor="let i of block.decreeMaps; let idx = index" [nzLabel]="i.DecreeType1Name"
+                            [nzValue]="i.DecreeType1Id"> </nz-option>
+                    </nz-select>
+                </ng-template>
+                <ng-template st-row="termApplyTpl" let-item let-index="index">
+                    <nz-select nzAllowClear [nzShowSearch]="true" class="width-100"
+                        [ngClass]="item.submit && !item.TermApply ? 'danger-st-row' : ''" [ngModel]="item.TermApply"
+                        (ngModelChange)="tableItemRef.setRow(index, { TermApply: $event })"
+                        [ngModelOptions]="{ standalone: true }" [disabled]="!item.edit">
+                        <nz-option
+                            *ngFor="let i of termApply_data | keyvalue | filterTermApplyByDecree: item.DecreeType1Id; let idx = index"
+                            [nzLabel]="i.value" [nzValue]="i.key"> </nz-option>
+                    </nz-select>
+                </ng-template>
+                <ng-template st-row="generalUseAreaTpl" let-item let-index="index">
+                    <ng-container *ngIf="!item.edit">{{ item.GeneralArea }}</ng-container>
+                </ng-template>
+                <ng-template st-row="personalUseAreaTpl" let-item let-index="index">
+                    <ng-container *ngIf="!item.edit">{{ item.PrivateArea }}</ng-container>
+                </ng-template>
+            </st> -->
+            <nz-table #basicTable nzBordered="true" nzShowPagination="false" [nzData]="data">
+                <thead>
+                    <tr *ngIf="typeReportApply != TypeReportApplyEnum.NHA_CHUNG_CU">
+                        <th nzWidth="30%" class="text-center">Nghị định</th>
+                        <th nzWidth="30%" class="text-center">Điều khoản</th>
+                        <th *ngIf="typeApartmentLandDetail == typeApartmentLandDetailEnum.APARTMENT && typeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG"
+                            nzWidth="15%" class="text-center">DT đất chung(sân chung phân bổ)</th>
+                        <th nzWidth="15%" class="text-center">
+                            <span *ngIf="typeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+                                <span class="mr-sm" style="color: red;">*</span>
+                                DT đất sử dụng riêng</span>
+                            <span
+                                *ngIf="typeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG && parentTypeReportApply == TypeReportApplyEnum.NHA_HO_CHUNG">DT
+                                đất ở xây dựng (Bán bổ sung)</span>
+                            <span
+                                *ngIf="typeReportApply == TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG && parentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">DT
+                                đất ở (m2)</span>
+                        </th>
+                    </tr>
+                    <tr *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+                        <th nzWidth="20%" class="text-center">Nghị định</th>
+                        <th nzWidth="20%" class="text-center">Điều khoản</th>
+                        <th nzWidth="10%" class="text-center">Cấp nhà</th>
+                        <th nzWidth="10%" class="text-center">Căn hộ ở tầng số</th>
+                        <th nzWidth="10%" class="text-center">Thông tin chi tiết tầng cụ thể</th>
+                        <th nzWidth="10%" class="text-center">Số tầng chung cư (để áp dụng hệ số phân bổ đất)</th>
+                        <th nzWidth="10%" class="text-center">
+                            <span class="mr-sm" style="color: red;">*</span>
+                            DT đất ở (m2)
+                        </th>
+                        <th nzWidth="10%" class="text-center">Hệ số phân bổ các tầng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data; let i = index;">
+                        <td>
+                            <span>{{ item.DecreeType1Id | showDecreeName }}</span>
+                        </td>
+                        <td>
+                            <span>{{ item.TermApply | showTermApplyName }}</span>
+                        </td>
+                        <td *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+                            <span>{{ item.Level | showLevelBlock }}</span>
+                        </td>
+                        <td *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+                            <span>{{ item.FloorId | showNameItem: floor_data : "Name"}}</span>
+                        </td>
+                        <td *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+                            <span>{{ item.AreaId | showNameItem: area_data : "Name" }}</span>
+                        </td>
+                        <td class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+                            <span>{{ item.FloorApplyPriceChange }}</span>
+                        </td>
+                        <td *ngIf="typeApartmentLandDetail == typeApartmentLandDetailEnum.APARTMENT && typeReportApply != TypeReportApplyEnum.NHA_CHUNG_CU && typeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG"
+                            class="text-center">
+                            <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                                [(ngModel)]="item.GeneralArea" class="width-100 text-center"
+                                [ngModelOptions]="{ standalone: true }" (ngModelChange)="emitChange()" />
+                        </td>
+                        <td class="text-center">
+                            <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                                [(ngModel)]="item.PrivateArea" class="width-100 text-center"
+                                [ngModelOptions]="{ standalone: true }" (ngModelChange)="emitChange()" />
+                        </td>
+                        <td class="text-center" *ngIf="typeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU">
+                            <span>{{ item.CoefficientDistribution }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>

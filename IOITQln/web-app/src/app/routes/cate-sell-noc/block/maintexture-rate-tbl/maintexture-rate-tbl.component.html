@@ -1,0 +1,126 @@
+<div nz-row class="row-title mt-lg">
+  <div nz-col [nzMd]="6" class="mr-lg">
+    <span class="title">Bảng xác định tỷ lệ chất lượng còn lại</span>
+  </div>
+</div>
+<div nz-row [nzGutter]="24">
+  <div nz-col [nzSpan]="24">
+    <div *ngFor="let data of listOfData; let index_lv1 = index" class="mb-sm">
+      <label><span class="mr-sm" style="color: red;">*</span>Tỷ lệ giá trị của kết cấu chính so với tổng giá trị của {{ typeReportApply ==
+        TypeReportApplyEnum.NHA_CHUNG_CU || parentTypeReportApply == TypeReportApplyEnum.NHA_CHUNG_CU ? "chung cư" :
+        "căn hộ" }} - Phần nhà cấp {{ data.levelblock
+        }}</label>
+      <nz-select nzAllowClear nzPlaceHolder="Chọn tỷ lệ giá trị của kết cấu chính so với tổng giá trị của căn nhà"
+        [(ngModel)]="data.ratio_maintexture" [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="changeRatioMaintexture($event, index_lv1)" [nzShowSearch]="true"
+        style="width: 100%; margin-top: 5px">
+        <nz-option *ngFor="let ratio_maintexture of ratio_maintexture_data" [nzValue]="ratio_maintexture.Id"
+          [nzLabel]="ratio_maintexture.Name"></nz-option>
+      </nz-select>
+    </div>
+
+    <nz-table #basicTable nzBordered="true" nzShowPagination="false" [nzData]="listOfData">
+      <thead>
+        <tr>
+          <th nzWidth="5%" class="text-center">Chức năng</th>
+          <th nzWidth="5%" class="text-center">Phần cấp nhà</th>
+          <th nzWidth="15%" class="text-center">Kết cấu chính</th>
+          <th nzWidth="15%" class="text-center">Hiện trạng</th>
+          <th nzWidth="10%" class="text-center">Tỷ lệ chất lượng còn lại %</th>
+          <th nzWidth="10%" class="text-center">Tỷ lệ GT kết cấu chính so với tổng giá trị nhà ở %</th>
+          <th nzWidth="40%" class="text-center">
+            <span class="point text-xxl" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+              [nzPopoverContent]="contentPpvTpl" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+            <ng-template #contentPpvTpl>
+              <app-shared-popover [cs]="2">
+              </app-shared-popover>
+            </ng-template>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let data of basicTable.data; let index_lv1 = index">
+          <tr>
+            <!-- <td></td> -->
+            <!-- <td class="text-center">{{ data.levelblock }}</td> -->
+            <td colspan="6">
+              &nbsp;
+              <!-- <nz-select
+                nzAllowClear
+                nzPlaceHolder="Chọn tỷ lệ giá trị của kết cấu chính so với tổng giá trị của căn nhà"
+                [(ngModel)]="data.ratio_maintexture"
+                [ngModelOptions]="{ standalone: true }"
+                (ngModelChange)="changeRatioMaintexture($event, index_lv1)"
+                [nzShowSearch]="true"
+                style="width: 100%"
+              >
+                <nz-option
+                  *ngFor="let ratio_maintexture of ratio_maintexture_data"
+                  [nzValue]="ratio_maintexture.Id"
+                  [nzLabel]="ratio_maintexture.Name"
+                ></nz-option>
+              </nz-select> -->
+            </td>
+            <td [attr.rowspan]="data.numRow">
+              <span>- Phương pháp phân tích kinh tế kỹ thuật: Phần nhà cấp {{ data.levelblock }} = </span>
+              <nz-input-group [nzAddOnAfter]="'%'">
+                <input nz-input [(ngModel)]="data.totalValue1" class="text-center"
+                  [ngModelOptions]="{ standalone: true }" type="number" disabled />
+              </nz-input-group>
+              <span>- Phương pháp thống kê kinh nghiệm: Phần nhà cấp {{ data.levelblock }} = </span>
+              <nz-input-group [nzAddOnAfter]="'%'">
+                <input nz-input [(ngModel)]="data.totalValue2" class="text-center"
+                  [ngModelOptions]="{ standalone: true }" type="number" disabled />
+              </nz-input-group>
+              <span><strong>Kết luận:</strong> Tỷ lệ chất lượng của nhà ở trên là: Phần nhà cấp {{ data.levelblock }} =
+              </span>
+              <nz-input-group [nzAddOnAfter]="'%'">
+                <input nz-input [(ngModel)]="data.totalValue" class="text-center"
+                  [ngModelOptions]="{ standalone: true }" type="number" disabled />
+              </nz-input-group>
+            </td>
+          </tr>
+          <ng-container *ngFor="let data_rowItemLv2 of data.rowItemLv2; let index_lv2 = index">
+            <tr *ngFor="let data_rowItemLv3 of data_rowItemLv2.rowItemLv3; let index_lv3 = index; let first = first">
+              <td style="padding: 0px">
+                <a *ngIf="first" nz-button [nzSize]="'small'" [nzType]="'text'"
+                  (click)="addRowItemLv3(index_lv1, index_lv2)" style="float: left">
+                  <span nz-icon nzType="plus-square" nzTheme="outline" class="text-blue"></span>
+                </a>
+                <a *ngIf="data_rowItemLv2.rowItemLv3.length > 1" nz-button [nzSize]="'small'" [nzType]="'text'"
+                  class="l0" (click)="removeRowItemLv3(index_lv1, index_lv2, index_lv3)"
+                  style="float: right; margin-left: 0px">
+                  <span nz-icon nzType="delete" nzTheme="outline" class="text-red"></span>
+                </a>
+              </td>
+              <td class="text-center">
+                <span *ngIf="first">{{ data.levelblock }}</span>
+              </td>
+              <td class="text-left">
+                <span *ngIf="first">{{ returnTypeMainTexTure(data_rowItemLv2.type_maintexture) }}</span>
+              </td>
+              <td class="text-center">
+                <!-- {{ data_rowItemLv3.currstate_maintexture }} -->
+                <nz-select nzAllowClear nzPlaceHolder="" [nzShowSearch]="true" class="text-left"
+                  [(ngModel)]="data_rowItemLv3.currstate_maintexture" [ngModelOptions]="{ standalone: true }"
+                  style="width: 100%">
+                  <nz-option *ngFor="
+                      let i of ct_maintexture_data | filterCtMainTexture: data_rowItemLv2.type_maintexture:data.levelblock;
+                      let idx = index
+                    " [nzLabel]="i.Name" [nzValue]="i.Id">
+                  </nz-option>
+                </nz-select>
+              </td>
+              <td>
+                <input type="text" currencyMask [options]="{ precision: 2, min: 0 }" nz-input
+                  [(ngModel)]="data_rowItemLv3.remaining_rate" class="width-100 text-center"
+                  [ngModelOptions]="{ standalone: true }" (ngModelChange)="changeReMainingRate(index_lv1)" />
+              </td>
+              <td class="text-center">{{ data_rowItemLv3.main_rate }}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

@@ -1,0 +1,4 @@
+<ag-grid-angular style="width: 100%; height: 100%" class="ag-theme-alpine" [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef" [rowData]="rowData$ | async" [sideBar]="true"
+    [autoGroupColumnDef]="autoGroupColumnDef" [animateRows]="true" [rowGroupPanelShow]="rowGroupPanelShow"
+    (gridReady)="onGridReady($event)"></ag-grid-angular>

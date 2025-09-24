@@ -1,0 +1,299 @@
+<ng-container *ngIf="roleMd167Dashboard.ViewOrActionSpecial">
+  <div style="background: #ECECEC; padding: 30px;">
+    <div nz-row nzGutter="16">
+      <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+        <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md">
+          <div nz-col nzSpan="12" class="p-md text-white">
+            <div class="h2 mt0">{{ houseBaseData?.TotalValue }}</div>
+            <p class="text-nowrap mb0">Tổng cơ sở nhà đất</p>
+          </div>
+          <div nz-col nzSpan="12">
+            <g2-mini-bar *ngIf="chartMinibarData" height="35" color="#fff" borderWidth="3" [padding]="[5, 30]"
+              [data]="chartMinibarData" tooltipType="mini"></g2-mini-bar>
+          </div>
+        </div>
+      </div>
+      <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+        <div nz-row nzType="flex" nzAlign="middle" class="bg-success rounded-md">
+          <div nz-col nzSpan="12" class="p-md text-white">
+            <div class="h2 mt0">{{ houseBaseData?.RentValue }}</div>
+            <p class="text-nowrap mb0">Tổng cơ sở nhà đất đang cho
+              thuê</p>
+          </div>
+          <div nz-col nzSpan="12">
+            <g2-mini-bar *ngIf="chartMinibarData" height="35" color="#fff" borderWidth="3" [padding]="[5, 30]"
+              [data]="chartMinibarData" tooltipType="mini"></g2-mini-bar>
+          </div>
+        </div>
+      </div>
+      <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+        <div nz-row nzType="flex" nzAlign="middle" class="bg-orange rounded-md">
+          <div nz-col nzSpan="12" class="p-md text-white">
+            <div class="h2 mt0">{{ houseBaseData?.NotRentValue }}</div>
+            <p class="text-nowrap mb0">Tổng cơ sở nhà đất chưa cho
+              thuê</p>
+          </div>
+          <div nz-col nzSpan="12">
+            <g2-mini-bar *ngIf="chartMinibarData" height="35" color="#fff" borderWidth="3" [padding]="[5, 30]"
+              [data]="chartMinibarData" tooltipType="mini"></g2-mini-bar>
+          </div>
+        </div>
+      </div>
+      <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
+        <div nz-row nzType="flex" nzAlign="middle" class="bg-magenta rounded-md">
+          <div nz-col nzSpan="12" class="p-md text-white">
+            <div class="h2 mt0">{{ houseBaseData?.OtherValue }}</div>
+            <p class="text-nowrap mb0">Tổng cơ sở nhà đất đang chờ sắp xếp
+              lại</p>
+          </div>
+          <div nz-col nzSpan="12">
+            <g2-mini-bar *ngIf="chartMinibarData" height="35" color="#fff" borderWidth="3" [padding]="[5, 30]"
+              [data]="chartMinibarData" tooltipType="mini"></g2-mini-bar>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <nz-row [nzGutter]="16">
+      <nz-col [nzSpan]="6">
+        <nz-card style="background: #719ece;">
+          <nz-statistic [nzValue]="houseBaseData?.TotalValue" [nzTitle]="titleTplOne"
+            [nzValueStyle]="{ color: 'white', float: 'right' }"></nz-statistic>
+          <ng-template #titleTplOne><strong style="color: white;">Tổng cơ sở nhà đất</strong></ng-template>
+        </nz-card>
+      </nz-col>
+      <nz-col [nzSpan]="6">
+        <nz-card style="background: #719ece;">
+          <nz-statistic [nzValue]="houseBaseData?.RentValue" [nzTitle]="titleTplTwo"
+            [nzValueStyle]="{ color: 'white', float: 'right' }"></nz-statistic>
+          <ng-template #titleTplTwo><strong style="color: white;">Tổng cơ sở nhà đất đang cho
+              thuê</strong></ng-template>
+        </nz-card>
+      </nz-col>
+      <nz-col [nzSpan]="6">
+        <nz-card style="background: #719ece;">
+          <nz-statistic [nzValue]="houseBaseData?.NotRentValue" [nzTitle]="titleTplThree"
+            [nzValueStyle]="{ color: 'white', float: 'right' }"></nz-statistic>
+          <ng-template #titleTplThree><strong style="color: white;">Tổng cơ sở nhà đất chưa cho
+              thuê</strong></ng-template>
+        </nz-card>
+      </nz-col>
+      <nz-col [nzSpan]="6">
+        <nz-card style="background: #719ece;">
+          <nz-statistic [nzValue]="houseBaseData?.OtherValue" [nzTitle]="titleTplFour"
+            [nzValueStyle]="{ color: 'white', float: 'right' }"></nz-statistic>
+          <ng-template #titleTplFour><strong style="color: white;">Tổng cơ sở nhà đất đang chờ sắp xếp
+              lại</strong></ng-template>
+        </nz-card>
+      </nz-col>
+    </nz-row> -->
+    <div nz-row nzAlign="top" [nzGutter]="16">
+      <div nz-col [nzSpan]="12">
+        <div nz-row class="row-title mt-lg">
+          <div nz-col [nzMd]="18">
+            <span class="title">Cơ sở nhà đất mới tiếp nhận</span>
+          </div>
+          <div nz-col [nzMd]="6">
+            <span nz-icon nzType="profile" nzTheme="outline" style="font-size: 28px; float: right;cursor: pointer;" (click)="goToReport(1)"></span>
+          </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="24">
+            <div class="d-inline-block mr-xxl">
+              <nz-radio-group [(ngModel)]="newHouseBaseReq.type" (ngModelChange)="GetNewHouseBase()"
+                nzButtonStyle="solid">
+                <label nz-radio-button nzValue="1">Tháng</label>
+                <label nz-radio-button nzValue="2">Năm</label>
+              </nz-radio-group>
+            </div>
+            <div class="d-inline-block mr-sm" *ngIf="newHouseBaseReq.type == '1'">
+              <span>Tháng&nbsp;</span>
+              <nz-select [(ngModel)]="newHouseBaseReq.month" (ngModelChange)="GetNewHouseBase()"
+                name="MonthNewHouseBase" id="MonthNewHouseBase" nzPlaceHolder="Tháng" [nzShowSearch]="true"
+                style="width: 80px;">
+                <nz-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]; let idx = index" [nzLabel]="i" [nzValue]="i">
+                </nz-option>
+              </nz-select>
+            </div>
+            <div class="d-inline-block">
+              <span>Năm&nbsp;</span>
+              <nz-select [(ngModel)]="newHouseBaseReq.year" (ngModelChange)="GetNewHouseBase()" name="YearNewHouseBase"
+                id="YearNewHouseBase" nzPlaceHolder="Năm" [nzShowSearch]="true" style="width: 80px;">
+                <nz-option *ngFor="let i of [].constructor(100); let idx = index" [nzLabel]="idx + 2000"
+                  [nzValue]="idx + 2000"> </nz-option>
+              </nz-select>
+            </div>
+          </div>
+        </div>
+        <div nz-row class="mt-sm">
+          <div nz-col [nzSpan]="24">
+            <nz-table #basicTable nzBordered="true" nzShowPagination="false" [nzData]="newHouseBaseData"
+              [nzScroll]="{ y: '240px' }">
+              <thead>
+                <tr>
+                  <th nzWidth="10%" class="text-center">STT</th>
+                  <th nzWidth="30%" class="text-left">Quận</th>
+                  <th nzWidth="30%" class="text-left">Loại nhà</th>
+                  <th nzWidth="30%" class="text-center">Tổng số căn nhà</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of basicTable.data; let i = index;">
+                  <tr>
+                    <td rowspan="2" class="text-center">
+                      <span>{{ i + 1 }}</span>
+                    </td>
+                    <td rowspan="2">
+                      <span>{{ item.DistrictName }}</span>
+                    </td>
+                    <td>Nhà phố</td>
+                    <td class="text-center">{{ item.TypeHouse1 }}</td>
+                  </tr>
+                  <tr>
+                    <td>Nhà chung cư</td>
+                    <td class="text-center">{{ item.TypeHouse2 }}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </nz-table>
+          </div>
+        </div>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <div nz-row class="row-title mt-lg">
+          <div nz-col [nzMd]="18">
+            <span class="title">Thống kê thuế đất</span>
+          </div>
+          <div nz-col [nzMd]="6">
+            <span nz-icon nzType="profile" nzTheme="outline" style="font-size: 28px; float: right;cursor: pointer;" (click)="goToReport(2)"></span>
+          </div>
+        </div>
+        <div nz-row class="mt-sm">
+          <div nz-col [nzSpan]="24">
+            <nz-table #basicTable1 nzBordered="true" nzShowPagination="false" [nzData]="taxData">
+              <thead>
+                <tr>
+                  <th nzWidth="10%" class="text-center">Năm</th>
+                  <th nzWidth="30%" class="text-right">Tiền thuế phải đóng</th>
+                  <th nzWidth="30%" class="text-right">Tiền thuế đã đóng</th>
+                  <th nzWidth="30%" class="text-right">Tiền thuế còn thiếu</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of basicTable1.data; let i = index;">
+                  <tr>
+                    <td class="text-center">{{ item.Year }}</td>
+                    <td class="text-right">{{ item.AmountToBePaid | number: '0.0-0':'de-DE' }}</td>
+                    <td class="text-right">{{ item.AmountPaid | number: '0.0-0':'de-DE' }}</td>
+                    <td class="text-right">{{ item.AmountDiff | number: '0.0-0':'de-DE' }}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </nz-table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div nz-row class="row-title mt-lg">
+      <div nz-col [nzMd]="24">
+        <span class="title">Thống kê doanh thu</span>
+      </div>
+    </div>
+    <nz-row [nzGutter]="16">
+      <nz-col [nzSpan]="12">
+        <nz-card>
+          <div class="font-weight-bold">
+            <label>Doanh thu theo năm&nbsp;</label>
+            <nz-select [(ngModel)]="revenueBoxYearReq.year" (ngModelChange)="GetRevenueBoxYearData()"
+              name="YearRevenueBoxRight" id="YearRevenueBoxRight" nzPlaceHolder="Năm" [nzShowSearch]="true"
+              style="width: 80px;">
+              <nz-option *ngFor="let i of [].constructor(100); let idx = index" [nzLabel]="idx + 2000"
+                [nzValue]="idx + 2000"> </nz-option>
+            </nz-select>
+            <span nz-icon nzType="profile" nzTheme="outline" style="font-size: 28px; float: right;cursor: pointer;" (click)="goToReport(3)"></span>
+          </div>
+          <div>
+            <p>Tổng số phải thu: {{ revenueBoxYearData?.AmountToBePaid | number: '0.0-0':'de-DE' }}</p>
+            <p>Tổng số đã thu: {{ revenueBoxYearData?.AmountPaid | number: '0.0-0':'de-DE' }}</p>
+            <p>Tổng số còn nợ: {{ revenueBoxYearData?.AmountDiff | number: '0.0-0':'de-DE' }}</p>
+          </div>
+        </nz-card>
+      </nz-col>
+      <nz-col [nzSpan]="12">
+        <nz-card>
+          <div class="font-weight-bold">
+            <label>Doanh thu theo tháng&nbsp;</label>
+            <nz-select [(ngModel)]="revenueBoxMonthReq.month" (ngModelChange)="GetRevenueBoxMonthData()"
+              name="MonthRevenueBoxRight" id="MonthRevenueBoxRight" nzPlaceHolder="Tháng" [nzShowSearch]="true"
+              style="width: 80px;">
+              <nz-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]; let idx = index" [nzLabel]="i" [nzValue]="i">
+              </nz-option>
+            </nz-select>
+            <label>&nbsp;năm&nbsp;</label>
+            <nz-select [(ngModel)]="revenueBoxMonthReq.year" (ngModelChange)="GetRevenueBoxMonthData()"
+              name="YearRevenueBoxRight" id="YearRevenueBoxRight" nzPlaceHolder="Năm" [nzShowSearch]="true"
+              style="width: 80px;">
+              <nz-option *ngFor="let i of [].constructor(100); let idx = index" [nzLabel]="idx + 2000"
+                [nzValue]="idx + 2000"> </nz-option>
+            </nz-select>
+            <span nz-icon nzType="profile" nzTheme="outline" style="font-size: 28px; float: right;cursor: pointer;" (click)="goToReport(4)"></span>
+          </div>
+          <div>
+            <p>Tổng số phải thu: {{ revenueBoxMonthData?.AmountToBePaid | number: '0.0-0':'de-DE' }}</p>
+            <p>Tổng số đã thu: {{ revenueBoxMonthData?.AmountPaid | number: '0.0-0':'de-DE' }}</p>
+            <p>Tổng số còn nợ: {{ revenueBoxMonthData?.AmountDiff | number: '0.0-0':'de-DE' }}</p>
+          </div>
+        </nz-card>
+      </nz-col>
+    </nz-row>
+  </div>
+</ng-container>
+<!-- <div>
+  biểu đồ tròn
+  <div>
+    <p>Thống kê về cơ sở nhà đất</p>
+  </div>
+  <div>
+    <button nz-button (click)="test()" nzType="primary">Refresh</button>
+    <g2-pie
+      #pie
+      [hasLegend]="true"
+      subTitle="Biểu đồ tròn"
+      [total]="total"
+      [valueFormat]="format"
+      [data]="salesPieData"
+      height="294"
+      repaint="false"
+      (clickItem)="handleClick($event)"
+    >
+    </g2-pie>
+  </div>
+  <div>
+    <g2-bar height="200" [title]="'Biểu đồ cột'" [data]="salesData" (clickItem)="handleClick($event)"></g2-bar>
+  </div>
+</div> -->
+<div style="
+    width: 50%;
+    height: 70vh;
+    text-align: center;
+    margin: auto;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 250px;
+  " *ngIf="!roleMd167Dashboard.ViewOrActionSpecial">
+  <!-- <div>
+    <input nz-input [ngModel]="value" (ngModelChange)="changeValue($event)" [ngModelOptions]="{ standalone: true }"
+      type="text" nz-input currencyMask style="width: 200px;" />
+    <span class="d-block">{{ str }}</span>
+  </div>
+  <div>
+    <ng-container *ngFor="let item of items">
+      <span *ngIf="item.Id">{{ item.Name }}</span>
+    </ng-container>
+  </div> -->
+  <p>
+    BẢN QUYỀN © 2023. TRUNG TÂM QUẢN LÝ NHÀ VÀ GIÁM ĐỊNH XÂY DỰNG TRỰC THUỘC SỞ XÂY DỰNG THÀNH PHỐ HỒ CHÍ MINH
+  </p>
+</div>
+<ng-template #itemTpl let-item='item'>
+  <span>{{ item.Name }}</span>
+</ng-template>

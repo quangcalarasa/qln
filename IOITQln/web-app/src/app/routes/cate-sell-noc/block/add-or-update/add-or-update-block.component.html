@@ -1,0 +1,113 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px; position: relative;">
+  <div *ngIf="isViewRecord" class="disabled-form-info"></div>
+  <!-- Phạm vi áp dụng: cho TH biên bản là bán phần diện tích sử dụng chung -->
+  <ng-container *ngIf="validateForm.value.TypeReportApply==TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+    <app-block-apply-range [validateForm]="validateForm" (eventEmitter)="changeDecreeType1($event, false)"
+      (eventEmitterChooseBlock)="chooseBlock()"></app-block-apply-range>
+  </ng-container>
+
+  <!-- Địa chỉ căn nhà -->
+  <app-block-block-address [validateForm]="validateForm" (eventEmitter)="getLandPrice(false)"></app-block-block-address>
+
+  <!-- Phạm vi áp dụng: cho TH biên bản là nhà hộ chung, nhà riêng lẻ, nhà chung cư -->
+  <ng-container *ngIf="validateForm.value.TypeReportApply!=TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+    <app-block-apply-range [validateForm]="validateForm"
+      (eventEmitter)="changeDecreeType1($event, false)"></app-block-apply-range>
+  </ng-container>
+
+  <!-- Thông tin căn nhà -->
+  <app-block-block-info [validateForm]="validateForm" [typehouse_data]="typehouse_data"
+    (eventEmitter)="changeLevelBlock($event)"></app-block-block-info>
+
+  <!-- Thông tin diện tích xây dựng và sử dụng của căn nhà -->
+  <app-block-block-area [validateForm]="validateForm"></app-block-block-area>
+
+  <!-- Tạm ẩn đi -->
+  <!-- <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="24">
+      <nz-form-control [nzSpan]="24">
+        <label nz-checkbox formControlName="SpecialCase">
+          <span> Trường hợp nhà tư nhân nhưng có tầng lửng do nhà nước quản lý </span>
+        </label>
+      </nz-form-control>
+    </div>
+  </div> -->
+
+  <!-- Bảng chi tiết diện tích tầng -->
+  <ng-container *ngIf="validateForm.value.TypeReportApply==TypeReportApplyEnum.NHA_HO_CHUNG">
+    <app-block-block-detail #blockDetailComponent [blockDetails]="validateForm.value.blockDetails"
+      [floorApplyPriceChange]="validateForm.value.FloorApplyPriceChange" [specialCase]="validateForm.value.SpecialCase"
+      [decreeMaps]="validateForm.value.decreeMaps"></app-block-block-detail>
+  </ng-container>
+
+  <!-- Bảng chi tiết diện tích tầng với nhà riêng lẻ -->
+  <ng-container *ngIf="validateForm.value.TypeReportApply==TypeReportApplyEnum.NHA_RIENG_LE">
+    <app-apartment-apartment-detail #apartmentDetailComponent [data]="validateForm.value.apartmentDetails"
+      [typeApartmentDetail]="typeApartmentDetailEnum.BLOCK" [decreeMaps]="validateForm.value.decreeMaps"
+      [typeReportApply]="validateForm.value.TypeReportApply"
+      [floorApplyPriceChange]="validateForm.value.FloorApplyPriceChange" [specialCase]="validateForm.value.SpecialCase"
+      [levelBlockMaps]="validateForm.value.levelBlockMaps"
+      (eventEmitter)="changeLevelBlockMaps($event)"></app-apartment-apartment-detail>
+  </ng-container>
+
+  <!-- Bảng tỷ lệ chất lượng còn lại của nhà ở -->
+  <app-block-maintexture-rate-tbl #mainTextureRateTblComponent [levelblocks]="levelblocks"
+    [typeReportApply]="validateForm.value.TypeReportApply"
+    [parentTypeReportApply]="validateForm.value.ParentTypeReportApply"
+    [blockMaintextureRaties]="validateForm.value.blockMaintextureRaties"></app-block-maintexture-rate-tbl>
+
+  <div nz-row class="row-title mt-lg">
+    <div nz-col [nzMd]="5">
+      <span class="title">Móng cọc các loại</span>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-control [nzSpan]="24">
+        <nz-radio-group formControlName="TypePile">
+          <label class="mr-xxl" nz-radio nzValue="2">L > 15</label>
+          <label nz-radio nzValue="1">L <= 15</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </div>
+  </div>
+
+  <!-- Thông tin đất ở -->
+  <app-block-landscape-info [validateForm]="validateForm"></app-block-landscape-info>
+
+  <!-- Vị trí đất ở -->
+  <app-shared-component-landscape-position [validateForm]="validateForm" [landprice_data]="landprice_data"
+    (eventEmitter)="changeLandPriceItem($event)"></app-shared-component-landscape-position>
+
+  <!-- Thông tin diện tích đất ở cho TH nhà riêng lẻ -->
+  <ng-container *ngIf="validateForm.value.TypeReportApply==TypeReportApplyEnum.NHA_RIENG_LE">
+    <app-block-landscape-area-info [validateForm]="validateForm"></app-block-landscape-area-info>
+  </ng-container>
+
+  <!-- Thông tin vị trí đất ở -->
+  <app-shared-component-landscape-position-info [validateForm]="validateForm"
+    [position_coefficient_data]="position_coefficient_data"
+    (eventEmitter)="changePositionCoefficientId($event)"></app-shared-component-landscape-position-info>
+
+  <!-- Thông tin diện tích đất liền kề với nhà ở cũ -->
+  <ng-container
+    *ngIf="validateForm.value.Id && validateForm.value.TypeReportApply==TypeReportApplyEnum.NHA_RIENG_LE && (validateForm.value.SellLandArea || validateForm.value.pricingApartmentLandDetails)">
+    <app-shared-adjacent-land [validateForm]="validateForm"></app-shared-adjacent-land>
+  </ng-container>
+
+  <!-- Khu đất, thửa đất có hình thể đặc biệt -->
+  <ng-container
+    *ngIf="validateForm.value.TypeReportApply !=
+  TypeReportApplyEnum.NHA_CHUNG_CU && validateForm.value.TypeReportApply != TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG">
+    <app-shared-component-land-special [validateForm]="validateForm"></app-shared-component-land-special>
+  </ng-container>
+</form>
+
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button *ngIf="!isViewRecord" nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>

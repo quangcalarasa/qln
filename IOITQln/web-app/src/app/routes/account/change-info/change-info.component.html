@@ -1,0 +1,90 @@
+<div class="main">
+  <form nz-form nzLayout="vertical" [formGroup]="validateForm" (ngSubmit)="save()" se-container="1">
+    <div class="left">
+      <se class="d-block" label="Tài khoản">
+        <nz-form-item>
+          <nz-form-control nzHasFeedback [nzErrorTip]="userNameErrorTpl">
+            <input nz-input formControlName="UserName" required />
+            <ng-template #userNameErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">Chưa nhập Tài khoản!</ng-container>
+              <ng-container *ngIf="control?.hasError('minlength')">Tài khoản từ 4 ký tự trở lên!</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </se>
+
+      <se class="d-block" label="Họ tên">
+        <nz-form-item>
+          <nz-form-control nzHasFeedback [nzErrorTip]="fullNameErrorTpl">
+            <input nz-input formControlName="FullName" required />
+            <ng-template #fullNameErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">Chưa nhập Họ tên!</ng-container>
+              <ng-container *ngIf="control.hasError('minlength')">Họ tên từ 6 ký tự trở lên!</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </se>
+      <se class="d-block" label="Số điện thoại">
+        <nz-form-item>
+          <nz-form-control nzHasFeedback [nzErrorTip]="phoneNameErrorTpl">
+            <input nz-input formControlName="Phone" required />
+            <ng-template #phoneNameErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">Chưa nhập Số điện thoại!</ng-container>
+              <ng-container *ngIf="control.hasError('pattern')">Số điện thoại không hợp lệ!</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </se>
+      <se class="d-block" label="Email">
+        <nz-form-item>
+          <nz-form-control nzHasFeedback [nzErrorTip]="emailNameErrorTpl">
+            <input nz-input formControlName="Email" />
+            <ng-template #emailNameErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('email')">Email không hợp lệ!</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </se>
+      <se class="d-block" label="Ngày sinh">
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="DobErrorTpl">
+            <input nz-input type="date" max="9999-12-31" formControlName="Dob" />
+            <ng-template #DobErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">Chưa nhập Ngày sinh!</ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </se>
+      <se class="d-block" label="Địa chỉ">
+        <nz-form-control>
+          <textarea formControlName="Address" nz-input rows="2"></textarea>
+        </nz-form-control>
+      </se>
+      <se class="d-block">
+        <button nz-button nzType="primary" [disabled]="!validateForm.valid || loading">Lưu thay đổi</button>
+      </se>
+    </div>
+    <div class="right">
+      <div class="avatar__title">Ảnh dại diện</div>
+      <nz-form-control [nzSpan]="14">
+        <nz-upload
+          class="avatar-uploader"
+          [nzAccept]="'image/png,image/jpeg,image/gif,image/bmp'"
+          nzName="Avatar"
+          nzListType="picture-card"
+          [nzShowUploadList]="false"
+          [nzBeforeUpload]="beforeUpload"
+        >
+          <ng-container *ngIf="!validateForm.value.Avatar">
+            <i class="upload-icon" nz-icon [nzType]="'upload'"></i>
+            <div class="ant-upload-text">&nbsp;&nbsp;&nbsp;Tải lên</div>
+          </ng-container>
+          <img *ngIf="validateForm.value.Avatar" [src]="srcImg + validateForm.value.Avatar" class="img-upload-drawer" />
+        </nz-upload>
+        <div *ngIf="validateForm.value.Avatar" class="btn-remove-img" style="color: red" (click)="validateForm.value.Avatar = undefined">
+          <i nz-icon nzType="close-circle" nzTheme="outline"></i>
+        </div>
+      </nz-form-control>
+    </div>
+  </form>
+</div>

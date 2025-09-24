@@ -1,0 +1,121 @@
+<nz-form nz-form [formGroup]="validateForm" style="padding-bottom: 30px">
+  <div nz-row class="row-title">
+    <div nz-col [nzMd]="5">
+      <span class="title">Thông tin </span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <label style="font-weight: bold">Chủ hộ : {{ validateForm.value.Name }}</label>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <label style="font-weight: bold">Căn số : {{ validateForm.value.Aparment }}</label>
+  </div>
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8">
+      <label style="font-weight: bold">Khối nhà : {{ validateForm.value.BlockHouse }}</label>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <label style="font-weight: bold">Lô : {{ validateForm.value.Land }}</label>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <label style="font-weight: bold"> Số tiền thế chân : {{ validateForm.value.PriceTC | number: '0.0-2':'de-DE' }} đồng</label>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <label style="font-weight: bold"> Khu chung cư :</label>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <label style="font-weight: bold">Số tiền thế chân đã nộp vào ngày : {{ validateForm.value.DatePriceTC | date: 'dd/MM/yyyy' }}</label>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <label style="font-weight: bold">
+      Số tiền thuê nộp hàng tháng là : {{ validateForm.value.PriceMonth | number: '0.0-2':'de-DE' }} đồng</label
+    >
+  </div>
+  <div nz-row [nzGutter]="8">
+    <label style="font-weight: bold">Quyết định bố trí tái định cư ngày : {{ validateForm.value.DateTDC | date: 'dd/MM/yyyy' }}</label>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <label style="font-weight: bold"> Quyết định điều chỉnh giá trị căn hộ ban hành ngày :</label>
+  </div>
+</nz-form>
+
+<div nz-row class="row-title">
+  <div nz-col [nzMd]="5">
+    <span class="title">Bảng chiết tính </span>
+  </div>
+</div>
+<div>
+  <table #groupingTable Data="data" class="table-bct">
+    <thead>
+      <tr>
+        <th rowspan="2">Lần trả </th>
+        <th rowspan="2">Ngày thanh toán theo quy định</th>
+        <th rowspan="2">Ngày thanh toán dự kiến</th>
+        <th rowspan="2">Ngày thanh toán thực tế</th>
+        <th rowspan="2">Thời gian tính lãi theo ngày</th>
+        <th rowspan="2">Lãi suất tính theo ngày</th>
+
+        <th colspan="3">Số tiền phải trả (VNĐ)</th>
+        <th colspan="3">Tình hình thanh toán (VNĐ)</th>
+        <th rowspan="2">Ghi Chú </th>
+        <th rowspan="2">Tiền nộp về công ích</th>
+      </tr>
+      <tr>
+        <th rowspan="1">Số tiền phải trả từng tháng </th>
+        <th rowspan="1"> Số tiền lãi phát sinh do chậm thanh toán </th>
+        <th rowspan="1">Số tiền đến kỳ phải thanh toán</th>
+        <!--  -->
+        <th rowspan="1">Số tiền phải thanh toán </th>
+        <th rowspan="1">Số tiền đã thanh toán </th>
+        <th rowspan="1">Chênh lệch</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <ng-container *ngFor="let item of data; let index = index; let first = first">
+        <tr
+          *ngFor="let childItem of item.tdcPriceRentExcels; let firstChild = first; let lastChild = last"
+          [ngClass]="{ 'highlight-row': childItem.IsImport }"
+        >
+          <td *ngIf="childItem.Year != 1 && childItem.Year != 2" class="text-center">{{
+            childItem.TypeRow == 4 || childItem.Year == 1 || childItem.Year == 2 ? '' : childItem.PaymentTimes
+          }}</td>
+
+          <td *ngIf="childItem.Year == 1" colspan="6" class="text-center">{{ childItem.PaymentTimes }}</td>
+          <td *ngIf="childItem.Year == 2" colspan="2" class="text-center">{{ childItem.PaymentTimes }}</td>
+
+          <td *ngIf="childItem.Year != 1 && childItem.Year != 2" class="text-center">{{
+            childItem.TypeRow == 4 ? 'Nợ cũ' : (childItem.PaymentDatePrescribed | date: 'dd/MM/yyyy')
+          }}</td>
+          <td *ngIf="childItem.Year != 1" class="text-center">{{ childItem.PaymentDatePrescribed1 | date: 'dd/MM/yyyy' }}</td>
+          <td *ngIf="childItem.Year != 1" class="text-center">{{
+            childItem.TypeRow == 2 ? '' : (childItem.ExpectedPaymentDate | date: 'dd/MM/yyyy')
+          }}</td>
+          <td *ngIf="childItem.Year != 1" class="text-center">{{ childItem.DailyInterest }}</td>
+          <td *ngIf="childItem.Year != 1 && childItem.DailyInterestRate !== null" class="text-center">{{
+            childItem.DailyInterestRate + '%'
+          }}</td>
+          <td class="text-center" *ngIf="childItem.DailyInterestRate === null && childItem.Year != 1">{{ childItem.DailyInterestRate }}</td>
+
+          <td  style="text-align: right">{{ childItem.UnitPay | number: '0.0-2':'de-DE' }}</td>
+          <td  style="text-align: right">{{ childItem.PriceEarnings | number: '0.0-2':'de-DE' }}</td>
+          <td  style="text-align: right">{{ childItem.PricePaymentPeriod | number: '0.0-2':'de-DE' }}</td>
+          <td *ngIf="firstChild" [attr.rowspan]="item.tdcPriceRentExcels.length"  style="text-align: right">{{
+            item.Pay | number: '0.0-2':'de-DE'
+          }}</td>
+          <td *ngIf="firstChild" [attr.rowspan]="item.tdcPriceRentExcels.length"  style="text-align: right"
+            >{{ item.Paid | number: '0.0-2':'de-DE' }}
+          </td>
+          <td *ngIf="firstChild" [attr.rowspan]="item.tdcPriceRentExcels.length"  style="text-align: right"
+            >{{ item.PriceDifference | number: '0.0-2':'de-DE' }}
+          </td>
+          <td *ngIf="firstChild" [attr.rowspan]="item.tdcPriceRentExcels.length" >{{ childItem.Note }} </td>
+          <td *ngIf="firstChild" [attr.rowspan]="item.tdcPriceRentExcels.length">
+            <input type="checkbox" [checked]="item.PricePublic" disabled />
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

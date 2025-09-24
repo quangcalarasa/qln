@@ -1,0 +1,11 @@
+<input (change)="onFileChange($event)" type="file" accept=".xlsx, .xls" style="margin: 10px" />
+<div class="drawer-footer">
+    <button nz-button nzType="default" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng
+    </button>
+    <button nz-button nzType="primary" [disabled]="!selectedFile || loading" (click)="onSubmit()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

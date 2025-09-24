@@ -1,0 +1,123 @@
+<div class="card-custom">
+    <div class="card-header">
+        <ng-container [ngTemplateOutlet]="nzExtra"></ng-container>
+    </div>
+
+    <div class="card-body">
+        <st #tableRef [data]="data" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'"
+            [loading]="loading" [ps]="paging.page_size" [total]="paging.item_count"
+            [widthMode]="{ type: 'strict',strictBehavior:'truncate' }" [page]="{front:false}">
+            <ng-template st-row="uavClmn" let-item let-index="index"> <span>{{ item.UseAreaValue |
+                    number:'0.0-2':'de-DE' }}</span> </ng-template>
+        </st>
+    </div>
+</div>
+
+<ng-template #nzExtra>
+    <div nz-row>
+        <div nz-col [nzSm]="24" [nzMd]="6">
+            <h3 class="title-table">
+                <i nz-icon nzType="arrow-left" nzTheme="outline" (click)="onBack()"></i>
+                Danh sách Căn hộ cho thuê
+            </h3>
+        </div>
+
+        <div nz-col [nzSm]="24" [nzMd]="24" style="text-align: right;">
+            <button nz-button nzType="text" class="btn-total-row" [ngClass]="filter ? 'd-block' : 'd-inline-block'"
+                [ngStyle]="{ position: filter ? 'relative' : 'absolute' }">
+                Tổng số căn hộ:&nbsp;&nbsp;&nbsp;<strong>{{ paging.item_count }}</strong>
+            </button>
+            <form class="hidden-mobile table-form" nz-form [nzLayout]="'inline'">
+                <ng-container *ngIf="filter">
+                    <nz-form-item>
+                        <nz-form-control>
+                            <nz-select nzAllowClear [(ngModel)]="query.type2" name="DistrictId" id="DistrictId"
+                                nzPlaceHolder="Lọc theo Quận/huyện" [nzShowSearch]="true"
+                                (ngModelChange)="changeDistrict()">
+                                <nz-option *ngFor="let i of districts; let idx = index" [nzLabel]="i.Name"
+                                    [nzValue]="i.Id"> </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control>
+                            <nz-select nzAllowClear [(ngModel)]="query.type3" name="WardId" id="WardId"
+                                nzPlaceHolder="Lọc theo Phường/xã" [nzShowSearch]="true" (ngModelChange)="changeWard()">
+                                <nz-option *ngFor="let i of wards; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"
+                                    [nzHide]="i.DistrictId != query.type2"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control>
+                            <nz-select nzAllowClear [(ngModel)]="query.type4" name="LaneId" id="LaneId"
+                                nzPlaceHolder="Lọc theo đường" [nzShowSearch]="true">
+                                <nz-option *ngFor="let i of lanes; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id"
+                                    [nzValue]="i.Id" [nzHide]="i.Ward != query.type3"> </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </ng-container>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group [nzSuffix]="inputClearTpl">
+                            <input nz-input [maxlength]="30" [width]="160" [(ngModel)]="query.txtSearch" name="no"
+                                placeholder="Nhập từ khoá" id="no" />
+                        </nz-input-group>
+                        <ng-template #inputClearTpl>
+                            <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle"
+                                *ngIf="query.txtSearch" (click)="[query.txtSearch = undefined]"></i>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-select nzAllowClear [nzDropdownMatchSelectWidth]="false" [(ngModel)]="query.type1"
+                            name="type1" id="type1" [nzPlaceHolder]="'Lọc theo Nghị định'" [nzShowSearch]="true">
+                            <nz-option *ngFor="let i of Decree | keyvalue; let idx = index" [nzLabel]="i.value"
+                                [nzValue]="i.key">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-select nzAllowClear [nzDropdownMatchSelectWidth]="false" [(ngModel)]="query.type"
+                            name="type" id="type" [nzPlaceHolder]="'Loại Biên bản áp dụng'" [nzShowSearch]="true">
+                            <nz-option
+                                *ngFor="let i of TypeReportApply | keyvalue | filterTypeReportApplyWithoutAnyItem : TypeReportApplyEnum.BAN_PHAN_DIEN_TICH_LIEN_KE; let idx = index"
+                                [nzLabel]="i.value" [nzValue]="i.key">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button type="submit" (click)="searchData()">
+                            <i nz-icon nzType="search" nzTheme="outline"></i>
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control>
+                        <button nz-button type="button" (click)="filter=!filter" nzTooltipTitle="Mở rộng bộ lọc"
+                            nz-tooltip>
+                            <i *ngIf="!filter" nz-icon nzType="filter" nzTheme="outline"></i>
+                            <i *ngIf="filter" nz-icon nzType="filter" nzTheme="fill"></i>
+                        </button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+
+            <button nz-button nzType="text" nzTooltipTitle="Làm mới" nz-tooltip (click)="reset()">
+                <i nz-icon nzType="reload" nzTheme="outline"></i>
+            </button>
+
+            <button nz-button *ngIf="role.Create" nzType="primary" nz-button (click)="addOrUpdate()">
+                <i nz-icon nzType="plus" nzTheme="outline"></i>
+                Thêm mới
+            </button>
+        </div>
+    </div>
+</ng-template>

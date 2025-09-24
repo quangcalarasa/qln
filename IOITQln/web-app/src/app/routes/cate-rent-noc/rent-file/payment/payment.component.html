@@ -1,0 +1,134 @@
+<nz-form nz-form [formGroup]="validateForm" style="padding-bottom: 30px">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Date" nzRequired>
+          <span>Ngày thực hiện</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback>
+          <input type="date" max="9999-12-31" formControlName="Date" nz-input />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <!-- <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Executor" nzRequired>
+          <span>Người thực hiện</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback>
+          <input formControlName="Executor" class="width-60" Disabled="true" />
+        </nz-form-control>
+      </nz-form-item>
+    </div> -->
+
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Price" nzRequired>
+          <span>Số tiền</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback>
+          <input formControlName="Price" currencyMask nz-input />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="NumberOfTransfer" nzRequired>
+          <span>Số phiếu chuyển</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback>
+          <input formControlName="NumberOfTransfer" nz-input />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DateOfTransfer" nzRequired>
+          <span>Ngày phiếu chuyển</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback>
+          <input type="date" max="9999-12-31" formControlName="DateOfTransfer" nz-input />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="InvoiceCode" nzRequired>
+          <span>Mã xuất hóa đơn</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback>
+          <input formControlName="InvoiceCode" nz-input />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Executor" nzRequired>
+          <span>Người thực hiện</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback>
+          <input formControlName="Executor" nz-input Disabled="true" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="12">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Number" nzRequired>
+          <span>Số thứ tự phiếu</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback>
+          <input formControlName="Number" nz-input />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="24">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="Note">
+          <span>Nội dung thu</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24">
+          <textarea formControlName="Note" nz-input></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col [nzSpan]="24">
+      <button nz-button nzType="primary" [disabled]="!validateForm.valid || loading" (click)="submitForm()">Lưu</button>
+    </div>
+  </div>
+</nz-form>
+
+<div *nzModalFooter>
+  
+</div>
+
+<div class="card-custom" style="margin-top: 50px; width: 100%">
+  <div class="card-header">
+    <label style="color: red; font-weight: 300">LỊCH SỬ PHIẾU THU</label>
+  </div>
+  <div class="card-body" style="min-height: 50%;">
+    <st
+      #tableRef
+      [data]="data"
+      [columns]="columns"
+      [size]="'small'"
+      [loading]="loading"
+      [ps]="paging.page_size"
+      [total]="paging.item_count"
+      [widthMode]="{ type: 'strict', strictBehavior: 'truncate' }"
+      [page]="{ front: false }"
+    >
+      <ng-template st-row="PriceHeader" type="title"><span class="danger-star"></span>Số Tiền</ng-template>
+      <ng-template st-row="Price" let-item let-index="index">
+        <span class="text-right">{{ item.Price | number: '0.0-2':'de-DE' }}</span>
+      </ng-template>
+    </st>
+  </div>
+</div>

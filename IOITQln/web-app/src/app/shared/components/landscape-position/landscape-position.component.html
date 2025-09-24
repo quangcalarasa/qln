@@ -1,0 +1,84 @@
+<ng-container [formGroup]="validateForm">
+    <div nz-row [nzGutter]="24" *ngIf="!validateForm.value.Disabled">
+        <div nz-col [nzSpan]="24">
+            <span class="note-drawer">Vị trí đất ở</span>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandNo" nzRequired>Thửa đất số</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Số thửa đất!">
+                    <input nz-input formControlName="LandNo" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="MapNo" nzRequired>Tờ bản đồ số</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Số tờ bản đồ!">
+                    <input nz-input formControlName="MapNo" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <ng-container *ngIf="checkDecree(DecreeEnum.ND_99)" [ngTemplateOutlet]="landPriceItemTpl"
+        [ngTemplateOutletContext]="{ decree: DecreeEnum.ND_99, form: validateForm}">
+    </ng-container>
+    <ng-container *ngIf="checkDecree(DecreeEnum.ND_34)" [ngTemplateOutlet]="landPriceItemTpl"
+        [ngTemplateOutletContext]="{ decree: DecreeEnum.ND_34, form: validateForm}">
+    </ng-container>
+    <ng-container *ngIf="checkDecree(DecreeEnum.ND_61)" [ngTemplateOutlet]="landPriceItemTpl"
+        [ngTemplateOutletContext]="{ decree: DecreeEnum.ND_61, form: validateForm}">
+    </ng-container>
+</ng-container>
+
+<!-- landPriceItemTpl -->
+<ng-template #landPriceItemTpl let-decree='decree' let-form='form'>
+    <div nz-row [nzGutter]="24" [formGroup]="form">
+        <div nz-col [nzSpan]="16">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandPriceItemId_{{decree}}" nzRequired>Đơn giá mặt tiền đường áp dụng theo Nghị
+                    định {{
+                    viewNameDecree(decree)
+                    }}</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear [formControlName]="'LandPriceItemId_' + decree" nzPlaceHolder=""
+                        [nzShowSearch]="true" (ngModelChange)="changeLandPriceItem($event, decree)">
+                        <nz-option
+                            *ngFor="let i of landprice_data | filterItemsByDecreeType1Id: decree; let idx = index"
+                            [nzLabel]="i.LaneName" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">&nbsp;</nz-form-label>
+                <nz-form-control [nzSpan]="24"
+                    *ngIf="validateForm.value.LandPriceItemValue_99!=undefined && decree==DecreeEnum.ND_99">
+                    <nz-input-group nzAddOnAfter="đồng/m2">
+                        <input type="text" nz-input [(ngModel)]="validateForm.value.LandPriceItemValue_99"
+                            [ngModelOptions]="{ standalone: true }" currencyMask disabled="true" />
+                    </nz-input-group>
+                </nz-form-control>
+
+                <nz-form-control [nzSpan]="24"
+                    *ngIf="validateForm.value.LandPriceItemValue_34!=undefined && decree==DecreeEnum.ND_34">
+                    <nz-input-group nzAddOnAfter="đồng/m2">
+                        <input type="text" nz-input [(ngModel)]="validateForm.value.LandPriceItemValue_34"
+                            [ngModelOptions]="{ standalone: true }" currencyMask disabled="true" />
+                    </nz-input-group>
+                </nz-form-control>
+
+                <nz-form-control [nzSpan]="24"
+                    *ngIf="validateForm.value.LandPriceItemValue_61!=undefined && decree==DecreeEnum.ND_61">
+                    <nz-input-group nzAddOnAfter="đồng/m2">
+                        <input type="text" nz-input [(ngModel)]="validateForm.value.LandPriceItemValue_61"
+                            [ngModelOptions]="{ standalone: true }" currencyMask disabled="true" />
+                    </nz-input-group>
+                </nz-form-control>
+
+            </nz-form-item>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,119 @@
+<form class="form-action-custom" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="FullName" nzRequired>Họ tên</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="fullNameErrorTpl">
+      <input nz-input formControlName="FullName" />
+      <ng-template #fullNameErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập Họ tên!</ng-container>
+        <ng-container *ngIf="control.hasError('minlength')">Họ tên từ 6 ký tự trở lên!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="Phone" nzRequired>Số điện thoại</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="phoneNameErrorTpl">
+      <input nz-input formControlName="Phone" />
+      <ng-template #phoneNameErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập Số điện thoại!</ng-container>
+        <ng-container *ngIf="control.hasError('pattern')">Số điện thoại không hợp lệ!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="Code" nzRequired>CCCD/CMND</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="codeErrorTpl">
+      <input nz-input formControlName="Code" />
+      <ng-template #codeErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập CCCD/CMND!</ng-container>
+        <ng-container *ngIf="control?.hasError('minlength')">CCCD/CMND từ 9 ký tự trở lên!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzMd]="6" nzFor="Doc">Ngày cấp</nz-form-label>
+    <nz-form-control [nzMd]="14" [nzErrorTip]="DocErrorTpl">
+      <!-- <nz-date-picker 
+        style="width: 696.953px"
+        [nzFormat]="nzFormat"
+        formControlName="Doc">
+      </nz-date-picker> -->
+      <input nz-input type="date" max="9999-12-31" formControlName="Doc" />
+      <ng-template #DocErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập Ngày cấp!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Nơi cấp</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <textarea formControlName="PlaceCode" nz-input rows="2"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="Email">Email</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzHasFeedback [nzErrorTip]="emailNameErrorTpl">
+      <input nz-input formControlName="Email" />
+      <ng-template #emailNameErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('email')">Email không hợp lệ!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzMd]="6" nzFor="Dob">Ngày sinh</nz-form-label>
+    <nz-form-control [nzMd]="14" [nzErrorTip]="DobErrorTpl">
+      <!-- <nz-date-picker 
+        style="width: 696.953px"
+        [nzFormat]="nzFormat"
+        formControlName="Dob">
+      </nz-date-picker> -->
+      <input nz-input type="date" max="9999-12-31" formControlName="Dob" />
+      <ng-template #DobErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">Chưa nhập Ngày sinh!</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzMd]="6" nzFor="Sex">Giới tính</nz-form-label>
+    <nz-form-control [nzMd]="14">
+      <nz-radio-group formControlName="Sex">
+        <label class="ml-lg" nz-radio nzValue="1">Nam</label>
+        <label class="ml-lg" nz-radio nzValue="2">Nữ</label>
+      </nz-radio-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="Avatar">Ảnh đại diện</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-upload class="avatar-uploader" [nzAccept]="'image/png,image/jpeg,image/gif,image/bmp'" nzName="Avatar"
+        nzListType="picture-card" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload">
+        <ng-container *ngIf="!validateForm.value.Avatar">
+          <i class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'upload'"></i>
+          <div class="ant-upload-text">&nbsp;&nbsp;&nbsp;Tải lên</div>
+        </ng-container>
+        <img *ngIf="validateForm.value.Avatar" [src]="srcImg + validateForm.value.Avatar" class="img-upload-drawer" />
+      </nz-upload>
+      <div *ngIf="validateForm.value.Avatar" class="btn-remove-img" style="color: red"
+        (click)="validateForm.value.Avatar = undefined">
+        <i nz-icon nzType="close-circle" nzTheme="outline"></i>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Địa chỉ</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <textarea formControlName="Address" nz-input rows="2"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>

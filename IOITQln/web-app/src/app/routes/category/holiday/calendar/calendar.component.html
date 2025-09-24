@@ -1,0 +1,15 @@
+<nz-calendar [(ngModel)]="curr_date" [nzFullscreen]='true' nzMode="month" (nzSelectChange)="getByMonthAndYear()">
+    <ul *nzDateCell="let date" class="events">
+        <ng-container *ngFor="let item of genMsg(date)">
+            <li>
+                <nz-badge [nzStatus]="'success'" [nzText]="item"></nz-badge>
+            </li>
+        </ng-container>
+    </ul>
+</nz-calendar>
+
+<div class="drawer-footer" style="z-index: 2;">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+</div>

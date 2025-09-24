@@ -1,0 +1,15 @@
+{
+    "/api": {
+      "target": "https://qln.cnttvietnam.com.vn/",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }
+  
+// {
+//   "/api": {
+//     "target": "https://qln.hmcic.com.vn/",
+//     "secure": false,
+//     "changeOrigin": true
+//   }
+// }

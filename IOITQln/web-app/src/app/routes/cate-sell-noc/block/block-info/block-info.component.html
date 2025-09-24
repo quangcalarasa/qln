@@ -1,0 +1,118 @@
+<ng-container [formGroup]="validateForm">
+    <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="3">
+            <span class="title">Thông tin căn nhà</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8" *ngIf="validateForm.value.TypeReportApply==typeReportApplyEnum.NHA_RIENG_LE">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Code" nzRequired>Mã định danh</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Mã định danh!">
+                    <input nz-input formControlName="Code" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="TypeBlockId" nzRequired>Loại nhà</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Loại nhà!">
+                    <nz-select nzAllowClear formControlName="TypeBlockId" name="TypeBlockId" id="TypeBlockId"
+                        nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option
+                            *ngFor="let i of typehouse_data | filterTypeBlockByTypeReportApply: (validateForm.value.TypeReportApply!=typeReportApplyEnum.BAN_PHAN_DIEN_TICH_SU_DUNG_CHUNG ? validateForm.value.TypeReportApply : validateForm.value.ParentTypeReportApply); let idx = index"
+                            [nzLabel]="i.Name" [nzValue]="i.Id">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="levelBlockMaps" nzRequired>Cấp nhà</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Cấp nhà">
+                    <nz-select nzAllowClear [compareWith]="compareFn" nzMode="multiple" nzPlaceHolder=""
+                        formControlName="levelBlockMaps" [nzShowSearch]="true"
+                        (ngModelChange)="changeLevelBlock($event)">
+                        <nz-option *ngFor="let levelblockmap of levelblockmap_data | keyvalue" [nzValue]="levelblockmap"
+                            [nzLabel]="levelblockmap.value"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="FloorBlockMap" nzRequired>Số tầng (Chi tiết số tầng căn nhà theo cấp
+                    nhà)</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback
+                    nzErrorTip="Chưa nhập thông tin Số tầng (Chi tiết số tầng căn nhà theo cấp nhà)!">
+                    <input nz-input formControlName="FloorBlockMap" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8"
+            *ngIf="validateForm.value.TypeReportApply==typeReportApplyEnum.NHA_HO_CHUNG || validateForm.value.TypeReportApply==typeReportApplyEnum.NHA_CHUNG_CU">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="FloorApplyPriceChange" nzRequired>Số tầng căn nhà (để áp dụng hệ số
+                    phân bổ
+                    đất)</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa chọn Số tầng nhà áp dụng hệ số!">
+                    <nz-select nzAllowClear formControlName="FloorApplyPriceChange" name="FloorApplyPriceChange"
+                        id="FloorApplyPriceChange" nzPlaceHolder="" [nzShowSearch]="true">
+                        <nz-option *ngFor="let number of [].constructor(40); let idx = index" [nzLabel]="idx + 1"
+                            [nzValue]="idx + 1"> </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Attactment">File xác minh đính kèm</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-upload nzName="Attactment" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload"
+                        [nzDisabled]="validateForm.value.Id && validateForm.value.Attactment && userId != validateForm.value.UserIdCreateAttactment">
+                        <button nz-button type="button">
+                            <span nz-icon nzType="upload"></span>
+                            Tải file xác minh đính kèm
+                        </button>
+                    </nz-upload>
+                    <ng-container *ngIf="validateForm.value.Attactment">
+                        <div style="position: relative;">
+                            <a style="white-space: nowrap; text-overflow: ellipsis; width: 100%; display: block; overflow: hidden; padding-right: 50px;"
+                                href="javascript:void(0)" (click)="downloadFile(validateForm.value.Attactment)">{{
+                                validateForm.value.Attactment }}</a>
+                            <span (click)="validateForm.value.Attactment=undefined"
+                                *ngIf="!validateForm.value.Id || (validateForm.value.Id && userId == validateForm.value.UserIdCreateAttactment) || !validateForm.value.UserIdCreateAttactment"
+                                style="position: absolute; top: 0; right: 0; color: red;" nz-icon nzType="delete"
+                                nzTheme="outline"></span>
+                        </div>
+
+                    </ng-container>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+
+    </div>
+    <!-- <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Code" nzRequired>Mã căn nhà</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Mã căn nhà!">
+                    <input nz-input formControlName="Code" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Name" nzRequired>Tên căn nhà</nz-form-label>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Chưa nhập Tên căn nhà!">
+                    <input nz-input formControlName="Name" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div> -->
+</ng-container>

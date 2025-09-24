@@ -1,0 +1,28 @@
+<form nz-form  style="padding-bottom: 30px">
+<div style="margin: 15px;">
+</div>
+<div *ngIf="ViewData" >
+  <table #groupingTable  class="table-bct" style="width: 100% !important;">
+    <thead>
+      <th>STT</th>
+      <th>Mã hợp đồng</th>
+      <th>Trạng thái</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ViewData ; let i = index ">
+          <td  class="text-center" >{{ i + 1 }}</td>
+          <td class="text-center">{{data.CodeHD}}</td>
+          <td class="text-center" *ngIf="data.StatusProcess == 2" >Hoàn thành</td>
+          <td class="text-center" *ngIf="data.StatusProcess == 1" >Thất bại</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</form>
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+</div>
+

@@ -1,0 +1,9 @@
+{
+  "/api": {
+     "target": "https://localhost:44397/",
+    // "target": "http://qln.cnttvietnam.com.vn/",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
+

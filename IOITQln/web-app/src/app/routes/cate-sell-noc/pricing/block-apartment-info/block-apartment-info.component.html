@@ -1,0 +1,79 @@
+<ng-container [formGroup]="validateForm">
+    <div nz-row [nzGutter]="24" *ngIf="block">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">Căn nhà số</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input [(ngModel)]="block.Address" [ngModelOptions]="{ standalone: true }" disabled />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">&nbsp;</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input [(ngModel)]="block.FullAddress" [ngModelOptions]="{ standalone: true }" disabled />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24" *ngIf="block.TypeReportApply != TypeReportApplyEnum.NHA_RIENG_LE && apartment">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">Địa chỉ căn hộ</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input [(ngModel)]="apartment.Address" [ngModelOptions]="{ standalone: true }" disabled />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">&nbsp;</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input [(ngModel)]="apartment.Code" [ngModelOptions]="{ standalone: true }" disabled />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="Customer">Người đang thuê nhà ở là
+                    <span class="point text-lg ml-sm" nz-icon nzType="question-circle" nzTheme="twotone" nz-popover
+                        [nzPopoverContent]="contentPpvTpl5" [nzPopoverOverlayClassName]="'fix-pd-ppv'"></span>
+                </nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <nz-select nzAllowClear [compareWith]="compareFnCustomer" nzMode="multiple"
+                        formControlName="customers" name="Customer" id="Customer" nzPlaceHolder=""
+                        [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of customer_data; let idx = index" [nzLabel]="i.FullName"
+                            [nzValue]="i">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- <div nz-col [nzSpan]="12">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">&nbsp;</nz-form-label>
+                <nz-form-label [nzSpan]="24" class="bg-magenta-light pl-sm font-weight-bold">
+                    <span class="pl-sm">Ghi chú: Có thể chọn từ danh sách thuê nhà, có thể chọn nhiều người</span>
+                </nz-form-label>
+            </nz-form-item>
+        </div> -->
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24">Thời điểm bố trí sử dụng được xác định</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <textarea formControlName="TimeUse" nz-input rows="3"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-container>
+<ng-template #contentPpvTpl5>
+    <app-shared-popover [cs]="5">
+    </app-shared-popover>
+</ng-template>

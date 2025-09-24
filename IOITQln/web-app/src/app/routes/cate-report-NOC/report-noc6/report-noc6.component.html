@@ -1,0 +1,86 @@
+<nz-form nz-form [formGroup]="validateForm" style="padding-bottom: 30px">
+  <div nz-row class="row-title">
+    <div nz-col [nzMd]="5">
+      <span class="title">Bộ lọc</span>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="16">
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DateStart" nzRequired>
+          <span>Từ ngày</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback>
+          <input nz-input type="date" max="9999-12-31" formControlName="DateStart" (change)="selectDayStart()" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="8">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="DateEnd" nzRequired>
+          <span>Đến ngày</span>
+        </nz-form-label>
+        <nz-form-control [nzSpan]="24" nzHasFeedback>
+          <input nz-input type="date" max="9999-12-31" formControlName="DateEnd" (change)="selectDayEnd()" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</nz-form>
+
+<div style="margin: 10px">
+  <button nz-button nzType="primary" (click)="onClick()">
+    <span nz-icon nzType="search"></span>
+    Hiển thị dữ liệu
+  </button>
+  <button nz-button nzType="primary" (click)="ExportReportNOC6()">
+    <span nz-icon nzType="download"></span>
+    Xuất báo cáo phụ lục 6</button
+  >
+</div>
+
+<div class="table-bct">
+  <table>
+    <thead>
+      <th>STT</th>
+      <th>Quận</th>
+      <th>Loại nhà</th>
+      <th>Tỉnh trạng nhà</th>
+      <th>Số hộ</th>
+      <th>Số tiền phải thu</th>
+      <th>Số tiền đã thu</th>
+      <th>Tỷ lệ</th>
+      <th>Số tiền còn nợ</th>
+      <th>Ghi chú</th>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let itemdata of data; let i = index">
+        <ng-container *ngFor="let item1 of itemdata.groupByDistrict; let firstChild = first; let lastChild = last">
+          <ng-container *ngFor="let itemChild of item1.groupByTypeBlockID; let first = first">
+            <tr *ngFor="let item of itemChild.groupDataByTypeUsageStatus; let first1 = first">
+              <td *ngIf="firstChild && first && first1 && item.Index != -1" [attr.rowspan]="itemdata.Index - 1" class="text-center">{{
+                i + 1
+              }}</td>
+              <td *ngIf="item.Index == -1" colspan="2" class="text-center">Tổng</td>
+              <td
+                *ngIf="firstChild && first && first1 && item.Index != -1"
+                [attr.rowspan]="itemdata.Index - 1"
+                class="text-center"
+                class="text-center"
+                >{{ item.DistrictName }}</td
+              >
+              <td *ngIf="first" [attr.rowspan]="item1.groupByTypeBlockID.length" class="text-center">{{ item.TypeBlockName }}</td>
+              <td class="text-center">{{ genUsageStatusName(item.UsageStatus) }}</td>
+              <td class="text-center">{{ item.Quantity }}</td>
+              <td class="text-center">{{ item.AmountDue | number: '0.0-2':'de-DE' }}</td>
+              <td class="text-center">{{ item.AmountReceived | number: '0.0-2':'de-DE' }}</td>
+              <td class="text-center">{{ item.Ratio }} %</td>
+              <td class="text-center">{{ item.AmountOwed | number: '0.0-2':'de-DE' }}</td>
+              <td class="text-center"></td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

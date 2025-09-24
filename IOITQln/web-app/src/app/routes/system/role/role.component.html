@@ -1,0 +1,62 @@
+<div class="card-custom" style="overflow-x: auto">
+  <div class="card-header">
+    <ng-container [ngTemplateOutlet]="nzExtra"></ng-container>
+  </div>
+
+  <div class="card-body">
+    <st #tableRef [data]="data" (change)="tableRefChange($event)" [columns]="columns" [size]="'small'"
+      [loading]="loading" [ps]="paging.page_size" [total]="paging.item_count"
+      [widthMode]="{ type: 'strict',strictBehavior:'truncate' }" [page]="{front:false}">
+    </st>
+  </div>
+</div>
+
+<ng-template #nzExtra>
+  <div nz-row>
+    <div nz-col [nzSm]="24" [nzMd]="6">
+      <h3 class="title-table">
+        <i nz-icon nzType="arrow-left" nzTheme="outline" (click)="onBack()"></i>
+        Danh sách quyền
+      </h3>
+    </div>
+
+    <div nz-col [nzSm]="24" [nzMd]="24" style="text-align: right;">
+      <form class="hidden-mobile table-form" nz-form [nzLayout]="'inline'">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzSuffix]="inputClearTpl">
+              <input nz-input [maxlength]="30" [width]="160" [(ngModel)]="query.txtSearch" name="no"
+                placeholder="Nhập từ khoá" id="no" />
+            </nz-input-group>
+            <ng-template #inputClearTpl>
+              <i nz-icon class="ant-input-clear-icon" nzTheme="fill" nzType="close-circle" *ngIf="query.txtSearch"
+                (click)="query.txtSearch = undefined"></i>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button type="submit" (click)="searchData()">
+              <i nz-icon nzType="search" nzTheme="outline"></i>
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+
+      <button nz-button nzType="text" nzTooltipTitle="Làm mới" nz-tooltip (click)="reset()">
+        <i nz-icon nzType="reload" nzTheme="outline"></i>
+      </button>
+
+      <button [hidden]="selectAll?.length==0" nzDanger nz-button nzType="primary"
+        nzTooltipTitle="Xoá các bản ghi đã chọn" nz-tooltip (click)="deletes()">
+        <i nz-icon nzType="delete" nzTheme="outline"></i>
+      </button>
+
+      <button nz-button nzType="primary" nz-button (click)="addOrUpdate()">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        Thêm mới
+      </button>
+    </div>
+  </div>
+</ng-template>

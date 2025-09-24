@@ -1,0 +1,46 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" style="padding-bottom: 30px;">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Code" nzRequired>Mã chức danh</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Mã chức danh!">
+            <input nz-input formControlName="Code" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="Name" nzRequired>Tên chức danh</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzHasFeedback nzErrorTip="Chưa nhập Tên chức danh!">
+            <input nz-input formControlName="Name" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="DepartmentId">Phòng ban</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <nz-select formControlName="DepartmentId" name="DepartmentId" id="DepartmentId"
+                [nzPlaceHolder]="'Chọn phòng ban'" [nzShowSearch]="true">
+                <nz-option *ngFor="let i of departments; let idx = index" [nzLabel]="i.Name" [nzValue]="i.Id">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="AuthorDocsCode">Mã VB ủy quyền</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <input nz-input formControlName="AuthorDocsCode" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6">Ghi chú</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <textarea formControlName="Note" nz-input rows="2"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+<div class="drawer-footer">
+    <button nz-button [nzType]="'default'" (click)="close()">
+        <i nz-icon nzType="stop" nzTheme="outline"></i>
+        Đóng </button>
+    <button nz-button [nzType]="'primary'" [disabled]="!validateForm.valid || loading" (click)="submitForm()">
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        Lưu
+    </button>
+</div>

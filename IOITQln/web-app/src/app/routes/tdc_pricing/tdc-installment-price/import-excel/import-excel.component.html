@@ -1,0 +1,132 @@
+<input type="file" accept=".xlsx, .xls" (change)="onFileChange($event)" style="margin: 10px" />
+<div class="drawer-footer">
+  <button nz-button [nzType]="'default'" (click)="close()">
+    <i nz-icon nzType="stop" nzTheme="outline"></i>
+    Đóng
+  </button>
+  <button nz-button [nzType]="'primary'" [disabled]="!selectedFile || loading" (click)="submitForm()">
+    <i nz-icon nzType="save" nzTheme="outline"></i>
+    Lưu
+  </button>
+</div>
+<table #groupingTable Data="dataTable">
+  <thead>
+    <tr>
+      <th rowspan="2">Lần trả </th>
+      <th rowspan="2">Ngày thanh toán theo quy định</th>
+      <th rowspan="2">Ngày thanh toán kì trước</th>
+      <th rowspan="2">Ngày thanh toán kì này dự kiến</th>
+      <th rowspan="2">Ngày thanh toán thực tế</th>
+      <th rowspan="2">Thời gian tính lãi theo tháng</th>
+      <th rowspan="2">Thời gian tính lãi theo ngày</th>
+      <th rowspan="2">Lãi suất tính theo tháng</th>
+      <th rowspan="2">Lãi suất tính theo ngày</th>
+      <th colspan="4">Số tiền thanh toán (VNĐ)</th>
+      <th colspan="3">Tình hình thanh toán (VNĐ)</th>
+
+      <th rowspan="2">Ghi Chú </th>
+    </tr>
+    <tr>
+      <th rowspan="1">Số tiền gốc tính lãi </th>
+      <th rowspan="1"> Số tiền gốc phải trả hàng năm </th>
+      <th rowspan="1">Lãi phát sinh theo tháng và ngày</th>
+      <th rowspan="1">Số tiền đến kỳ phải thanh toán </th>
+      <!--  -->
+      <th rowspan="1">Tổng số tiền phải thanh toán </th>
+      <th rowspan="1">Số tiền đã thanh toán </th>
+      <th rowspan="1">Chênh lệch</th>
+    </tr>
+  </thead>
+  <tbody id="tbody">
+    <!-- <tr *ngFor="let item of dataTable">
+            <td *ngIf="item.check" colspan="9">{{ item.PaymentTimes }}</td>
+            <td *ngIf="!item.check">{{ item.PaymentTimes }}</td>
+            <td *ngIf="!item.check">{{ item.PayDateDefault }}</td>
+            <td *ngIf="!item.check">{{ item.PayDateBefore }}</td>
+            <td *ngIf="!item.check">{{ item.PayDateGuess }}</td>
+            <td *ngIf="!item.check">{{ item.PayDateReal }}</td>
+            <td *ngIf="!item.check">{{ item.MonthInterest }}</td>
+            <td *ngIf="!item.check">{{ item.DailyInterest }}</td>
+            <td *ngIf="!item.check">{{ item.MonthInterestRate }}</td>
+            <td *ngIf="!item.check">{{ item.DailyInterestRate }}</td>
+            <td>{{ item.TotalPay | number}}</td>
+            <td>{{ item.PayAnnual | number}}</td>
+            <td>{{ item.TotalInterest | number}}</td>
+            <td>{{ item.TotalPayAnnual | number}}</td>
+            <td>{{ item.Pay | number}}</td>
+            <td>{{ item.Paid | number}}</td>
+            <td>{{ item.PriceDifference | number}}</td>
+            <td>{{ item.Note }}</td>
+        </tr> -->
+    <ng-container *ngFor="let item of dataTable; let i = index">
+      <tr *ngFor="let childItem of item.installmentPriceTableTdcs; let firstChild = first; let lastChild = last">
+        <td class="text-center" *ngIf="childItem.check" colspan="9"> {{ childItem.PaymentTimes }}</td>
+        <td class="text-center" *ngIf="!childItem.check"> {{ childItem.PaymentTimes }}</td>
+        <td *ngIf="!childItem.check" class="text-center">{{
+          childItem.RowStatus == 2
+          ? 'Nợ Cũ'
+          : childItem.RowStatus == 3
+          ? 'Phạt trễ
+          hạn'
+          : childItem.RowStatus == 5
+          ? 'Tổng cộng'
+          : childItem.PayDateDefault
+          }}</td>
+        <td *ngIf="!childItem.check" class="text-center">{{ childItem.PayDateBefore }}</td>
+        <td *ngIf="!childItem.check" class="text-center">{{ childItem.PayDateGuess }}</td>
+        <td *ngIf="!childItem.check" class="text-center">{{ childItem.PayDateReal }}</td>
+        <td *ngIf="!childItem.check" class="text-center">{{ childItem.MonthInterest }}</td>
+        <td *ngIf="!childItem.check" class="text-center">{{ childItem.DailyInterest }}</td>
+        <td *ngIf="!childItem.check" class="text-center">{{ childItem.MonthInterestRate }}</td>
+        <td *ngIf="!childItem.check" class="text-center">{{ childItem.DailyInterestRate }}</td>
+        <!-- <td class="text-center"> {{childItem.PaymentTimes }}</td>
+                <td class="text-center">{{ childItem.RowStatus == 2 ? 'Nợ Cũ'
+                    :(childItem.RowStatus ==
+                    3 ? 'Phạt trễ
+                    hạn' :(childItem.RowStatus == 5 ? 'Tổng cộng':childItem.PayDateDefault)) }}</td>
+                <td class="text-center">{{ childItem.PayDateBefore }}</td>
+                <td class="text-center">{{ childItem.PayDateGuess }}</td>
+                <td class="text-center">{{ childItem.PayDateReal }}</td>
+                <td class="text-center">{{ childItem.MonthInterest }}</td>
+                <td class="text-center">{{ childItem.DailyInterest }}</td>
+                <td class="text-center">{{ childItem.MonthInterestRate }}</td>
+                <td class="text-center">{{ childItem.DailyInterestRate }}</td> -->
+        <td style="text-align: right;">{{ childItem.TotalPay | number: '0.0-2':'de-DE'}}</td>
+        <td style="text-align: right;">{{ childItem.PayAnnual | number: '0.0-2':'de-DE'}}</td>
+        <td style="text-align: right;">{{ childItem.TotalInterest | number: '0.0-2':'de-DE'}}</td>
+        <td style="text-align: right;">{{ childItem.TotalPayAnnual | number: '0.0-2':'de-DE'}}</td>
+        <!-- <td style="text-align: right;">{{ childItem.Pay }}</td>
+                <td style="text-align: right;">{{ childItem.Paid }}</td>
+                <td style="text-align: right;">{{ childItem.PriceDifference }}</td> -->
+        <td *ngIf="firstChild" [attr.rowspan]="item.installmentPriceTableTdcs.length" style="text-align: right;">{{ item.Pay |
+          number: '0.0-2':'de-DE'}}</td>
+        <td *ngIf="firstChild" [attr.rowspan]="item.installmentPriceTableTdcs.length" style="text-align: right;">{{ item.Paid |
+          number: '0.0-2':'de-DE'}}</td>
+        <td *ngIf="firstChild" [attr.rowspan]="item.installmentPriceTableTdcs.length" style="text-align: right;">{{
+          item.PriceDifference | number: '0.0-2':'de-DE'}}
+        </td>
+        <td class="text-center">{{ childItem.Note }}</td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td,
+  th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  #tbody tr {
+    background-color: white;
+  }
+
+  #tbody tr:hover {
+    background-color: #ddd;
+  }
+</style>

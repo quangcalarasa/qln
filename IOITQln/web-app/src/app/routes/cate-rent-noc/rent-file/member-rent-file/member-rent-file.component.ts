@@ -1,0 +1,152 @@
+import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, SimpleChanges } from '@angular/core';
+import { _HttpClient } from '@delon/theme';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { STChange, STColumn, STComponent, STData, STSingleSort } from '@delon/abc/st';
+
+@Component({
+  selector: 'app-member-rent-file',
+  templateUrl: './member-rent-file.component.html',
+  styles: []
+})
+export class MemberRentFileComponent implements OnInit {
+  @ViewChild('tableItemRef') public tableItemRef!: STComponent;
+  @Input() memberRentFiles: any[] = [];
+
+  data_tableItemRef: any;
+  invalid_tableItemRef = true;
+
+  loading: boolean = false;
+  columnsItem: STColumn[] = [
+    { title: 'Stt', type: 'no', width: 40 },
+    { renderTitle: 'NameHeader', render: 'Name', className: 'text-center' },
+    { renderTitle: 'RelationshipHeader', render: 'Relationship', className: 'text-center' },
+    { renderTitle: 'NoteHeader', render: 'Note', className: 'text-center' },
+    {
+      title: 'Chức năng',
+      width: 150,
+      className: 'text-center',
+
+      buttons: [
+        {
+          icon: 'edit',
+          iif: i => !i.edit,
+          click: record => this.updateTableItemRefRow(record, true)
+        },
+        {
+          icon: 'delete',
+          iif: i => !i.edit,
+          type: 'del',
+          pop: {
+            title: 'Bạn có chắc chắn muốn xoá bản ghi này?',
+            okType: 'danger',
+            icon: 'star'
+          },
+          click: record => this.deleteItem(record)
+        },
+        {
+          text: `Lưu`,
+          iif: i => i.edit,
+          type: 'link',
+          click: record => {
+            this.submit(record);
+          }
+        },
+        {
+          text: `Hủy`,
+          iif: i => i.edit,
+          click: record => this.cancelUpdateTableItemRefRow(record, false)
+        }
+      ]
+    }
+  ];
+
+  constructor(private message: NzMessageService) {}
+
+  ngOnInit(): void {
+    if (this.memberRentFiles == undefined) {
+      this.memberRentFiles = [];
+    }
+    this.data_tableItemRef = [...this.memberRentFiles];
+
+    this.invalid_tableItemRef = this.memberRentFiles.length == 0 ? true : false;
+  }
+
+  getValue() {
+    let res: any[] = [];
+    [...this.tableItemRef._data].forEach((item: any) => {
+      res.push({
+        Name: item.Name,
+        Relationship: item.Relationship,
+        Note: item.Note,
+        Check: item.Check
+      });
+    });
+    return res;
+  }
+  addRow() {
+    let row = {
+      Name: undefined,
+      Relationship: undefined,
+      Note: undefined,
+      Check: false,
+      edit: true,
+      index: this.data_tableItemRef.length - 1
+    };
+
+    this.tableItemRef.addRow(row);
+    this.data_tableItemRef.push(Object.assign({}, row));
+    this.checkTableItemRefIsValid();
+  }
+  checkTableItemRefIsValid() {
+    if (this.tableItemRef._data.length == 0) this.invalid_tableItemRef = true;
+    else {
+      let isValid = this.tableItemRef._data.filter(x => x['edit'] == true);
+      this.invalid_tableItemRef = isValid.length > 0 ? true : false;
+    }
+  }
+  tableItemRefChange(e: STChange): void {
+    switch (e.type) {
+      case 'pi':
+        break;
+      case 'dblClick':
+        break;
+    }
+  }
+  private updateTableItemRefRow(i: STData, edit: boolean): void {
+    this.tableItemRef.setRow(i, { edit }, { refreshSchema: true });
+
+    this.checkTableItemRefIsValid();
+  }
+  async deleteItem(i: STData) {
+    this.tableItemRef.removeRow(i);
+    this.message.create('success', `Xóa item thành công!`);
+    this.checkTableItemRefIsValid();
+  }
+  private submit(i: STData): void {
+    if (!i['Name'] || !i['Relationship']) {
+      this.tableItemRef.setRow(i, { submit: true }, { refreshSchema: true });
+    } else {
+      this.data_tableItemRef = this.data_tableItemRef.map((item: any) => {
+        if (item.index == i['index']) {
+          return Object.assign({}, i);
+        } else return item;
+      });
+
+      this.updateTableItemRefRow(i, false);
+      this.message.success(`Lưu item thành công!`);
+    }
+    this.checkTableItemRefIsValid();
+  }
+  private cancelUpdateTableItemRefRow(i: STData, edit: boolean): void {
+    let item = this.data_tableItemRef.find((x: any) => x.index == i['index']);
+
+    if (!i['Name'] || !i['Relationship']) {
+      this.data_tableItemRef = this.data_tableItemRef.filter((x: any) => x != item);
+      this.tableItemRef.removeRow(i);
+    } else {
+      item.edit = false;
+      this.tableItemRef.setRow(i, Object.assign({}, item), { refreshSchema: true });
+    }
+    this.checkTableItemRefIsValid();
+  }
+}

@@ -1,0 +1,43 @@
+<ng-container [formGroup]="validateForm">
+    <div nz-row class="row-title mt-lg">
+        <div nz-col [nzMd]="3">
+            <span class="title">Thông tin đất ở</span>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandUsePlanningInfo">Về quy hoạch sử dụng
+                    đất</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <textarea formControlName="LandUsePlanningInfo" placeholder="Ví dụ: Căn cứ đồ án quy hoạch chi tiết xây dựng đô thị tỷ lệ 1/2000 (quy hoạch phân khu) Khu trung tâm hiện hữu Tp Hồ Chí Minh (930ha) được Ủy ban nhân dân Thành phố phê duyệt tại Quyết định số 6708/QĐ-UBND ngày 29/12/2012: Khu đất trên thuộc ô phố ký hiệu X16; chức năng quy hoạch sử dụng đất: Đất phức hợp - Chủ đạo chức năng ở.
+    (Theo Văn bản số 321/QLĐT- QHXD ngày 17/5/2022 của phòng Quản lý đô thị Quận 1)." nz-input rows="4"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="HighwayPlanningInfo">Về quy hoạch lộ giới</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <textarea formControlName="HighwayPlanningInfo" placeholder="Ví dụ: Căn cứ bản đồ quy hoạch lộ giới đường và hẽm <12m trên địa bàn Phường Đa Kao, được Ủy ban nhân dân quận 1 phê duyệt tại Quyết định số 476/QĐ-UB ngày 20/7/1999, Bên hông khu đất có hẻm hiện hữu (hẻm quy hoạch 24m đã được điều chỉnh thành 4,5m-4,8m theo Quyết định số 308/QĐ-UB ngày 19/6/2000 của Ủy ban nhân dân quận 1).       
+    (Theo Văn bản số 321/QLĐT- QHXD ngày 17/5/2022 của phòng Quản lý đô thị Quận 1)." nz-input rows="4"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="24" nzFor="LandAcquisitionSituationInfo">Tình hình thu hồi
+                    đất</nz-form-label>
+                <nz-form-control [nzSpan]="24">
+                    <textarea formControlName="LandAcquisitionSituationInfo"
+                        placeholder="Ví dụ: Căn nhà có quy hoạch theo hiện trạng sử dụng đất là đất ở đô thị, chưa nhận được quyết định thu hồi đất (Căn cứ theo công văn số 86/TNMT ngày 18/3/2022 của phòng Tài nguyên và môi trường Quận 1)"
+                        nz-input rows="4"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</ng-container>

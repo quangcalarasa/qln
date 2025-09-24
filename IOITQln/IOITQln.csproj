@@ -1,0 +1,159 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20230420084512_add-tbls-TDCProddject.cs" />
+    <Compile Remove="Migrations\20230420084512_add-tbls-TDCProddject.Designer.cs" />
+    <Compile Remove="Migrations\20230420092646_add-tbls-TDCProddject.cs" />
+    <Compile Remove="Migrations\20230420092646_add-tbls-TDCProddject.Designer.cs" />
+    <Compile Remove="Migrations\20230421073941_tang-tdc.cs" />
+    <Compile Remove="Migrations\20230421073941_tang-tdc.Designer.cs" />
+    <Compile Remove="Migrations\20230428072816_update-tbl-tdcinstall.cs" />
+    <Compile Remove="Migrations\20230428072816_update-tbl-tdcinstall.Designer.cs" />
+    <Compile Remove="Migrations\20230509081809_bo-sung-tinh-gia-1-lan.cs" />
+    <Compile Remove="Migrations\20230509081809_bo-sung-tinh-gia-1-lan.Designer.cs" />
+    <Compile Remove="Migrations\20230509082905_bo-sung-tinhgia.cs" />
+    <Compile Remove="Migrations\20230509082905_bo-sung-tinhgia.Designer.cs" />
+    <Compile Remove="Migrations\20230509083031_bo-sung-tinhgia.cs" />
+    <Compile Remove="Migrations\20230509083031_bo-sung-tinhgia.Designer.cs" />
+    <Compile Remove="Migrations\20230510151758_tinh-gia-1-lan.cs" />
+    <Compile Remove="Migrations\20230510151758_tinh-gia-1-lan.Designer.cs" />
+    <Compile Remove="Migrations\20230510154212_tinh-gia-1-lan-update.cs" />
+    <Compile Remove="Migrations\20230510154212_tinh-gia-1-lan-update.Designer.cs" />
+    <Compile Remove="Migrations\20230510160906_gia1lan.cs" />
+    <Compile Remove="Migrations\20230510160906_gia1lan.Designer.cs" />
+    <Compile Remove="Migrations\20230510161633_gia1lan-1.cs" />
+    <Compile Remove="Migrations\20230510161633_gia1lan-1.Designer.cs" />
+    <Compile Remove="Migrations\20230511022419_add-tbl-tdcInstallmentPricePay.cs" />
+    <Compile Remove="Migrations\20230511022419_add-tbl-tdcInstallmentPricePay.Designer.cs" />
+    <Compile Remove="Migrations\20230515013457_update-tdc-project-rate.cs" />
+    <Compile Remove="Migrations\20230515013457_update-tdc-project-rate.Designer.cs" />
+    <Compile Remove="Migrations\20230515014007_update-tdc-project-rate.cs" />
+    <Compile Remove="Migrations\20230515014007_update-tdc-project-rate.Designer.cs" />
+    <Compile Remove="Migrations\20230526065101_add-tbl-TdcPriceRentDataExcel.cs" />
+    <Compile Remove="Migrations\20230526065101_add-tbl-TdcPriceRentDataExcel.Designer.cs" />
+    <Compile Remove="Migrations\20230526070031_add-tbl-TdcPriceRentDataExcels.cs" />
+    <Compile Remove="Migrations\20230526070031_add-tbl-TdcPriceRentDataExcels.Designer.cs" />
+    <Compile Remove="Migrations\20230526082042_add-tbl-TdcPriceRentExcel-updatedatbase.cs" />
+    <Compile Remove="Migrations\20230526082042_add-tbl-TdcPriceRentExcel-updatedatbase.Designer.cs" />
+    <Compile Remove="Migrations\20230526084006_add-tbl-TdcPriceRentDataExcels.cs" />
+    <Compile Remove="Migrations\20230526084006_add-tbl-TdcPriceRentDataExcels.Designer.cs" />
+    <Compile Remove="Migrations\20230603042201_Fixfloor.cs" />
+    <Compile Remove="Migrations\20230603042201_Fixfloor.Designer.cs" />
+    <Compile Remove="Migrations\20230725015701_add-tbl-updateDataDebtsTable.cs" />
+    <Compile Remove="Migrations\20230725015701_add-tbl-updateDataDebtsTable.Designer.cs" />
+    <Compile Remove="Migrations\20230801075112_add-tbl-changeDatabaseRentFilé.cs" />
+    <Compile Remove="Migrations\20230801075112_add-tbl-changeDatabaseRentFilé.Designer.cs" />
+    <Compile Remove="Migrations\20230804111852_update-db-md167.cs" />
+    <Compile Remove="Migrations\20230804111852_update-db-md167.Designer.cs" />
+    <Compile Remove="Migrations\20230808033552_update-tbl-landtax1.cs" />
+    <Compile Remove="Migrations\20230808033552_update-tbl-landtax1.Designer.cs" />
+        <Compile Remove="Migrations\20230809015829_add-tbl-addDataRentFileBCT.cs" />
+    <Compile Remove="Migrations\20230809015829_add-tbl-addDataRentFileBCT.Designer.cs" />
+    <Compile Remove="Migrations\20230809020027_add-tbl-addDataRentFileBCT.cs" />
+    <Compile Remove="Migrations\20230809020027_add-tbl-addDataRentFileBCT.Designer.cs" />
+    <Compile Remove="Migrations\20230809022145_add-tbl-addDataRentFileBCT.cs" />
+    <Compile Remove="Migrations\20230809022145_add-tbl-addDataRentFileBCT.Designer.cs" />
+    <Compile Remove="Migrations\20230814014353_update-tbl-house.cs" />
+    <Compile Remove="Migrations\20230814014353_update-tbl-house.Designer.cs" />
+    <Compile Remove="Migrations\20230814031018_update-tbl-house1.cs" />
+    <Compile Remove="Migrations\20230814031018_update-tbl-house1.Designer.cs" />
+    <Compile Remove="Migrations\20231214070657_change-IdRentFile.cs" />
+    <Compile Remove="Migrations\20231214070657_change-IdRentFile.Designer.cs" />
+    <Compile Remove="Migrations\20231214091002_change-IdRentFile.cs" />
+    <Compile Remove="Migrations\20231214091002_change-IdRentFile.Designer.cs" />
+    <Compile Remove="Migrations\20231214092122_change-IdRentFile.cs" />
+    <Compile Remove="Migrations\20231214092122_change-IdRentFile.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Dapper" Version="2.1.28" />
+    <PackageReference Include="EPPlus" Version="6.2.2" />
+    <PackageReference Include="FcmSharp" Version="3.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.2.2" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NPOI" Version="2.6.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.7" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DevExpress.CodeParser.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.CodeParser.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.Data.Desktop.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.Data.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Docs.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.Docs.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v20.1.Core">
+      <HintPath>wwwroot\exportword\dll\DevExpress.Office.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v20.1.Core">
+      <HintPath>wwwroot\exportword\dll\DevExpress.Pdf.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v20.1.Drawing">
+      <HintPath>wwwroot\exportword\dll\DevExpress.Pdf.v20.1.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v20.1.Core">
+      <HintPath>wwwroot\exportword\dll\DevExpress.Printing.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v20.1.Core">
+      <HintPath>wwwroot\exportword\dll\DevExpress.RichEdit.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v20.1.Export">
+      <HintPath>wwwroot\exportword\dll\DevExpress.RichEdit.v20.1.Export.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.Utils.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.XtraBars.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.XtraEditors.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.XtraGrid.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.XtraLayout.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.XtraPrinting.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraRichEdit.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.XtraRichEdit.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v20.1">
+      <HintPath>wwwroot\exportword\dll\DevExpress.XtraTreeList.v20.1.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
